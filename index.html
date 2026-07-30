@@ -16,9 +16,9 @@
   }
   *{box-sizing:border-box;}
   body{margin:0;}
-  .board{ background:linear-gradient(180deg, #F7F7FA 0%, #F2F2F5 100%); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; padding:0 20px 60px; min-height:100vh; -webkit-font-smoothing:antialiased; }
-  .top-accent{height:5px; background:linear-gradient(90deg, var(--navy) 0%, #2d5488 45%, var(--brass) 100%); margin:0 -20px 28px; border-radius:0 0 6px 6px;}
-  .wrap{max-width:1320px; margin:0 auto;}
+  .board{ background:linear-gradient(180deg, #F7F7FA 0%, #F2F2F5 100%); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; padding:0 24px 60px; min-height:100vh; -webkit-font-smoothing:antialiased; }
+  .top-accent{height:5px; background:linear-gradient(90deg, var(--navy) 0%, #2d5488 45%, var(--brass) 100%); margin:0 -24px 28px; border-radius:0 0 6px 6px;}
+  .wrap{width:100%; max-width:none; margin:0 auto;}
   .masthead{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; flex-wrap:wrap; gap:14px;}
   .masthead-left{display:flex; flex-direction:row; align-items:center; gap:16px;}
   .logo-img{height:60px; width:60px; border-radius:50%; box-shadow:0 3px 12px rgba(31,58,92,0.18); display:block; border:1px solid var(--border);}
@@ -30,11 +30,12 @@
   .whoami input{background:var(--surface); border:1px solid var(--border); color:var(--text); padding:4px 8px; border-radius:6px; font-family:inherit; font-size:12px; width:110px;}
 
   .summary-cards{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px;}
-  .scard{flex:1 1 160px; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px 18px; box-shadow:0 1px 3px rgba(20,30,45,0.04), 0 8px 20px -12px rgba(20,30,45,0.10); position:relative; overflow:hidden; transition:box-shadow 0.2s, transform 0.2s;}
+  .scard{flex:1 1 190px; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px 18px; box-shadow:0 1px 3px rgba(20,30,45,0.04), 0 8px 20px -12px rgba(20,30,45,0.10); position:relative; overflow:hidden; transition:box-shadow 0.2s, transform 0.2s;}
   .scard:hover{box-shadow:0 2px 6px rgba(20,30,45,0.06), 0 14px 30px -14px rgba(20,30,45,0.16); transform:translateY(-1px);}
   .scard::before{content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--navy);}
   .scard:nth-child(2)::before{background:var(--brass);}
   .scard:nth-child(3)::before{background:var(--green);}
+  .scard:nth-child(4)::before{background:#2d5488;}
   .scard .l{font-size:11px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px; font-weight:600;}
   .scard .v{font-size:23px; font-weight:700; letter-spacing:-0.01em;}
   .scard .tag{font-size:11.5px; margin-top:4px; font-weight:600;}
@@ -56,13 +57,16 @@
   .howto-list b{font-weight:600; color:var(--navy);}
   .banner p b{font-weight:600;}
 
-  .table-scroll{overflow-x:auto; background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:0 1px 3px rgba(20,30,45,0.04), 0 10px 24px -16px rgba(20,30,45,0.14);}
-  table.budget-table{border-collapse:collapse; width:1630px; font-size:13px; table-layout:fixed;}
+  .table-scroll{overflow-x:auto; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:0 1px 3px rgba(20,30,45,0.04), 0 10px 24px -16px rgba(20,30,45,0.14);}
+  table.budget-table{border-collapse:collapse; width:100%; min-width:1675px; font-size:13px; table-layout:fixed;}
   table.budget-table th, table.budget-table td{padding:9px 12px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--border);}
   table.budget-table th:first-child, table.budget-table td:first-child{text-align:left;}
   table.budget-table td.notes-cell, table.budget-table th.notes-th{text-align:left; white-space:normal; max-width:300px;}
   table.budget-table thead tr.col-row th{background:var(--gray-bg); color:var(--text-2); font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700; position:sticky; top:0; border-bottom:2px solid var(--border);}
   table.budget-table thead tr.col-row th:first-child{background:var(--gray-bg);}
+  table.budget-table thead tr.col-row th:nth-child(5){background:#EEF3F8;}
+  table.budget-table th:nth-child(5), table.budget-table td:nth-child(5),
+  table.budget-table th:nth-child(8), table.budget-table td:nth-child(8){border-left:2px solid #D7DEE8;}
   tr.cat-row{background:#FAFAFC; cursor:pointer; font-weight:700; transition:background 0.15s;}
   tr.cat-row td{color:var(--text);}
   tr.cat-row:hover{background:#F1F2F5;}
@@ -100,7 +104,7 @@
   .comment-add input{flex:1; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:7px 10px; border-radius:8px; font-family:inherit; font-size:12.5px;}
   .comment-add button{background:var(--navy); color:#fff; border:none; border-radius:8px; padding:7px 13px; font-family:inherit; font-weight:600; font-size:12px; cursor:pointer;}
 
-  .bid-chips-cell{white-space:normal; text-align:left; padding:6px 8px !important; min-width:430px;}
+  .bid-chips-cell{white-space:normal; text-align:left; padding:6px 8px !important; min-width:410px;}
   .bids-subtable{border-collapse:collapse; width:421px; table-layout:fixed; box-sizing:border-box; border:1px solid var(--border); border-radius:9px;}
   .bids-subtable td{box-sizing:border-box;}
   .bids-subtable tr.bid-row{background:var(--surface);}
@@ -217,50 +221,45 @@
   <div class="summary-cards" id="summary-bottom"></div>
 
   <div class="banner">
-    <div class="tag">How to use this page</div>
+    <div class="tag">Cost vs. price</div>
     <ul class="howto-list">
-      <li><b>Cells are editable</b> — click any Cost Code, Budget, or Bid amount to type a new value.</li>
-      <li><b>Price</b> is Budget/Cost with McCamy's standard markup applied (General Conditions excluded) — this is what goes to the client.</li>
-      <li><b>Check the box</b> to include that Bid / Cost in the calculated total.</li>
-      <li><b>Click the PDF icon</b> to view the attachment.</li>
-      <li><b>Status</b> is a dropdown showing where things stand — Open or Closed.</li>
-      <li><b>Notes</b> are free-hand — click to add anything not covered elsewhere.</li>
-      <li><b>Comment</b> on any line for clarification — click the cost code to open its thread.</li>
-      <li><b>Activity Log</b>, below the table, shows who changed what.</li>
+      <li><b>Budgeted Cost</b> is the original BuilderTrend cost allowance before contractor fee.</li>
+      <li><b>Est. Cost to Complete</b> uses checked bids when available, otherwise the original budgeted cost.</li>
+      <li><b>Cost Difference</b> shows whether the current estimate is over or under the original budgeted cost.</li>
+      <li><b>Total Price</b> is the client-facing projected price with McCamy's 16% contractor fee applied, except General Conditions.</li>
+      <li><b>Bid / Estimates</b> are supporting quotes; check the box to include a bid in the projected cost.</li>
     </ul>
   </div>
 
   <div class="table-scroll">
     <table class="budget-table">
       <colgroup>
-        <col style="width:250px">
-        <col style="width:110px">
-        <col style="width:120px">
-        <col style="width:440px">
+        <col style="width:280px">
         <col style="width:130px">
-        <col style="width:120px">
-        <col style="width:120px">
-        <col style="width:80px">
-        <col style="width:260px">
+        <col style="width:155px">
+        <col style="width:140px">
+        <col style="width:150px">
+        <col style="width:90px">
+        <col style="width:300px">
+        <col style="width:430px">
       </colgroup>
       <thead>
         <tr class="col-row">
           <th>Cost Code</th>
-          <th>Budget</th>
-          <th>Price</th>
-          <th>Bid / Estimates Received</th>
+          <th>Budgeted Cost</th>
           <th>Est. Cost to Complete</th>
-          <th>Est. Price to Complete</th>
           <th>Cost Difference</th>
+          <th>Total Price</th>
           <th>Status</th>
           <th class="notes-th">Notes</th>
+          <th>Bid / Estimates</th>
         </tr>
       </thead>
       <tbody id="budget-tbody"></tbody>
     </table>
   </div>
 
-  <div class="foot-note">Cost Difference = Budget minus Estimated Cost to Complete, shown as "over" (red) or "under" (green) budget.</div>
+  <div class="foot-note">Cost Difference = Budgeted Cost minus Estimated Cost to Complete. Total Price is the projected client price after the 16% contractor fee, except General Conditions.</div>
 
   <div class="activity-section">
     <div class="activity-header" id="activity-toggle">📋 Activity Log <span id="activity-count"></span> <span class="chev" id="activity-chev">▸</span></div>
@@ -393,12 +392,13 @@ function varClass(n){ if(n===null||n===undefined) return 'v-dash'; return n<0 ? 
 function diffLabel(n){ if(n===0) return fmtMoney(0); return n<0 ? `${fmtMoney(Math.abs(n))} over` : `${fmtMoney(n)} under`; }
 
 function renderTop(){
-  let totalBudget=0, totalProjected=0, totalCostDiff=0;
-  budget.forEach(g=>{ const s = catCalc(g); totalBudget+=s.budgetAmt; totalProjected+=s.projected; totalCostDiff+=s.costDiff; });
+  let totalBudget=0, totalProjected=0, totalCostDiff=0, totalPrice=0;
+  budget.forEach(g=>{ const s = catCalc(g); totalBudget+=s.budgetAmt; totalProjected+=s.projected; totalCostDiff+=s.costDiff; totalPrice+=s.completePrice; });
   document.getElementById('summary-top').innerHTML = `
-    <div class="scard"><div class="l">Budget</div><div class="v">${fmtMoney(totalBudget)}</div></div>
-    <div class="scard"><div class="l">Cost Difference</div><div class="v ${varClass(totalCostDiff)}">${diffLabel(totalCostDiff)}</div></div>
+    <div class="scard"><div class="l">Budgeted Cost</div><div class="v">${fmtMoney(totalBudget)}</div></div>
     <div class="scard"><div class="l">Est. Cost to Complete</div><div class="v">${fmtMoney(totalProjected)}</div></div>
+    <div class="scard"><div class="l">Cost Difference</div><div class="v ${varClass(totalCostDiff)}">${diffLabel(totalCostDiff)}</div></div>
+    <div class="scard"><div class="l">Total Price</div><div class="v">${fmtMoney(totalPrice)}</div><div class="tag">Includes 16% contractor fee</div></div>
   `;
   document.getElementById('summary-bottom').innerHTML = '';
 }
@@ -424,13 +424,12 @@ function renderBudget(){
     rows += `<tr class="cat-row" data-catexpand="${g.id}">
       <td><span class="chev">${isOpen?'▾':'▸'}</span> <span class="cat-title-edit" contenteditable="true" data-cattitle="${g.id}">${(g.category||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</span></td>
       <td>${fmtMoney(s.budgetAmt)}</td>
-      <td>${fmtMoney(s.price)}</td>
-      <td>${s.hasBid?fmtMoney(s.bidReceived):'<span class="v-dash">--</span>'}</td>
       <td>${fmtMoney(s.projected)}</td>
-      <td>${fmtMoney(s.completePrice)}</td>
       <td class="${varClass(s.costDiff)}">${diffLabel(s.costDiff)}</td>
+      <td>${fmtMoney(s.completePrice)}</td>
       <td></td>
       <td class="notes-cell"></td>
+      <td>${s.hasBid?fmtMoney(s.bidReceived):'<span class="v-dash">--</span>'}</td>
     </tr>`;
     if(isOpen){
       g.items.forEach(it=>{
@@ -453,23 +452,22 @@ function renderBudget(){
         rows += `<tr class="item-row" data-itemexpand="${it.id}">
           <td>${isItemOpen?'▾':'▸'} <span class="item-title-edit" contenteditable="true" data-itemtitle="${it.id}">${(it.title||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</span></td>
           <td><input class="cell-input" type="text" inputmode="decimal" size="${fmtMoney(it.allowance).length+1}" data-budgetinput="${it.id}" value="${fmtMoney(it.allowance)}"></td>
-          <td>${fmtMoney(c.price)}</td>
-          <td class="bid-chips-cell">
-            ${chipsHtml}
-          </td>
           <td>${fmtMoney(c.projected)}</td>
-          <td>${fmtMoney(c.completePrice)}</td>
           <td class="${varClass(c.costDiff)}">${diffLabel(c.costDiff)}</td>
+          <td>${fmtMoney(c.completePrice)}</td>
           <td><select class="status-select status-${it.status||'none'}" data-statusinput="${it.id}">
             <option value="" ${!it.status?'selected':''}>—</option>
             <option value="open" ${it.status==='open'?'selected':''}>Open</option>
             <option value="closed" ${it.status==='closed'?'selected':''}>Closed</option>
           </select></td>
           <td class="notes-cell"><div class="notes-preview" data-notespreview="${it.id}" data-placeholder="Notes...">${(it.notes||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div></td>
+          <td class="bid-chips-cell">
+            ${chipsHtml}
+          </td>
         </tr>`;
         if(isItemOpen){
           const commentsHtml = (it.comments||[]).map(cm=>`<div class="comment"><b>${cm.author||'Anon'}</b><span class="ts">${fmtTs(cm.ts)}</span><button class="icon-btn icon-btn-x rm-comment-btn" data-rmcomment="${cm.id||cm.ts}" data-itemid="${it.id}" title="Delete comment">${iconX()}</button><div>${cm.text}</div></div>`).join('');
-          rows += `<tr class="detail-row" id="detail-${it.id}"><td colspan="9">
+          rows += `<tr class="detail-row" id="detail-${it.id}"><td colspan="8">
             <div class="comments">${commentsHtml || '<div style="font-size:13px;color:var(--text-2);">No comments yet.</div>'}
               <div class="comment-add"><input type="text" placeholder="Add a comment..." data-commentinput="${it.id}"><button data-commentbtn="${it.id}">Post</button></div>
             </div>
@@ -484,13 +482,12 @@ function renderBudget(){
   rows += `<tr class="cat-row" style="border-top:2px solid var(--navy);">
     <td>Totals</td>
     <td>${fmtMoney(T.budgetAmt)}</td>
-    <td>${fmtMoney(T.price)}</td>
-    <td>${fmtMoney(T.bidReceived)}</td>
     <td>${fmtMoney(T.projected)}</td>
-    <td>${fmtMoney(T.completePrice)}</td>
     <td class="${varClass(T.costDiff)}">${diffLabel(T.costDiff)}</td>
+    <td>${fmtMoney(T.completePrice)}</td>
     <td></td>
     <td class="notes-cell"></td>
+    <td>${fmtMoney(T.bidReceived)}</td>
   </tr>`;
 
   document.getElementById('budget-tbody').innerHTML = rows;
