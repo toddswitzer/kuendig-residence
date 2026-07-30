@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuendig Residence — Job Costing Budget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#F5F5F7; --surface:#FFFFFF; --text:#1D1D1F; --text-2:#6E6E73; --text-3:#A1A1A6;
+    --border:#E5E5E7; --navy:#1F3A5C; --brass:#B98A3D;
+    --red:#E0453C; --amber:#C9820A; --green:#2FA84F;
+    --red-bg:#FDECEC; --amber-bg:#FBF1DE; --green-bg:#E7F6EB; --gray-bg:#F0F0F2;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  .board{ background:linear-gradient(180deg, #F7F7FA 0%, #F2F2F5 100%); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; padding:0 20px 60px; min-height:100vh; -webkit-font-smoothing:antialiased; }
+  .top-accent{height:5px; background:linear-gradient(90deg, var(--navy) 0%, #2d5488 45%, var(--brass) 100%); margin:0 -20px 28px; border-radius:0 0 6px 6px;}
+  .wrap{max-width:1320px; margin:0 auto;}
+  .masthead{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; flex-wrap:wrap; gap:14px;}
+  .masthead-left{display:flex; flex-direction:row; align-items:center; gap:16px;}
+  .logo-img{height:60px; width:60px; border-radius:50%; box-shadow:0 3px 12px rgba(31,58,92,0.18); display:block; border:1px solid var(--border);}
+  .masthead h1{font-size:22px; font-weight:700; margin:0; letter-spacing:-0.01em;}
+  .masthead .sub{font-size:13px; color:var(--text-2); margin-top:3px;}
+  .asof{font-size:12px; color:var(--text-3); text-align:right;}
+  .asof b{color:var(--text); font-size:14px; font-weight:600;}
+  .whoami{font-size:11.5px; color:var(--text-3); margin-top:6px;}
+  .whoami input{background:var(--surface); border:1px solid var(--border); color:var(--text); padding:4px 8px; border-radius:6px; font-family:inherit; font-size:12px; width:110px;}
+
+  .summary-cards{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px;}
+  .scard{flex:1 1 160px; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px 18px; box-shadow:0 1px 3px rgba(20,30,45,0.04), 0 8px 20px -12px rgba(20,30,45,0.10); position:relative; overflow:hidden; transition:box-shadow 0.2s, transform 0.2s;}
+  .scard:hover{box-shadow:0 2px 6px rgba(20,30,45,0.06), 0 14px 30px -14px rgba(20,30,45,0.16); transform:translateY(-1px);}
+  .scard::before{content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--navy);}
+  .scard:nth-child(2)::before{background:var(--brass);}
+  .scard:nth-child(3)::before{background:var(--green);}
+  .scard .l{font-size:11px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px; font-weight:600;}
+  .scard .v{font-size:23px; font-weight:700; letter-spacing:-0.01em;}
+  .scard .tag{font-size:11.5px; margin-top:4px; font-weight:600;}
+  .scard .tag.ok{color:var(--green);} .scard .tag.over{color:var(--red);}
+
+  .storage-bar{width:180px; height:6px; background:var(--gray-bg); border-radius:4px; overflow:hidden; flex-shrink:0;}
+  .storage-fill{height:100%; background:var(--green); transition:width 0.3s;}
+  .storage-warn .storage-fill{background:var(--amber);}
+  .storage-critical .storage-fill{background:var(--red);}
+  .storage-critical{color:var(--red); font-weight:600;}
+  .storage-warn{color:#8a5d00; font-weight:600;}
+
+  .banner{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px 18px; margin-bottom:18px; box-shadow:0 1px 3px rgba(20,30,45,0.04);}
+  .banner .tag{font-size:12px; font-weight:600; color:var(--navy); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:6px;}
+  .banner p{font-size:13.5px; line-height:1.55; margin:6px 0 0; color:var(--text);}
+  .howto-list{margin:8px 0 0; padding:0; list-style:none;}
+  .howto-list li{font-size:13.5px; line-height:1.6; color:var(--text); padding:4px 0 4px 20px; position:relative;}
+  .howto-list li:before{content:"–"; position:absolute; left:2px; color:var(--brass); font-weight:700;}
+  .howto-list b{font-weight:600; color:var(--navy);}
+  .banner p b{font-weight:600;}
+
+  .table-scroll{overflow-x:auto; background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:0 1px 3px rgba(20,30,45,0.04), 0 10px 24px -16px rgba(20,30,45,0.14);}
+  table.budget-table{border-collapse:collapse; width:1630px; font-size:13px; table-layout:fixed;}
+  table.budget-table th, table.budget-table td{padding:9px 12px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--border);}
+  table.budget-table th:first-child, table.budget-table td:first-child{text-align:left;}
+  table.budget-table td.notes-cell, table.budget-table th.notes-th{text-align:left; white-space:normal; max-width:300px;}
+  table.budget-table thead tr.col-row th{background:var(--gray-bg); color:var(--text-2); font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700; position:sticky; top:0; border-bottom:2px solid var(--border);}
+  table.budget-table thead tr.col-row th:first-child{background:var(--gray-bg);}
+  tr.cat-row{background:#FAFAFC; cursor:pointer; font-weight:700; transition:background 0.15s;}
+  tr.cat-row td{color:var(--text);}
+  tr.cat-row:hover{background:#F1F2F5;}
+  tr.item-row{cursor:pointer; transition:background 0.15s;}
+  tr.item-row:hover td{background:#FAFAFC;}
+  table.budget-table td{vertical-align:middle;}
+  tr.item-row td:first-child{padding-left:28px; font-weight:500;}
+  .cat-title-edit, .item-title-edit{border-radius:5px; padding:2px 4px; cursor:text;}
+  .cat-title-edit:hover, .item-title-edit:hover{background:var(--bg);}
+  .cat-title-edit:focus, .item-title-edit:focus{outline:none; background:var(--surface); box-shadow:0 0 0 2px var(--navy) inset;}
+  tr.detail-row td{text-align:left; white-space:normal; background:#FAFAFB; padding:14px 16px 18px 28px;}
+  .chev{display:inline-block; width:14px; color:var(--text-3);}
+  .v-over{color:var(--red) !important; font-weight:600;}
+  .v-under{color:var(--green) !important; font-weight:600;}
+  .v-dash{color:var(--text-3) !important;}
+  .cell-input{text-align:right; font-family:inherit; font-size:13px; border:1px solid transparent; border-radius:5px; padding:4px 6px; background:transparent; color:var(--text); min-width:70px;}
+  .cell-input:hover{border-color:var(--border); background:var(--bg);}
+  .cell-input:focus{border-color:var(--navy); background:var(--surface); outline:none;}
+  .notes-preview{width:100%; max-width:260px; font-family:inherit; font-size:12.5px; padding:7px 8px; color:var(--text-2); line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; border-radius:6px; border:1px solid transparent;}
+  .notes-preview:empty:before{content:attr(data-placeholder); color:var(--text-3);}
+  .notes-preview:hover{border-color:var(--border); background:var(--bg); color:var(--text);}
+
+  .status-select{border:none; border-radius:7px; padding:6px 6px; font-family:inherit; font-size:11.5px; font-weight:700; cursor:pointer; width:80px; min-width:80px; appearance:none; -webkit-appearance:none; text-align:center; letter-spacing:0.01em;}
+  .status-select:focus{outline:2px solid var(--navy); outline-offset:1px;}
+  .status-select.status-none{background:var(--gray-bg); color:var(--text-3);}
+  .status-select.status-open{background:var(--amber-bg); color:#8a5d00;}
+  .status-select.status-closed{background:var(--green-bg); color:#1c7a3c;}
+
+  .comments{margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); max-width:640px;}
+  .comment{font-size:12.5px; padding:5px 0; border-bottom:1px solid var(--bg); position:relative;}
+  .comment b{color:var(--text); font-size:12px;}
+  .comment .ts{color:var(--text-3); font-size:10.5px; margin-left:6px;}
+  .rm-comment-btn{position:absolute; right:0; top:3px;}
+  .comment-add{display:flex; gap:6px; margin-top:8px;}
+  .comment-add input{flex:1; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:7px 10px; border-radius:8px; font-family:inherit; font-size:12.5px;}
+  .comment-add button{background:var(--navy); color:#fff; border:none; border-radius:8px; padding:7px 13px; font-family:inherit; font-weight:600; font-size:12px; cursor:pointer;}
+
+  .bid-chips-cell{white-space:normal; text-align:left; padding:6px 8px !important; min-width:430px;}
+  .bids-subtable{border-collapse:collapse; width:421px; table-layout:fixed; box-sizing:border-box; border:1px solid var(--border); border-radius:9px;}
+  .bids-subtable td{box-sizing:border-box;}
+  .bids-subtable tr.bid-row{background:var(--surface);}
+  .bids-subtable tr.bid-row:not(:first-child) td{border-top:1px solid var(--border);}
+  .bids-subtable td{padding:6px 6px; vertical-align:middle; border-bottom:none; white-space:normal;}
+  .bids-subtable td.bc-check{width:44px; padding:6px 10px 6px 12px;}
+  .bids-subtable td.bc-check input{width:14px; height:14px; accent-color:var(--navy); cursor:pointer; display:block; margin:0 auto;}
+  .bids-subtable td.bc-vendor{width:110px; max-width:110px; padding:6px 4px;}
+  .bids-subtable td.bc-amount{width:125px; max-width:125px; padding:6px 4px;}
+  .bids-subtable td.bc-pdf{width:70px; white-space:nowrap; padding:6px 4px;}
+  .bids-subtable td.bc-pdf .pdf-badge{margin-right:6px;}
+  .bids-subtable td.bc-trash, .bids-subtable td.bc-add{width:36px; text-align:center; padding:6px 4px;}
+  .mini-vendor{width:100%; min-width:0; white-space:pre-wrap; overflow-wrap:anywhere; word-break:break-word; cursor:text; font-family:inherit; font-size:12px; border:1px solid transparent; border-radius:5px; padding:5px 6px; background:var(--bg); color:var(--text); line-height:1.35;}
+  .mini-vendor:focus{border-color:var(--navy); outline:none; background:var(--surface);}
+  .mini-vendor:empty:before{content:attr(data-placeholder); color:var(--text-3);}
+  .mini-amount{width:100%; min-width:0; box-sizing:border-box; text-align:right; font-family:inherit; font-size:12px; border:1px solid transparent; border-radius:5px; padding:5px 6px; background:var(--bg); color:var(--text);}
+  .mini-amount:focus{border-color:var(--navy); outline:none; background:var(--surface);}
+  .icon-btn{display:inline-flex; align-items:center; justify-content:center; width:24px; min-width:24px; max-width:24px; height:24px; min-height:24px; max-height:24px; border-radius:7px; border:1px solid var(--border); background:var(--gray-bg); color:var(--text-3); cursor:pointer; flex-shrink:0; flex-grow:0; transition:all 0.15s; padding:0; box-sizing:border-box;}
+  .icon-btn.is-hidden{visibility:hidden; pointer-events:none;}
+  .icon-btn.icon-btn-disabled{opacity:0.35; pointer-events:none; cursor:default;}
+  .icon-btn-x:hover{background:var(--red-bg); border-color:var(--red); color:var(--red);}
+  .icon-btn-trash:hover{background:var(--red-bg); border-color:var(--red); color:var(--red);}
+  .icon-btn-add:hover{background:var(--navy); border-color:var(--navy); color:#fff; transform:scale(1.05);}
+
+  .activity-section{background:var(--surface); border:1px solid var(--border); border-radius:16px; margin-top:16px; overflow:hidden; box-shadow:0 1px 3px rgba(20,30,45,0.04);}
+  .activity-header{padding:13px 16px; font-size:13px; font-weight:600; color:var(--text); cursor:pointer; display:flex; align-items:center; gap:6px; transition:background 0.15s;}
+  .activity-header:hover{background:var(--bg);}
+  .activity-header #activity-count{color:var(--text-3); font-weight:500;}
+  .activity-header .chev{margin-left:auto; transition:transform 0.15s;}
+  .activity-list{max-height:280px; overflow-y:auto; padding:0 16px 14px; border-top:1px solid var(--border);}
+  .log-entry{font-size:12.5px; color:var(--text-2); padding:8px 0; border-bottom:1px solid var(--bg);}
+  .log-entry b{color:var(--navy);}
+  .log-entry .log-ts{color:var(--text-3); font-size:11px; margin-left:6px;}
+  .is-hidden{visibility:hidden; pointer-events:none;}
+  .rm-btn:hover{color:var(--red);}
+
+  .pdf-badge{display:inline-flex; align-items:center; justify-content:center; font-size:8px; font-weight:800; letter-spacing:0.01em; width:24px; min-width:24px; max-width:24px; height:24px; min-height:24px; max-height:24px; border-radius:7px; cursor:pointer; flex-shrink:0; flex-grow:0; transition:all 0.15s; box-sizing:border-box; border:1px solid transparent;}
+  .pdf-badge.filled{background:var(--red); color:#fff; box-shadow:0 1px 4px rgba(224,69,60,0.45);}
+  .pdf-badge.filled:hover{filter:brightness(1.1); transform:scale(1.05);}
+  .pdf-badge.empty{background:var(--gray-bg); color:var(--text-3); border:1px solid var(--border);}
+  .pdf-badge.empty:hover{background:var(--navy); color:#fff; border-color:var(--navy);}
+  .pdf-badge input{display:none;}
+
+  .pdf-modal-overlay{position:fixed; inset:0; background:rgba(29,29,31,0.55); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; z-index:200; padding:24px; animation:fadeIn 0.15s ease;}
+  .pdf-modal{background:var(--surface); border-radius:16px; width:100%; max-width:920px; height:88vh; display:flex; flex-direction:column; box-shadow:0 24px 70px rgba(0,0,0,0.35); overflow:hidden; animation:modalIn 0.2s ease;}
+  @keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
+  @keyframes modalIn{from{opacity:0; transform:scale(0.97) translateY(8px);} to{opacity:1; transform:scale(1) translateY(0);}}
+  .pdf-modal-header{display:flex; align-items:center; justify-content:space-between; padding:12px 18px; border-bottom:1px solid var(--border); font-weight:600; font-size:14px; gap:10px;}
+  .pdf-modal-header #pdf-modal-title{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;}
+  .pdf-modal-actions{display:flex; align-items:center; gap:10px; flex-shrink:0;}
+  #pdf-modal-pageinfo{font-size:12px; color:var(--text-2); font-weight:500;}
+  .pdf-modal-actions a{color:var(--navy); font-size:13px; font-weight:600; text-decoration:none;}
+  .pdf-modal-actions a:hover{text-decoration:underline;}
+  #pdf-modal-close{background:var(--gray-bg); border:none; border-radius:7px; width:28px; height:28px; cursor:pointer; font-size:13px; color:var(--text-2);}
+  #pdf-modal-close:hover{background:var(--red-bg); color:var(--red);}
+  .notes-modal-card{max-width:520px; height:auto;}
+  .notes-modal-body{padding:18px;}
+  .notes-modal-textarea{width:100%; min-height:220px; font-family:inherit; font-size:14px; line-height:1.5; border:1px solid var(--border); border-radius:10px; padding:14px; color:var(--text); background:var(--bg); resize:vertical;}
+  .notes-modal-textarea:focus{outline:none; border-color:var(--navy); background:var(--surface);}
+  #notes-modal-close{background:var(--gray-bg); border:none; border-radius:7px; width:28px; height:28px; cursor:pointer; font-size:13px; color:var(--text-2);}
+  #notes-modal-close:hover{background:var(--red-bg); color:var(--red);}
+  .pdf-modal-body{flex:1; overflow:auto; background:#525659; display:flex; flex-direction:column; align-items:center; padding:20px; gap:16px;}
+  #pdf-pages-container{display:flex; flex-direction:column; align-items:center; gap:16px;}
+  .pdf-page-canvas{box-shadow:0 4px 16px rgba(0,0,0,0.3); background:#fff; max-width:100%;}
+  #pdf-modal-img{max-width:100%; box-shadow:0 4px 16px rgba(0,0,0,0.3);}
+
+  #toast{position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--text); color:#fff; padding:12px 20px; border-radius:10px; font-size:13.5px; font-weight:500; box-shadow:0 10px 30px rgba(0,0,0,0.25); opacity:0; pointer-events:none; transition:opacity 0.2s, transform 0.2s; z-index:300; max-width:400px; text-align:center;}
+  #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  #toast.toast-error{background:var(--red);}
+  .foot-note{font-size:11.5px; color:var(--text-3); text-align:center; margin-top:24px; line-height:1.5;}
+  .mccamy-footer{margin-top:28px; padding-top:16px; border-top:1px solid var(--border); text-align:center;}
+  .mccamy-footer div{font-size:12px; color:var(--text-2);}
+  .mccamy-footer-sub{color:var(--text-3) !important; font-style:italic; margin-top:4px; font-size:11px !important;}
+  .gate-overlay{position:fixed; inset:0; background:rgba(29,29,31,0.4); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:100; padding:20px;}
+  .gate-card{background:var(--surface); border-radius:18px; padding:26px 26px; max-width:360px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,0.25); animation:modalIn 0.25s ease;}
+  .gate-card .stamp{font-size:11px; letter-spacing:0.05em; color:var(--brass); text-transform:uppercase; margin-bottom:8px; font-weight:600;}
+  .gate-card h2{font-size:19px; margin:0 0 6px; font-weight:700; letter-spacing:-0.01em;}
+  .gate-card p{font-size:13px; color:var(--text-2); margin:0 0 16px; line-height:1.5;}
+  .gate-card input{width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:inherit; font-size:15px; padding:10px 12px; border-radius:10px; margin-bottom:12px;}
+  .gate-card .gate-btn{width:100%; background:var(--navy); color:#fff; border:none; padding:11px; border-radius:10px; font-family:inherit; font-weight:600; font-size:14px; cursor:pointer; transition:background 0.15s, transform 0.1s;}
+  .gate-card .gate-btn:hover{background:#28497a; transform:translateY(-1px);}
+  .gate-card .gate-skip{display:block; text-align:center; margin-top:10px; font-size:12px; color:var(--text-3); background:none; border:none; cursor:pointer; text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div class="board"><div class="top-accent"></div><div class="wrap">
+  <div id="gate-overlay" class="gate-overlay" style="display:none;">
+    <div class="gate-card">
+      <div class="stamp">Kuendig Budget Review</div>
+      <h2>Who's checking in?</h2>
+      <p>This page tracks the Kuendig Residence job costing budget. It's separate from the site decisions/selections board.</p>
+      <input id="gate-input" type="text" placeholder="Your name" autofocus>
+      <button class="gate-btn" id="gate-submit">Continue</button>
+      <button class="gate-skip" id="gate-skip">Continue without a name</button>
+    </div>
+  </div>
+
+  <div class="masthead">
+    <div class="masthead-left">
+      <img class="logo-img" src="data:image/png;base64,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" alt="McCamy Construction">
+      <div>
+        <h1>Kuendig Residence — Job Costing Budget</h1>
+        <div class="sub">825 Blows Ferry Road, Knoxville, TN · (865) 247-7068</div>
+      </div>
+    </div>
+    <div>
+      <div class="asof">As of<br><b id="asof-date"></b></div>
+      <div class="whoami">You: <input id="username-input" placeholder="your name"></div>
+    </div>
+  </div>
+
+  <div class="summary-cards" id="summary-top"></div>
+  <div class="summary-cards" id="summary-bottom"></div>
+
+  <div class="banner">
+    <div class="tag">How to use this page</div>
+    <ul class="howto-list">
+      <li><b>Cells are editable</b> — click any Cost Code, Budget, or Bid amount to type a new value.</li>
+      <li><b>Price</b> is Budget/Cost with McCamy's standard markup applied (General Conditions excluded) — this is what goes to the client.</li>
+      <li><b>Check the box</b> to include that Bid / Cost in the calculated total.</li>
+      <li><b>Click the PDF icon</b> to view the attachment.</li>
+      <li><b>Status</b> is a dropdown showing where things stand — Open or Closed.</li>
+      <li><b>Notes</b> are free-hand — click to add anything not covered elsewhere.</li>
+      <li><b>Comment</b> on any line for clarification — click the cost code to open its thread.</li>
+      <li><b>Activity Log</b>, below the table, shows who changed what.</li>
+    </ul>
+  </div>
+
+  <div class="table-scroll">
+    <table class="budget-table">
+      <colgroup>
+        <col style="width:250px">
+        <col style="width:110px">
+        <col style="width:120px">
+        <col style="width:440px">
+        <col style="width:130px">
+        <col style="width:120px">
+        <col style="width:120px">
+        <col style="width:80px">
+        <col style="width:260px">
+      </colgroup>
+      <thead>
+        <tr class="col-row">
+          <th>Cost Code</th>
+          <th>Budget</th>
+          <th>Price</th>
+          <th>Bid / Estimates Received</th>
+          <th>Est. Cost to Complete</th>
+          <th>Est. Price to Complete</th>
+          <th>Cost Difference</th>
+          <th>Status</th>
+          <th class="notes-th">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="budget-tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="foot-note">Cost Difference = Budget minus Estimated Cost to Complete, shown as "over" (red) or "under" (green) budget.</div>
+
+  <div class="activity-section">
+    <div class="activity-header" id="activity-toggle">📋 Activity Log <span id="activity-count"></span> <span class="chev" id="activity-chev">▸</span></div>
+    <div id="changelog-list" class="activity-list" style="display:none;"></div>
+  </div>
+
+  <div class="mccamy-footer">
+    <div>McCamy Construction · 825 Blows Ferry Road, Knoxville, TN · (865) 247-7068</div>
+    <div class="mccamy-footer-sub">This page is separate from the job site decisions/selections board — share this link only with those who should see budget and pricing.</div>
+  </div>
+</div></div>
+
+<div id="notes-modal" class="pdf-modal-overlay">
+  <div class="pdf-modal notes-modal-card">
+    <div class="pdf-modal-header">
+      <span id="notes-modal-title">Notes</span>
+      <div class="pdf-modal-actions">
+        <button id="notes-modal-close">✕</button>
+      </div>
+    </div>
+    <div class="notes-modal-body">
+      <textarea id="notes-modal-textarea" class="notes-modal-textarea" placeholder="Notes for this line item..."></textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+
+const seedBudgetGroups = [{"id": "1000-job-startup-and-site-work", "category": "1000- Job Startup and Site Work", "items": [{"id": "1010-building-permits", "title": "1010- Building Permits", "allowance": 8500.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "1400-temporary-utilities", "title": "1400- Temporary Utilities", "allowance": 3200.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "1430-utility-fees", "title": "1430- Utility Fees", "allowance": 3500.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2000-surveying", "title": "2000- Surveying", "allowance": 5000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2005-excavation", "title": "2005- Excavation", "allowance": 75000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2011-plumbing-underground", "title": "2011- Plumbing Underground", "allowance": 10000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2012-electrical-underground", "title": "2012- Electrical Underground", "allowance": 10000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2300-termite-treatment", "title": "2300- Termite Treatment", "allowance": 1200.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1100-foundation-waterproofing", "category": "1100- Foundation & Waterproofing", "items": [{"id": "2100-footings-foundation", "title": "2100- Footings & Foundation", "allowance": 263449.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2200-waterproofing", "title": "2200- Waterproofing", "allowance": 23728.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2500-gravel", "title": "2500- Gravel", "allowance": 65000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "3100-structural-steel", "title": "3100- Structural Steel", "allowance": 87621.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1200-framing-roofing", "category": "1200- Framing & Roofing", "items": [{"id": "3110-framing-material", "title": "3110- Framing Material", "allowance": 216750.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "3210-framing-labor", "title": "3210- Framing Labor", "allowance": 137275.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4100-roofing", "title": "4100- Roofing", "allowance": 103660.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4150-roofing-labor", "title": "4150- Roofing Labor", "allowance": 40000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4160-roofing", "title": "4160- Roofing", "allowance": 40000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1300-exterior-finishes", "category": "1300- Exterior Finishes", "items": [{"id": "3401-exterior-siding-m-l", "title": "3401- Exterior Siding M&L", "allowance": 85000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "3402-exterior-siding", "title": "3402- Exterior Siding", "allowance": 100000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "3910-gutters-downspouts", "title": "3910- Gutters & downspouts", "allowance": 49200.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4220-stone", "title": "4220- Stone ", "allowance": 105639.5, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4230-stone-labor", "title": "4230- Stone Labor", "allowance": 105840.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4601-exterior-paint", "title": "4601- Exterior Paint", "allowance": 50000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4900-mailbox", "title": "4900 Mailbox", "allowance": 2000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1301-porches-decks", "category": "1301- Porches & Decks", "items": [{"id": "6452-deck", "title": "6452- Deck", "allowance": 50000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1302-windows-doors", "category": "1302- Windows & Doors", "items": [{"id": "3300-windows", "title": "3300- Windows", "allowance": 105487.37, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4300-exterior-doors", "title": "4300- Exterior Doors", "allowance": 38000.0, "actual": 67010.99, "notes": "Approved package total 7/9/26 (standard raised panel + glass, Dallas Millwork/Witt Building). Not reflected in BuilderTrend.", "comments": []}, {"id": "4350-garage-doors", "title": "4350- Garage Doors", "allowance": 25000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1400-mep", "category": "1400- MEP", "items": [{"id": "3720-plumbing-labor", "title": "3720- Plumbing Labor", "allowance": 59675.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5700-hvac", "title": "5700- HVAC", "allowance": 68927.0, "actual": 89155.0, "notes": "Bid accepted 7/13/26 (Gent Heating & Cooling) — Sarah confirmed pulling equipment same day. Not reflected in BuilderTrend's Committed/Actual columns.", "comments": []}, {"id": "5750-low-voltage-wiring", "title": "5750- Low Voltage Wiring", "allowance": 20000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "electrical-labor", "title": "Electrical Labor", "allowance": 139432.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1500-insulation-drywall", "category": "1500- Insulation & Drywall", "items": [{"id": "4400-insulation", "title": "4400- Insulation", "allowance": 37095.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5100-drywall", "title": "5100- Drywall", "allowance": 62656.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1600-interior-finishes", "category": "1600- Interior Finishes", "items": [{"id": "5200-interior-trim-material", "title": "5200- Interior Trim Material", "allowance": 100000.0, "actual": 182353.75, "notes": "Charlie's (USAM) pricing received 7/27/26, excludes reclaimed doors (bedroom hallway, laundry, pantry). Needs a client conversation on overage vs scope reduction.", "comments": []}, {"id": "5250-interior-trim-labor", "title": "5250- Interior Trim Labor", "allowance": 115000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5300-painting-interior", "title": "5300- Painting- Interior", "allowance": 65000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5610-door-hardware", "title": "5610- Door Hardware", "allowance": 10000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5620-glass", "title": "5620- Glass", "allowance": 16059.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5622-mirrors", "title": "5622- Mirrors", "allowance": 7000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5640-closet-shelving", "title": "5640- Closet Shelving", "allowance": 30000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1601-cabinets-countertops", "category": "1601- Cabinets & Countertops", "items": [{"id": "5400-cabinets-vanities", "title": "5400- Cabinets & Vanities", "allowance": 150000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5452-quartz-tops", "title": "5452- Quartz tops", "allowance": 75000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1602-fireplaces", "category": "1602- Fireplaces", "items": [{"id": "4500-fireplaces", "title": "4500- Fireplaces", "allowance": 60808.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1603-flooring-tile", "category": "1603- Flooring & Tile", "items": [{"id": "5510-ceramic-tile", "title": "5510- Ceramic Tile", "allowance": 65000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5512-ceramic-tile-installation", "title": "5512- Ceramic Tile Installation", "allowance": 75000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5520-hardwood-flooring", "title": "5520- Hardwood Flooring", "allowance": 92570.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1604-appliances-fixtures", "category": "1604- Appliances & Fixtures", "items": [{"id": "5630-appliances", "title": "5630- Appliances", "allowance": 85000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5710-fixtures-accessories", "title": "5710- Fixtures + Accessories", "allowance": 65000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5720-electrical-fixtures", "title": "5720- Electrical Fixtures", "allowance": 100000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1700-final-grade-concrete", "category": "1700- Final Grade & Concrete", "items": [{"id": "2700-concrete", "title": "2700- Concrete", "allowance": 116781.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1800-landscaping", "category": "1800- Landscaping", "items": [{"id": "6600-landscaping", "title": "6600- Landscaping", "allowance": 300943.64, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "6900-pool", "title": "6900- Pool", "allowance": 233826.9, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "2000-general-conditions", "category": "2000- General Conditions", "items": [{"id": "1000-general-conditions", "title": "1000- General Conditions", "allowance": 140000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "2100-general-construction-costs", "category": "2100- General Construction Costs", "items": [{"id": "1002-general-construction-cost", "title": "1002 - General construction cost", "allowance": 75000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "6100-final-cleaning", "title": "6100- Final Cleaning", "allowance": 6000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "6700-pressure-washing", "title": "6700- Pressure Washing", "allowance": 5000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}];
+
+const BUDGET_KEY = 'kuendig-budget-standalone-v1';
+const USERNAME_KEY = 'kuendig-budget-username';
+
+let __saveTimer = null;
+function persistState(){
+  clearTimeout(__saveTimer);
+  __saveTimer = setTimeout(()=>{
+    fetch('/api/state', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({budget, changeLog})})
+      .then(r=>r.json()).then(res=>{
+        if(!res || !res.ok){ showToast('That change may not have saved — check your connection and try again.', 'error'); }
+      }).catch(()=>{ showToast('That change may not have saved — check your connection and try again.', 'error'); });
+  }, 150);
+}
+function loadJSON(key, fallback){
+  return fetch('/api/state').then(r=>r.json()).then(data=>{
+    if(!data) return fallback;
+    return data.budget || fallback;
+  }).catch(()=> fallback);
+}
+function saveJSON(key, data){ persistState(); }
+function loadPersonal(key, fallback){ try{ const v = localStorage.getItem(key); return Promise.resolve(v===null?fallback:v); }catch(e){ return Promise.resolve(fallback); } }
+function savePersonal(key, val){ try{ localStorage.setItem(key, val); }catch(e){} }
+function fmtMoney(n){ return n===null||n===undefined||n==='' ? '—' : '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2}); }
+function parseCurrency(s){ if(s==null) return null; const cleaned = String(s).replace(/[^0-9.\-]/g,''); if(cleaned==='') return null; const n = parseFloat(cleaned); return isNaN(n)?null:n; }
+function fmtTs(ts){ const d = new Date(ts); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
+function fmtDate(d){ return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+function fmtSize(kb){ return kb>1024 ? (kb/1024).toFixed(1)+' MB' : kb+' KB'; }
+function showToast(msg, kind){
+  let t = document.getElementById('toast');
+  if(!t){ t = document.createElement('div'); t.id='toast'; document.body.appendChild(t); }
+  t.className = 'toast toast-'+(kind||'info')+' show';
+  t.textContent = msg;
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=>{ t.classList.remove('show'); }, 4000);
+}
+
+let changeLog = [];
+function findItemTitle(itemId){
+  for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec) return rec.title; }
+  return 'a line item';
+}
+function logChange(action){
+  changeLog.unshift({ts: Date.now(), author: username||'Anon', action});
+  if(changeLog.length>200) changeLog = changeLog.slice(0,200);
+  renderChangeLog();
+}
+function renderChangeLog(){
+  const list = document.getElementById('changelog-list');
+  const count = document.getElementById('activity-count');
+
+  if(!list) return;
+  if(count) count.textContent = changeLog.length ? `(${changeLog.length})` : '';
+  list.innerHTML = changeLog.slice(0,50).map(c=>`<div class="log-entry"><b>${c.author}</b> ${c.action} <span class="log-ts">${fmtTs(c.ts)}</span></div>`).join('') || '<div style="color:var(--text-3); font-size:12.5px;">No activity yet.</div>';
+}
+
+const MAX_FILE_BYTES = 10*1024*1024;
+function uploadFile(file, onDone){
+  if(file.size > MAX_FILE_BYTES){ showToast('That file is '+fmtSize(Math.round(file.size/1024))+' — please keep uploads under 10MB.', 'error'); return; }
+  fetch('/api/upload?filename='+encodeURIComponent(file.name), {
+    method:'POST',
+    headers:{'Content-Type': file.type || 'application/octet-stream'},
+    body: file
+  }).then(r=>r.json()).then(res=>{
+    if(res.error){ showToast(res.error, 'error'); return; }
+    onDone({fileUrl: res.url, fileName: res.fileName, fileSizeKB: res.fileSizeKB});
+  }).catch(()=>showToast('Upload failed — try again.', 'error'));
+}
+let notesModalItemId = null;
+let budget = [];
+let username = '';
+let expandedCat = {};
+let expandedItem = {};
+
+const MARKUP_RATE = 0.16;
+const NO_MARKUP_IDS = new Set(['1000-general-conditions']);
+function priceFor(itemId, amount){ const rate = NO_MARKUP_IDS.has(itemId) ? 0 : MARKUP_RATE; return amount * (1+rate); }
+function itemCalc(it){
+  const budgetAmt = Number(it.allowance||0);
+  const bids = it.bids || [];
+  const checked = bids.filter(b=>b.checked && b.amount!=null);
+  const hasBid = checked.length>0;
+  const bidReceived = hasBid ? checked.reduce((s,b)=>s+Number(b.amount||0),0) : null;
+  const projected = hasBid ? bidReceived : budgetAmt;
+  const costDiff = budgetAmt - projected;
+  const price = priceFor(it.id, budgetAmt);
+  const completePrice = priceFor(it.id, projected);
+  return {budgetAmt, bidReceived, hasBid, checkedCount: checked.length, projected, costDiff, price, completePrice};
+}
+function catCalc(g){
+  const sums = {budgetAmt:0, bidReceived:0, hasBid:false, projected:0, costDiff:0, price:0, completePrice:0};
+  g.items.forEach(it=>{
+    const c = itemCalc(it);
+    sums.budgetAmt += c.budgetAmt; sums.projected += c.projected; sums.costDiff += c.costDiff;
+    sums.price += c.price; sums.completePrice += c.completePrice;
+    if(c.hasBid){ sums.bidReceived += c.bidReceived; sums.hasBid = true; }
+  });
+  return sums;
+}
+function varClass(n){ if(n===null||n===undefined) return 'v-dash'; return n<0 ? 'v-over' : (n>0 ? 'v-under' : ''); }
+function diffLabel(n){ if(n===0) return fmtMoney(0); return n<0 ? `${fmtMoney(Math.abs(n))} over` : `${fmtMoney(n)} under`; }
+
+function renderTop(){
+  let totalBudget=0, totalProjected=0, totalCostDiff=0;
+  budget.forEach(g=>{ const s = catCalc(g); totalBudget+=s.budgetAmt; totalProjected+=s.projected; totalCostDiff+=s.costDiff; });
+  document.getElementById('summary-top').innerHTML = `
+    <div class="scard"><div class="l">Budget</div><div class="v">${fmtMoney(totalBudget)}</div></div>
+    <div class="scard"><div class="l">Cost Difference</div><div class="v ${varClass(totalCostDiff)}">${diffLabel(totalCostDiff)}</div></div>
+    <div class="scard"><div class="l">Est. Cost to Complete</div><div class="v">${fmtMoney(totalProjected)}</div></div>
+  `;
+  document.getElementById('summary-bottom').innerHTML = '';
+}
+
+function iconX(){ return `<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>`; }
+function iconTrash(){ return `<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h10M6.5 4.5V2.8a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1.7M4.5 4.5l.6 8.3a1 1 0 0 0 1 .9h3.8a1 1 0 0 0 1-.9l.6-8.3"/></svg>`; }
+function iconPlus(){ return `<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>`; }
+function pdfBadgeHTML(bid, itemId){
+  const hasFile = !!bid.fileUrl;
+  const badge = hasFile
+    ? `<a class="pdf-badge filled" href="${bid.fileUrl}" target="_blank" rel="noopener" title="Open ${(bid.fileName||'file')} (${fmtSize(bid.fileSizeKB||0)})">PDF</a>`
+    : `<label class="pdf-badge empty" title="Upload PDF for this bid">PDF<input type="file" accept=".pdf,image/*" data-uploadbidfile="${bid.id}" data-itemid="${itemId}"></label>`;
+  const removeFile = `<button class="icon-btn icon-btn-x${hasFile?'':' icon-btn-disabled'}" data-rmbidfile="${bid.id}" data-itemid="${itemId}" title="${hasFile?'Clear file':'No file attached'}">${iconX()}</button>`;
+  return badge + removeFile;
+}
+
+function renderBudget(){
+  renderTop();
+  let rows = '';
+  budget.forEach(g=>{
+    const s = catCalc(g);
+    const isOpen = expandedCat[g.id];
+    rows += `<tr class="cat-row" data-catexpand="${g.id}">
+      <td><span class="chev">${isOpen?'▾':'▸'}</span> <span class="cat-title-edit" contenteditable="true" data-cattitle="${g.id}">${(g.category||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</span></td>
+      <td>${fmtMoney(s.budgetAmt)}</td>
+      <td>${fmtMoney(s.price)}</td>
+      <td>${s.hasBid?fmtMoney(s.bidReceived):'<span class="v-dash">--</span>'}</td>
+      <td>${fmtMoney(s.projected)}</td>
+      <td>${fmtMoney(s.completePrice)}</td>
+      <td class="${varClass(s.costDiff)}">${diffLabel(s.costDiff)}</td>
+      <td></td>
+      <td class="notes-cell"></td>
+    </tr>`;
+    if(isOpen){
+      g.items.forEach(it=>{
+        const c = itemCalc(it);
+        const isItemOpen = expandedItem[it.id];
+        const bids = (it.bids && it.bids.length) ? it.bids : [{id:'virtual', vendor:'', amount:null, checked:true, fileUrl:null, fileName:null, fileSizeKB:null}];
+        const bidRowsHtml = bids.map(b=>{
+          const amtStr = b.amount!=null?fmtMoney(b.amount):'';
+          return `
+          <tr class="bid-row">
+            <td class="bc-check"><input type="checkbox" data-bidcheck="${b.id}" data-itemid="${it.id}" ${b.checked?'checked':''} title="Include in Bid/Estimates Received total"></td>
+            <td class="bc-vendor"><div class="mini-vendor" contenteditable="true" data-placeholder="Vendor" data-bidvendor="${b.id}" data-itemid="${it.id}">${(b.vendor||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div></td>
+            <td class="bc-amount"><input type="text" class="mini-amount" placeholder="Amount" data-bidamount="${b.id}" data-itemid="${it.id}" value="${amtStr}"></td>
+            <td class="bc-pdf">${pdfBadgeHTML(b, it.id)}</td>
+            <td class="bc-trash"><button class="icon-btn icon-btn-trash${b.id==='virtual'?' icon-btn-disabled':''}" data-rmbid="${b.id}" data-itemid="${it.id}" title="Remove this bid">${iconTrash()}</button></td>
+            <td class="bc-add"><button class="icon-btn icon-btn-add" data-addbid="${it.id}" title="Add another bid">${iconPlus()}</button></td>
+          </tr>`;
+        }).join('');
+        const chipsHtml = `<table class="bids-subtable">${bidRowsHtml}</table>`;
+        rows += `<tr class="item-row" data-itemexpand="${it.id}">
+          <td>${isItemOpen?'▾':'▸'} <span class="item-title-edit" contenteditable="true" data-itemtitle="${it.id}">${(it.title||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</span></td>
+          <td><input class="cell-input" type="text" inputmode="decimal" size="${fmtMoney(it.allowance).length+1}" data-budgetinput="${it.id}" value="${fmtMoney(it.allowance)}"></td>
+          <td>${fmtMoney(c.price)}</td>
+          <td class="bid-chips-cell">
+            ${chipsHtml}
+          </td>
+          <td>${fmtMoney(c.projected)}</td>
+          <td>${fmtMoney(c.completePrice)}</td>
+          <td class="${varClass(c.costDiff)}">${diffLabel(c.costDiff)}</td>
+          <td><select class="status-select status-${it.status||'none'}" data-statusinput="${it.id}">
+            <option value="" ${!it.status?'selected':''}>—</option>
+            <option value="open" ${it.status==='open'?'selected':''}>Open</option>
+            <option value="closed" ${it.status==='closed'?'selected':''}>Closed</option>
+          </select></td>
+          <td class="notes-cell"><div class="notes-preview" data-notespreview="${it.id}" data-placeholder="Notes...">${(it.notes||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div></td>
+        </tr>`;
+        if(isItemOpen){
+          const commentsHtml = (it.comments||[]).map(cm=>`<div class="comment"><b>${cm.author||'Anon'}</b><span class="ts">${fmtTs(cm.ts)}</span><button class="icon-btn icon-btn-x rm-comment-btn" data-rmcomment="${cm.id||cm.ts}" data-itemid="${it.id}" title="Delete comment">${iconX()}</button><div>${cm.text}</div></div>`).join('');
+          rows += `<tr class="detail-row" id="detail-${it.id}"><td colspan="9">
+            <div class="comments">${commentsHtml || '<div style="font-size:13px;color:var(--text-2);">No comments yet.</div>'}
+              <div class="comment-add"><input type="text" placeholder="Add a comment..." data-commentinput="${it.id}"><button data-commentbtn="${it.id}">Post</button></div>
+            </div>
+          </td></tr>`;
+        }
+      });
+    }
+  });
+  // Totals row
+  let T = {budgetAmt:0, bidReceived:0, projected:0, costDiff:0, price:0, completePrice:0};
+  budget.forEach(g=>{ const s = catCalc(g); T.budgetAmt+=s.budgetAmt; T.bidReceived+= s.hasBid?s.bidReceived:0; T.projected+=s.projected; T.costDiff+=s.costDiff; T.price+=s.price; T.completePrice+=s.completePrice; });
+  rows += `<tr class="cat-row" style="border-top:2px solid var(--navy);">
+    <td>Totals</td>
+    <td>${fmtMoney(T.budgetAmt)}</td>
+    <td>${fmtMoney(T.price)}</td>
+    <td>${fmtMoney(T.bidReceived)}</td>
+    <td>${fmtMoney(T.projected)}</td>
+    <td>${fmtMoney(T.completePrice)}</td>
+    <td class="${varClass(T.costDiff)}">${diffLabel(T.costDiff)}</td>
+    <td></td>
+    <td class="notes-cell"></td>
+  </tr>`;
+
+  document.getElementById('budget-tbody').innerHTML = rows;
+  bindRowEvents();
+}
+
+function bindRowEvents(){
+  document.querySelectorAll('[data-catexpand]').forEach(el=>{ el.onclick = (e)=>{ if(e.target.classList.contains('cat-title-edit')) return; const id = el.dataset.catexpand; expandedCat[id] = !expandedCat[id]; renderBudget(); }; });
+  document.querySelectorAll('[data-itemexpand]').forEach(el=>{ el.onclick = (e)=>{ if(['INPUT','SELECT','BUTTON','OPTION','LABEL','A','SPAN','TEXTAREA','DIV'].includes(e.target.tagName)) return; const id = el.dataset.itemexpand; expandedItem[id] = !expandedItem[id]; renderBudget(); }; });
+
+  // Editable Cost Code / category titles
+  document.querySelectorAll('[data-cattitle]').forEach(el=>{
+    el.addEventListener('click', e=>e.stopPropagation());
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); e.target.blur(); } });
+    el.addEventListener('blur', e=>{
+      const catId = el.dataset.cattitle;
+      const val = e.target.textContent;
+      const g = budget.find(x=>x.id===catId);
+      if(g){
+        if(g.category === val) return;
+        g.category = val;
+        logChange(`renamed a category to "${val}"`);
+        saveJSON(BUDGET_KEY, budget); renderBudget();
+      }
+    });
+  });
+  document.querySelectorAll('[data-itemtitle]').forEach(el=>{
+    el.addEventListener('click', e=>e.stopPropagation());
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); e.target.blur(); } });
+    el.addEventListener('blur', e=>{
+      const itemId = el.dataset.itemtitle;
+      const val = e.target.textContent;
+      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){
+        if(rec.title === val) return;
+        rec.title = val;
+        logChange(`renamed a line item to "${val}"`);
+        saveJSON(BUDGET_KEY, budget); renderBudget();
+        break;
+      } }
+    });
+  });
+
+  document.querySelectorAll('[data-commentbtn]').forEach(el=>{
+    el.addEventListener('click', e=>e.stopPropagation());
+    el.onclick = (e)=>{
+      const id = el.dataset.commentbtn;
+      const input = document.querySelector(`[data-commentinput="${id}"]`);
+      const text = input.value.trim(); if(!text) return;
+      for(const g of budget){ const rec = g.items.find(x=>x.id===id); if(rec){ rec.comments = rec.comments||[]; rec.comments.push({id:'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), author: username||'Anon', text, ts: Date.now()}); break; } }
+      logChange(`commented on ${findItemTitle(id)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    };
+  });
+  document.querySelectorAll('[data-rmcomment]').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      const cid = el.dataset.rmcomment, itemId = el.dataset.itemid;
+      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){ rec.comments = (rec.comments||[]).filter(cm=>String(cm.id||cm.ts)!==cid); break; } }
+      logChange(`deleted a comment on ${findItemTitle(itemId)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    });
+  });
+  document.querySelectorAll('.comment-add input').forEach(el=>{ el.addEventListener('click', e=>e.stopPropagation()); });
+
+  // Editable Budget cell (spreadsheet-style currency)
+  document.querySelectorAll('[data-budgetinput]').forEach(el=>{
+    el.addEventListener('click', e=>e.stopPropagation());
+    el.addEventListener('focus', e=>{ const raw = parseCurrency(e.target.value); e.target.value = raw!=null ? raw : ''; e.target.select(); });
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter') e.target.blur(); });
+    el.onchange = (e)=>{
+      const itemId = el.dataset.budgetinput;
+      const val = parseCurrency(e.target.value);
+      if(val===null){ renderBudget(); return; }
+      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){ rec.allowance = val; break; } }
+      logChange(`set ${findItemTitle(itemId)} budget to ${fmtMoney(val)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    };
+  });
+
+  // Status column
+  document.querySelectorAll('[data-statusinput]').forEach(el=>{
+    el.addEventListener('click', e=>e.stopPropagation());
+    el.onchange = (e)=>{
+      const itemId = el.dataset.statusinput;
+      const val = e.target.value;
+      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){ rec.status = val; break; } }
+      logChange(`set status to "${val||'—'}" on ${findItemTitle(itemId)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    };
+  });
+
+  // Notes column (truncated preview, opens modal for full read/edit)
+  document.querySelectorAll('[data-notespreview]').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      const itemId = el.dataset.notespreview;
+      let rec = null;
+      for(const g of budget){ const r = g.items.find(x=>x.id===itemId); if(r){ rec = r; break; } }
+      if(!rec) return;
+      notesModalItemId = itemId;
+      document.getElementById('notes-modal-title').textContent = 'Notes — ' + rec.title;
+      document.getElementById('notes-modal-textarea').value = rec.notes || '';
+      document.getElementById('notes-modal').style.display = 'flex';
+      setTimeout(()=>document.getElementById('notes-modal-textarea').focus(), 50);
+    });
+  });
+
+  // Bids array: checkbox / vendor / amount
+  function getOrCreateBid(itemId, bidId){
+    for(const g of budget){
+      const rec = g.items.find(x=>x.id===itemId);
+      if(!rec) continue;
+      rec.bids = rec.bids || [];
+      if(bidId === 'virtual'){
+        const bid = {id:'b'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), vendor:'', amount:null, checked:true, fileUrl:null, fileName:null, fileSizeKB:null};
+        rec.bids.push(bid);
+        return bid;
+      }
+      return rec.bids.find(x=>x.id===bidId);
+    }
+    return null;
+  }
+  document.querySelectorAll('[data-bidcheck]').forEach(el=>{
+    el.addEventListener('click', e=>e.stopPropagation());
+    el.onchange = (e)=>{
+      const b = getOrCreateBid(el.dataset.itemid, el.dataset.bidcheck);
+      if(b) b.checked = e.target.checked;
+      logChange(`${e.target.checked?'checked':'unchecked'} a bid on ${findItemTitle(el.dataset.itemid)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    };
+  });
+  document.querySelectorAll('[data-bidvendor]').forEach(el=>{
+    el.addEventListener('click', e=>e.stopPropagation());
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); e.target.blur(); } });
+    el.addEventListener('blur', (e)=>{
+      const val = e.target.textContent;
+      const b = getOrCreateBid(el.dataset.itemid, el.dataset.bidvendor);
+      if(b){ if(b.vendor === val) return; b.vendor = val; }
+      logChange(`set vendor "${val}" on ${findItemTitle(el.dataset.itemid)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    });
+  });
+  document.querySelectorAll('[data-bidamount]').forEach(el=>{
+    el.addEventListener('click', e=>e.stopPropagation());
+    el.addEventListener('focus', e=>{ const raw = parseCurrency(e.target.value); e.target.value = raw!=null ? raw : ''; e.target.select(); });
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter') e.target.blur(); });
+    el.onchange = (e)=>{
+      const val = parseCurrency(e.target.value);
+      const b = getOrCreateBid(el.dataset.itemid, el.dataset.bidamount);
+      if(b) b.amount = val;
+      logChange(`set bid amount ${fmtMoney(val)} on ${findItemTitle(el.dataset.itemid)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    };
+  });
+  document.querySelectorAll('[data-addbid]').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      const itemId = el.dataset.addbid;
+      const bid = {id:'b'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), vendor:'', amount:null, checked:true, fileUrl:null, fileName:null, fileSizeKB:null};
+      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){ rec.bids = rec.bids||[]; rec.bids.push(bid); break; } }
+      logChange(`added a new bid on ${findItemTitle(itemId)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    });
+  });
+  document.querySelectorAll('[data-rmbid]').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      const bidId = el.dataset.rmbid, itemId = el.dataset.itemid;
+      if(bidId === 'virtual') return;
+      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){
+        const b = (rec.bids||[]).find(x=>x.id===bidId);
+        rec.bids = (rec.bids||[]).filter(x=>x.id!==bidId);
+        break;
+      } }
+      logChange(`removed a bid on ${findItemTitle(itemId)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    });
+  });
+
+  // Per-bid PDF upload / view / remove
+  document.querySelectorAll('[data-uploadbidfile]').forEach(el=>{
+    el.addEventListener('click', e=>e.stopPropagation());
+    el.onchange = (e)=>{
+      const file = e.target.files[0]; if(!file) return;
+      const itemId = el.dataset.itemid, bidId = el.dataset.uploadbidfile;
+      uploadFile(file, meta=>{
+        const b = getOrCreateBid(itemId, bidId);
+        if(b){ b.fileUrl = meta.fileUrl; b.fileName = meta.fileName; b.fileSizeKB = meta.fileSizeKB; }
+        logChange(`uploaded ${meta.fileName} on ${findItemTitle(itemId)}`);
+        saveJSON(BUDGET_KEY, budget); renderBudget();
+      });
+    };
+  });
+  document.querySelectorAll('[data-rmbidfile]').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      const bidId = el.dataset.rmbidfile, itemId = el.dataset.itemid;
+      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){ const b = (rec.bids||[]).find(x=>x.id===bidId); if(b){ b.fileUrl=null; b.fileName=null; b.fileSizeKB=null; } break; } }
+      logChange(`removed a file on ${findItemTitle(itemId)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    });
+  });
+}
+
+
+function closeNotesModal(){
+  if(notesModalItemId){
+    const val = document.getElementById('notes-modal-textarea').value;
+    for(const g of budget){ const rec = g.items.find(x=>x.id===notesModalItemId); if(rec){
+      if(rec.notes !== val){
+        rec.notes = val;
+        logChange(`updated notes on ${findItemTitle(notesModalItemId)}`);
+        saveJSON(BUDGET_KEY, budget);
+      }
+      break;
+    } }
+  }
+  document.getElementById('notes-modal').style.display = 'none';
+  notesModalItemId = null;
+  renderBudget();
+}
+document.getElementById('notes-modal-close').onclick = closeNotesModal;
+document.getElementById('notes-modal').addEventListener('click', e=>{ if(e.target.id==='notes-modal') closeNotesModal(); });
+
+const gateOverlay = document.getElementById('gate-overlay');
+const gateInput = document.getElementById('gate-input');
+const unInput = document.getElementById('username-input');
+unInput.oninput = ()=>{ username = unInput.value; savePersonal(USERNAME_KEY, username); };
+function submitGate(){ closeGate(gateInput.value.trim()); }
+function closeGate(name){ username = name; unInput.value = name; savePersonal(USERNAME_KEY, name); gateOverlay.style.display = 'none'; }
+document.getElementById('gate-submit').onclick = submitGate;
+document.getElementById('gate-skip').onclick = ()=>{ closeGate(''); };
+gateInput.addEventListener('keydown', e=>{ if(e.key==='Enter') submitGate(); });
+loadPersonal(USERNAME_KEY, null).then(v=>{
+  if(v===null){ gateOverlay.style.display = 'flex'; } else { username = v; unInput.value = v; }
+});
+
+const today = new Date();
+document.getElementById('asof-date').textContent = fmtDate(today);
+
+const LEGACY_VENDOR_LABELS = {
+  '4300-exterior-doors': 'Dallas Millwork / Witt Building',
+  '5700-hvac': 'Gent Heating & Cooling',
+  '5200-interior-trim-material': "Charlie's (USAM)"
+};
+// Migrates any older saved schema (single actual/bidAmount/bidVendor/bidFile per item)
+// into the new bids[] array so nothing already entered gets lost.
+const BOILERPLATE_NOTE = "No committed/actual cost entered in BuilderTrend yet — original estimate only.";
+function migrateToBidsArray(data){
+  data.forEach(g=>g.items.forEach(it=>{
+    if(it.notes === BOILERPLATE_NOTE){ it.notes = ''; }
+    if(!it.bids){
+      it.bids = [];
+      if(it.bidAmount!=null || it.bidVendor || it.bidFileId){
+        it.bids.push({
+          id:'b-legacy-'+it.id, vendor: it.bidVendor||'', amount: it.bidAmount!=null?it.bidAmount:0,
+          checked:true, fileUrl: it.bidFileId||it.bidFileUrl||null, fileName: it.bidFileName||null, fileSizeKB: it.bidFileSizeKB||null
+        });
+      } else if(it.actual!=null){
+        it.bids.push({id:'b-legacy-'+it.id, vendor: LEGACY_VENDOR_LABELS[it.id] || 'Accepted bid', amount: it.actual, checked:true, fileUrl:null, fileName:null, fileSizeKB:null});
+      }
+      delete it.bidVendor; delete it.bidAmount; delete it.bidFileId; delete it.bidFileName; delete it.bidFileSizeKB;
+    }
+  }));
+  return data;
+}
+
+document.getElementById('activity-toggle').onclick = ()=>{
+  const list = document.getElementById('changelog-list');
+  const chev = document.getElementById('activity-chev');
+  const isOpen = list.style.display !== 'none';
+  list.style.display = isOpen ? 'none' : 'block';
+  chev.textContent = isOpen ? '▸' : '▾';
+};
+
+fetch('/api/state').then(r=>r.json()).then(data=>{
+  budget = migrateToBidsArray((data && data.budget) ? data.budget : seedBudgetGroups);
+  changeLog = (data && data.changeLog) ? data.changeLog : [];
+  renderChangeLog();
+  renderBudget();
+}).catch(()=>{
+  budget = migrateToBidsArray(seedBudgetGroups);
+  changeLog = [];
+  renderChangeLog();
+  renderBudget();
+  showToast('Could not reach the server — showing local data only. Check your connection.', 'error');
+});
+</script>
+</body>
+</html>
