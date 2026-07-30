@@ -15,8 +15,8 @@
     --red-bg:#FDECEC; --amber-bg:#FBF1DE; --green-bg:#E7F6EB; --gray-bg:#F0F0F2;
   }
   *{box-sizing:border-box;}
-  body{margin:0;}
-  .board{ background:linear-gradient(180deg, #F7F7FA 0%, #F2F2F5 100%); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; padding:0 24px 60px; min-height:100vh; -webkit-font-smoothing:antialiased; }
+  body{margin:0; color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; -webkit-font-smoothing:antialiased;}
+  .board{ background:linear-gradient(180deg, #F7F7FA 0%, #F2F2F5 100%); color:var(--text); padding:0 24px 60px; min-height:100vh; }
   .top-accent{height:5px; background:linear-gradient(90deg, var(--navy) 0%, #2d5488 45%, var(--brass) 100%); margin:0 -24px 28px; border-radius:0 0 6px 6px;}
   .wrap{width:100%; max-width:none; margin:0 auto;}
   .masthead{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; flex-wrap:wrap; gap:14px;}
@@ -113,35 +113,52 @@
   .icon-btn-trash:hover{background:var(--red-bg); border-color:var(--red); color:var(--red);}
   .icon-btn-add:hover{background:var(--navy); border-color:var(--navy); color:#fff; transform:scale(1.05);}
 
-  .bid-modal-card{max-width:760px; height:auto; max-height:86vh;}
-  .bid-modal-body{padding:18px; overflow:auto;}
-  .bid-modal-summary{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; margin-bottom:14px;}
-  .bid-stat{background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px;}
+  .bid-modal-card{max-width:880px; height:auto; max-height:82vh;}
+  .bid-modal-body{padding:18px; overflow:auto; background:linear-gradient(180deg, #FFFFFF 0%, #FAFAFC 100%);}
+  .bid-modal-summary{display:grid; grid-template-columns:1.25fr 1fr 1fr; gap:10px; margin-bottom:14px;}
+  .bid-stat{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:11px 13px; box-shadow:0 1px 2px rgba(20,30,45,0.03);}
+  .bid-stat.primary{background:#EEF3F8; border-color:#D7DEE8;}
   .bid-stat .l{font-size:10.5px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.05em; font-weight:700; margin-bottom:4px;}
-  .bid-stat .v{font-size:15px; font-weight:700; color:var(--text);}
-  .bid-list{border:1px solid var(--border); border-radius:12px; overflow:hidden; background:var(--surface);}
-  .bid-list-head, .bid-modal-row{display:grid; grid-template-columns:34px minmax(170px,1fr) 140px 170px 32px; gap:8px; align-items:center;}
-  .bid-list-head{padding:9px 12px; background:var(--gray-bg); color:var(--text-2); font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700;}
-  .bid-modal-row{padding:10px 12px; border-top:1px solid var(--border);}
-  .bid-modal-row input[type="checkbox"]{width:15px; height:15px; accent-color:var(--navy); cursor:pointer; margin:0 auto;}
-  .bid-modal-row .mini-vendor{font-size:12.5px; min-height:30px;}
-  .bid-modal-row .mini-amount{font-size:12.5px; height:30px;}
-  .bid-modal-row .pdf-badge{margin-right:6px;}
-  .bid-modal-empty{border:1px dashed var(--border); border-radius:12px; padding:22px; text-align:center; color:var(--text-2); font-size:13px; background:var(--bg);}
-  .bid-modal-upload, .bid-modal-add{display:inline-flex; align-items:center; gap:7px; background:var(--navy); color:#fff; border:none; border-radius:9px; padding:8px 12px; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer;}
+  .bid-stat .v{font-size:16px; font-weight:700; color:var(--text); letter-spacing:-0.01em;}
+  .bid-stat .hint{font-size:11px; color:var(--text-2); margin-top:3px;}
+  .bid-upload-strip{width:100%; display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:12px; border:1px dashed #CCD7E4; border-radius:14px; background:#F8FAFD; color:var(--navy); padding:13px 14px; font-family:inherit; text-align:left; cursor:pointer; transition:border-color 0.15s, background 0.15s, transform 0.15s;}
+  .bid-upload-strip:hover, .bid-upload-strip.is-dragging{border-color:var(--navy); background:#EEF3F8; transform:translateY(-1px);}
+  .bid-upload-strip strong{display:block; font-size:13px; font-weight:700;}
+  .bid-upload-strip small{display:block; color:#65758A; font-size:11.5px; margin-top:2px;}
+  .bid-upload-strip svg{flex-shrink:0;}
+  .bid-list{display:flex; flex-direction:column; gap:10px;}
+  .bid-card{display:grid; grid-template-columns:130px minmax(160px,1fr) 140px minmax(210px,0.95fr) 36px; gap:12px; align-items:center; border:1px solid var(--border); border-radius:14px; background:var(--surface); padding:12px; box-shadow:0 1px 3px rgba(20,30,45,0.04);}
+  .bid-card.is-applied{border-color:#CCD7E4; box-shadow:inset 3px 0 0 var(--navy), 0 1px 3px rgba(20,30,45,0.04);}
+  .bid-apply{display:flex; align-items:center; gap:9px; color:var(--text); font-size:12px; font-weight:700; cursor:pointer; min-width:0;}
+  .bid-apply input{width:16px; height:16px; accent-color:var(--navy); cursor:pointer; flex-shrink:0;}
+  .bid-apply small{display:block; color:var(--text-2); font-size:10.5px; font-weight:600; margin-top:1px;}
+  .bid-field-label{font-size:10px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.05em; font-weight:700; margin-bottom:5px;}
+  .bid-card .mini-vendor{font-size:13px; min-height:34px; border-radius:8px; padding:8px 9px;}
+  .bid-card .mini-amount{font-size:13px; height:34px; border-radius:8px; padding:8px 9px;}
+  .bid-pdf-slot{display:flex; align-items:center; gap:7px; flex-wrap:wrap; min-width:0;}
+  .bid-modal-empty{border:1px solid var(--border); border-radius:14px; padding:22px; text-align:center; color:var(--text-2); font-size:13px; background:var(--surface);}
+  .bid-modal-empty strong{display:block; color:var(--text); font-size:14px; margin-bottom:4px;}
+  .bid-modal-upload, .bid-modal-add{display:inline-flex; align-items:center; justify-content:center; gap:7px; background:var(--navy); color:#fff; border:none; border-radius:10px; padding:9px 13px; font-family:inherit; font-size:12.5px; font-weight:700; cursor:pointer; white-space:nowrap;}
   .bid-modal-upload:hover, .bid-modal-add:hover{background:#28497a;}
   .bid-modal-add.secondary{background:var(--gray-bg); color:var(--navy); border:1px solid var(--border);}
   .bid-modal-add.secondary:hover{background:#EEF3F8; border-color:var(--navy);}
-  #bid-modal-close{background:var(--gray-bg); border:none; border-radius:7px; width:28px; height:28px; cursor:pointer; font-size:13px; color:var(--text-2);}
+  #bid-modal-close{background:var(--gray-bg); border:none; border-radius:9px; width:34px; height:34px; cursor:pointer; font-size:13px; color:var(--text-2);}
   #bid-modal-close:hover{background:var(--red-bg); color:var(--red);}
-  .pdf-upload-btn{height:30px; border:1px solid var(--border); border-radius:8px; background:var(--gray-bg); color:var(--navy); font-family:inherit; font-size:11.5px; font-weight:700; padding:0 10px; cursor:pointer;}
+  .pdf-upload-btn{height:34px; display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:999px; background:var(--gray-bg); color:var(--navy); font-family:inherit; font-size:12px; font-weight:700; padding:0 12px; cursor:pointer;}
   .pdf-upload-btn:hover{background:#EEF3F8; border-color:var(--navy);}
-  .pdf-file-link{display:inline-flex; align-items:center; max-width:118px; height:30px; border:1px solid #F0BBB7; border-radius:8px; background:var(--red-bg); color:var(--red); text-decoration:none; font-size:11.5px; font-weight:800; padding:0 9px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:middle;}
+  .pdf-file-link{display:inline-flex; align-items:center; gap:7px; min-width:0; max-width:160px; height:34px; border:1px solid #F0BBB7; border-radius:999px; background:var(--red-bg); color:var(--red); text-decoration:none; font-size:12px; font-weight:800; padding:0 11px; vertical-align:middle;}
+  .pdf-file-link span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .pdf-file-link svg{flex-shrink:0;}
   .pdf-file-link:hover{filter:brightness(0.98); border-color:var(--red);}
+  .bid-action-link{border:none; background:transparent; color:var(--navy); font-family:inherit; font-size:11.5px; font-weight:700; padding:3px 0; cursor:pointer;}
+  .bid-action-link:hover{text-decoration:underline;}
+  .bid-action-link.danger{color:var(--red);}
+  .bid-remove-btn{display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border:1px solid var(--border); border-radius:10px; background:var(--gray-bg); color:var(--text-3); cursor:pointer; transition:all 0.15s;}
+  .bid-remove-btn:hover{background:var(--red-bg); border-color:var(--red); color:var(--red);}
   @media (max-width:720px){
     .bid-modal-summary{grid-template-columns:1fr;}
-    .bid-list-head{display:none;}
-    .bid-modal-row{grid-template-columns:28px 1fr 112px 126px 28px;}
+    .bid-card{grid-template-columns:1fr; gap:9px;}
+    .bid-remove-btn{justify-self:end;}
   }
 
   .activity-section{background:var(--surface); border:1px solid var(--border); border-radius:16px; margin-top:16px; overflow:hidden; box-shadow:0 1px 3px rgba(20,30,45,0.04);}
@@ -165,6 +182,7 @@
 
   .pdf-modal-overlay{position:fixed; inset:0; background:rgba(29,29,31,0.55); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; z-index:200; padding:24px; animation:fadeIn 0.15s ease;}
   .pdf-modal{background:var(--surface); border-radius:16px; width:100%; max-width:920px; height:88vh; display:flex; flex-direction:column; box-shadow:0 24px 70px rgba(0,0,0,0.35); overflow:hidden; animation:modalIn 0.2s ease;}
+  .pdf-modal.bid-modal-card{max-width:880px; height:auto; max-height:82vh;}
   @keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
   @keyframes modalIn{from{opacity:0; transform:scale(0.97) translateY(8px);} to{opacity:1; transform:scale(1) translateY(0);}}
   .pdf-modal-header{display:flex; align-items:center; justify-content:space-between; padding:12px 18px; border-bottom:1px solid var(--border); font-weight:600; font-size:14px; gap:10px;}
@@ -451,17 +469,22 @@ function renderTop(){
 function iconX(){ return `<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>`; }
 function iconTrash(){ return `<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h10M6.5 4.5V2.8a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1.7M4.5 4.5l.6 8.3a1 1 0 0 0 1 .9h3.8a1 1 0 0 0 1-.9l.6-8.3"/></svg>`; }
 function iconPlus(){ return `<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>`; }
+function iconUpload(){ return `<svg viewBox="0 0 18 18" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12V3.8M5.8 6.8 9 3.6l3.2 3.2"/><path d="M3.5 11.8v1.7c0 .8.7 1.5 1.5 1.5h8c.8 0 1.5-.7 1.5-1.5v-1.7"/></svg>`; }
+function iconFile(){ return `<svg viewBox="0 0 18 18" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5h5l3 3v10H5a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1Z"/><path d="M10 2.5v3h3"/><path d="M6.5 9h5M6.5 12h5"/></svg>`; }
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 function vendorFromFileName(fileName){
   return String(fileName||'').replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();
 }
 function pdfBadgeHTML(bid, itemId){
   const hasFile = !!bid.fileUrl;
-  const badge = hasFile
-    ? `<a class="pdf-file-link" href="${bid.fileUrl}" target="_blank" rel="noopener" title="Open ${(bid.fileName||'file')} (${fmtSize(bid.fileSizeKB||0)})">${esc(bid.fileName||'Open PDF')}</a>`
-    : `<button type="button" class="pdf-upload-btn" data-uploadbidfile="${bid.id}" data-itemid="${itemId}">Upload</button>`;
-  const removeFile = `<button class="icon-btn icon-btn-x${hasFile?'':' icon-btn-disabled'}" data-rmbidfile="${bid.id}" data-itemid="${itemId}" title="${hasFile?'Clear file':'No file attached'}">${iconX()}</button>`;
-  return badge + removeFile;
+  if(hasFile){
+    return `
+      <a class="pdf-file-link" href="${bid.fileUrl}" target="_blank" rel="noopener" title="Open ${(bid.fileName||'file')} (${fmtSize(bid.fileSizeKB||0)})">${iconFile()}<span>${esc(bid.fileName||'Open PDF')}</span></a>
+      <button type="button" class="bid-action-link" data-uploadbidfile="${bid.id}" data-itemid="${itemId}">Replace</button>
+      <button type="button" class="bid-action-link danger" data-rmbidfile="${bid.id}" data-itemid="${itemId}">Remove</button>
+    `;
+  }
+  return `<button type="button" class="pdf-upload-btn" data-uploadbidfile="${bid.id}" data-itemid="${itemId}">${iconUpload()} Upload file</button>`;
 }
 
 function findItemRecord(itemId){
@@ -496,14 +519,18 @@ function handleBidUploadSelected(file){
   if(!file || !pendingBidUpload) return;
   const target = pendingBidUpload;
   pendingBidUpload = null;
+  attachBidFileToItem(target.itemId, target.bidId, file);
+}
+function attachBidFileToItem(itemId, bidId, file){
+  if(!file) return;
   uploadFile(file, meta=>{
-    const bid = target.bidId ? getOrCreateBid(target.itemId, target.bidId) : addBidToItem(target.itemId);
+    const bid = bidId ? getOrCreateBid(itemId, bidId) : addBidToItem(itemId);
     if(!bid) return;
     if(!bid.vendor) bid.vendor = vendorFromFileName(meta.fileName);
     bid.fileUrl = meta.fileUrl;
     bid.fileName = meta.fileName;
     bid.fileSizeKB = meta.fileSizeKB;
-    logChange(`uploaded ${meta.fileName} on ${findItemTitle(target.itemId)}`);
+    logChange(`uploaded ${meta.fileName} on ${findItemTitle(itemId)}`);
     afterBidChange();
   });
 }
@@ -528,34 +555,51 @@ function renderBidModal(){
   const it = rec.item;
   const bids = it.bids || [];
   const c = itemCalc(it);
-  const checkedCount = bids.filter(b=>b.checked && b.amount!=null).length;
+  const appliedBids = bids.filter(b=>b.checked && b.amount!=null);
+  const checkedCount = appliedBids.length;
+  const appliedTotal = appliedBids.reduce((sum,b)=>sum+Number(b.amount||0),0);
   const fileCount = bids.filter(b=>b.fileUrl).length;
   document.getElementById('bid-modal-title').textContent = 'Bid / Estimates — ' + it.title;
   document.getElementById('bid-modal-add').dataset.addbid = it.id;
   document.getElementById('bid-modal-upload').dataset.uploadnewbid = it.id;
   document.getElementById('bid-modal-summary').innerHTML = `
-    <div class="bid-stat"><div class="l">Estimate Cost</div><div class="v">${fmtMoney(c.projected)}</div></div>
-    <div class="bid-stat"><div class="l">Applied to Total</div><div class="v">${checkedCount}</div></div>
-    <div class="bid-stat"><div class="l">PDFs Attached</div><div class="v">${fileCount}</div></div>
+    <div class="bid-stat primary"><div class="l">Est. Cost to Complete</div><div class="v">${fmtMoney(c.projected)}</div><div class="hint">${checkedCount ? 'Using selected bid cost' : 'Using budgeted cost'}</div></div>
+    <div class="bid-stat"><div class="l">Selected Bids</div><div class="v">${checkedCount} of ${bids.length}</div><div class="hint">${checkedCount ? fmtMoney(appliedTotal) : 'No bid costs applied'}</div></div>
+    <div class="bid-stat"><div class="l">Files Attached</div><div class="v">${fileCount}</div><div class="hint">${fileCount===1 ? '1 PDF/image available' : `${fileCount} PDFs/images available`}</div></div>
   `;
   const list = document.getElementById('bid-modal-list');
+  const uploadStrip = `
+    <button type="button" class="bid-upload-strip" data-dropupload="${it.id}" title="Click or drop a PDF/image to add a bid">
+      <span><strong>Click or drop a PDF/image to add a bid</strong><small>Creates a bid row automatically. Add the cost, then check Apply to include it.</small></span>
+      ${iconUpload()}
+    </button>
+  `;
   if(!bids.length){
-    list.innerHTML = `<div class="bid-modal-empty">No bid PDFs or estimates attached yet.<br><br><button class="bid-modal-upload" type="button" data-uploadnewbid="${it.id}">Upload first PDF</button></div>`;
+    list.innerHTML = uploadStrip + `<div class="bid-modal-empty"><strong>No bids attached yet.</strong>Upload a file or add a manual bid when you only have a number.</div>`;
   } else {
     const rows = bids.map(b=>{
       const amtStr = b.amount!=null?fmtMoney(b.amount):'';
-      return `<div class="bid-modal-row">
-        <input type="checkbox" data-bidcheck="${b.id}" data-itemid="${it.id}" ${b.checked?'checked':''} title="Apply this bid to Est. Cost to Complete">
-        <div class="mini-vendor" contenteditable="true" data-placeholder="Vendor" data-bidvendor="${b.id}" data-itemid="${it.id}">${esc(b.vendor)}</div>
-        <input type="text" class="mini-amount" placeholder="Amount" data-bidamount="${b.id}" data-itemid="${it.id}" value="${amtStr}">
-        <div>${pdfBadgeHTML(b, it.id)}</div>
-        <button class="icon-btn icon-btn-trash" data-rmbid="${b.id}" data-itemid="${it.id}" title="Remove this bid">${iconTrash()}</button>
+      return `<div class="bid-card ${b.checked?'is-applied':''}">
+        <label class="bid-apply">
+          <input type="checkbox" data-bidcheck="${b.id}" data-itemid="${it.id}" ${b.checked?'checked':''} title="Apply this bid to Est. Cost to Complete">
+          <span>Apply<small>Include cost</small></span>
+        </label>
+        <div>
+          <div class="bid-field-label">Vendor</div>
+          <div class="mini-vendor" contenteditable="true" data-placeholder="Vendor" data-bidvendor="${b.id}" data-itemid="${it.id}">${esc(b.vendor)}</div>
+        </div>
+        <div>
+          <div class="bid-field-label">Cost</div>
+          <input type="text" class="mini-amount" placeholder="Amount" data-bidamount="${b.id}" data-itemid="${it.id}" value="${amtStr}">
+        </div>
+        <div>
+          <div class="bid-field-label">PDF / Image</div>
+          <div class="bid-pdf-slot">${pdfBadgeHTML(b, it.id)}</div>
+        </div>
+        <button class="bid-remove-btn" data-rmbid="${b.id}" data-itemid="${it.id}" title="Remove this bid">${iconTrash()}</button>
       </div>`;
     }).join('');
-    list.innerHTML = `<div class="bid-list">
-      <div class="bid-list-head"><div>Apply</div><div>Vendor</div><div>Cost</div><div>PDF</div><div></div></div>
-      ${rows}
-    </div>`;
+    list.innerHTML = uploadStrip + `<div class="bid-list">${rows}</div>`;
   }
   bindBidControlEvents(modal);
 }
@@ -762,6 +806,26 @@ function bindBidControlEvents(scope){
       logChange(`added a new bid on ${findItemTitle(itemId)}`);
       afterBidChange();
     };
+  });
+  scope.querySelectorAll('[data-dropupload]').forEach(el=>{
+    el.onclick = (e)=>{
+      e.stopPropagation();
+      startBidUpload(el.dataset.dropupload, null);
+    };
+    el.addEventListener('dragover', e=>{
+      e.preventDefault();
+      el.classList.add('is-dragging');
+    });
+    el.addEventListener('dragleave', ()=>{
+      el.classList.remove('is-dragging');
+    });
+    el.addEventListener('drop', e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      el.classList.remove('is-dragging');
+      const file = e.dataTransfer && e.dataTransfer.files ? e.dataTransfer.files[0] : null;
+      attachBidFileToItem(el.dataset.dropupload, null, file);
+    });
   });
   scope.querySelectorAll('[data-uploadnewbid]').forEach(el=>{
     el.onclick = (e)=>{
