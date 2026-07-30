@@ -58,26 +58,25 @@
   .banner p b{font-weight:600;}
 
   .table-scroll{overflow-x:auto; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:0 1px 3px rgba(20,30,45,0.04), 0 10px 24px -16px rgba(20,30,45,0.14);}
-  table.budget-table{border-collapse:collapse; width:100%; min-width:1675px; font-size:13px; table-layout:fixed;}
+  table.budget-table{border-collapse:collapse; width:100%; min-width:1365px; font-size:13px; table-layout:fixed;}
   table.budget-table th, table.budget-table td{padding:9px 12px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--border);}
   table.budget-table th:first-child, table.budget-table td:first-child{text-align:left;}
   table.budget-table td.notes-cell, table.budget-table th.notes-th{text-align:left; white-space:normal; max-width:300px;}
   table.budget-table thead tr.col-row th{background:var(--gray-bg); color:var(--text-2); font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700; position:sticky; top:0; border-bottom:2px solid var(--border);}
   table.budget-table thead tr.col-row th:first-child{background:var(--gray-bg);}
-  table.budget-table thead tr.col-row th:nth-child(5){background:#EEF3F8;}
-  table.budget-table th:nth-child(5), table.budget-table td:nth-child(5),
-  table.budget-table th:nth-child(8), table.budget-table td:nth-child(8){border-left:2px solid #D7DEE8;}
+  table.budget-table thead tr.col-row th:nth-child(3){background:#EEF3F8;}
+  table.budget-table th:nth-child(3), table.budget-table td:nth-child(3),
+  table.budget-table th:nth-child(5), table.budget-table td:nth-child(5){border-left:2px solid #D7DEE8;}
   tr.cat-row{background:#FAFAFC; cursor:pointer; font-weight:700; transition:background 0.15s;}
   tr.cat-row td{color:var(--text);}
   tr.cat-row:hover{background:#F1F2F5;}
-  tr.item-row{cursor:pointer; transition:background 0.15s;}
+  tr.item-row{transition:background 0.15s;}
   tr.item-row:hover td{background:#FAFAFC;}
   table.budget-table td{vertical-align:middle;}
   tr.item-row td:first-child{padding-left:28px; font-weight:500;}
   .cat-title-edit, .item-title-edit{border-radius:5px; padding:2px 4px; cursor:text;}
   .cat-title-edit:hover, .item-title-edit:hover{background:var(--bg);}
   .cat-title-edit:focus, .item-title-edit:focus{outline:none; background:var(--surface); box-shadow:0 0 0 2px var(--navy) inset;}
-  tr.detail-row td{text-align:left; white-space:normal; background:#FAFAFB; padding:14px 16px 18px 28px;}
   .chev{display:inline-block; width:14px; color:var(--text-3);}
   .v-over{color:var(--red) !important; font-weight:600;}
   .v-under{color:var(--green) !important; font-weight:600;}
@@ -85,6 +84,13 @@
   .cell-input{text-align:right; font-family:inherit; font-size:13px; border:1px solid transparent; border-radius:5px; padding:4px 6px; background:transparent; color:var(--text); min-width:70px;}
   .cell-input:hover{border-color:var(--border); background:var(--bg);}
   .cell-input:focus{border-color:var(--navy); background:var(--surface); outline:none;}
+  .estimate-cell{text-align:right !important; white-space:normal !important;}
+  .estimate-value{display:block; font-weight:600; margin-bottom:4px;}
+  .bid-summary-chip{display:inline-flex; flex-direction:column; align-items:center; gap:1px; border:1px solid var(--border); border-radius:999px; background:var(--gray-bg); color:var(--text-2); font-family:inherit; font-size:11.5px; font-weight:700; padding:4px 10px; cursor:pointer; line-height:1.1; min-width:86px;}
+  .bid-summary-chip.has-bids{background:#EEF3F8; border-color:#D7DEE8; color:var(--navy);}
+  .bid-summary-chip:hover{border-color:var(--navy); color:var(--navy); background:#E7EDF5;}
+  .bid-summary-chip small{display:block; font-size:9.5px; line-height:1.1; color:var(--text-3); font-weight:700; white-space:nowrap;}
+  .bid-summary-chip.has-bids small{color:#5B6F89;}
   .notes-preview{width:100%; max-width:260px; font-family:inherit; font-size:12.5px; padding:7px 8px; color:var(--text-2); line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; border-radius:6px; border:1px solid transparent;}
   .notes-preview:empty:before{content:attr(data-placeholder); color:var(--text-3);}
   .notes-preview:hover{border-color:var(--border); background:var(--bg); color:var(--text);}
@@ -95,28 +101,6 @@
   .status-select.status-open{background:var(--amber-bg); color:#8a5d00;}
   .status-select.status-closed{background:var(--green-bg); color:#1c7a3c;}
 
-  .comments{margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); max-width:640px;}
-  .comment{font-size:12.5px; padding:5px 0; border-bottom:1px solid var(--bg); position:relative;}
-  .comment b{color:var(--text); font-size:12px;}
-  .comment .ts{color:var(--text-3); font-size:10.5px; margin-left:6px;}
-  .rm-comment-btn{position:absolute; right:0; top:3px;}
-  .comment-add{display:flex; gap:6px; margin-top:8px;}
-  .comment-add input{flex:1; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:7px 10px; border-radius:8px; font-family:inherit; font-size:12.5px;}
-  .comment-add button{background:var(--navy); color:#fff; border:none; border-radius:8px; padding:7px 13px; font-family:inherit; font-weight:600; font-size:12px; cursor:pointer;}
-
-  .bid-chips-cell{white-space:normal; text-align:left; padding:6px 8px !important; min-width:410px;}
-  .bids-subtable{border-collapse:collapse; width:421px; table-layout:fixed; box-sizing:border-box; border:1px solid var(--border); border-radius:9px;}
-  .bids-subtable td{box-sizing:border-box;}
-  .bids-subtable tr.bid-row{background:var(--surface);}
-  .bids-subtable tr.bid-row:not(:first-child) td{border-top:1px solid var(--border);}
-  .bids-subtable td{padding:6px 6px; vertical-align:middle; border-bottom:none; white-space:normal;}
-  .bids-subtable td.bc-check{width:44px; padding:6px 10px 6px 12px;}
-  .bids-subtable td.bc-check input{width:14px; height:14px; accent-color:var(--navy); cursor:pointer; display:block; margin:0 auto;}
-  .bids-subtable td.bc-vendor{width:110px; max-width:110px; padding:6px 4px;}
-  .bids-subtable td.bc-amount{width:125px; max-width:125px; padding:6px 4px;}
-  .bids-subtable td.bc-pdf{width:70px; white-space:nowrap; padding:6px 4px;}
-  .bids-subtable td.bc-pdf .pdf-badge{margin-right:6px;}
-  .bids-subtable td.bc-trash, .bids-subtable td.bc-add{width:36px; text-align:center; padding:6px 4px;}
   .mini-vendor{width:100%; min-width:0; white-space:pre-wrap; overflow-wrap:anywhere; word-break:break-word; cursor:text; font-family:inherit; font-size:12px; border:1px solid transparent; border-radius:5px; padding:5px 6px; background:var(--bg); color:var(--text); line-height:1.35;}
   .mini-vendor:focus{border-color:var(--navy); outline:none; background:var(--surface);}
   .mini-vendor:empty:before{content:attr(data-placeholder); color:var(--text-3);}
@@ -128,6 +112,37 @@
   .icon-btn-x:hover{background:var(--red-bg); border-color:var(--red); color:var(--red);}
   .icon-btn-trash:hover{background:var(--red-bg); border-color:var(--red); color:var(--red);}
   .icon-btn-add:hover{background:var(--navy); border-color:var(--navy); color:#fff; transform:scale(1.05);}
+
+  .bid-modal-card{max-width:760px; height:auto; max-height:86vh;}
+  .bid-modal-body{padding:18px; overflow:auto;}
+  .bid-modal-summary{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; margin-bottom:14px;}
+  .bid-stat{background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px;}
+  .bid-stat .l{font-size:10.5px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.05em; font-weight:700; margin-bottom:4px;}
+  .bid-stat .v{font-size:15px; font-weight:700; color:var(--text);}
+  .bid-list{border:1px solid var(--border); border-radius:12px; overflow:hidden; background:var(--surface);}
+  .bid-list-head, .bid-modal-row{display:grid; grid-template-columns:34px minmax(170px,1fr) 140px 170px 32px; gap:8px; align-items:center;}
+  .bid-list-head{padding:9px 12px; background:var(--gray-bg); color:var(--text-2); font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700;}
+  .bid-modal-row{padding:10px 12px; border-top:1px solid var(--border);}
+  .bid-modal-row input[type="checkbox"]{width:15px; height:15px; accent-color:var(--navy); cursor:pointer; margin:0 auto;}
+  .bid-modal-row .mini-vendor{font-size:12.5px; min-height:30px;}
+  .bid-modal-row .mini-amount{font-size:12.5px; height:30px;}
+  .bid-modal-row .pdf-badge{margin-right:6px;}
+  .bid-modal-empty{border:1px dashed var(--border); border-radius:12px; padding:22px; text-align:center; color:var(--text-2); font-size:13px; background:var(--bg);}
+  .bid-modal-upload, .bid-modal-add{display:inline-flex; align-items:center; gap:7px; background:var(--navy); color:#fff; border:none; border-radius:9px; padding:8px 12px; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer;}
+  .bid-modal-upload:hover, .bid-modal-add:hover{background:#28497a;}
+  .bid-modal-add.secondary{background:var(--gray-bg); color:var(--navy); border:1px solid var(--border);}
+  .bid-modal-add.secondary:hover{background:#EEF3F8; border-color:var(--navy);}
+  #bid-modal-close{background:var(--gray-bg); border:none; border-radius:7px; width:28px; height:28px; cursor:pointer; font-size:13px; color:var(--text-2);}
+  #bid-modal-close:hover{background:var(--red-bg); color:var(--red);}
+  .pdf-upload-btn{height:30px; border:1px solid var(--border); border-radius:8px; background:var(--gray-bg); color:var(--navy); font-family:inherit; font-size:11.5px; font-weight:700; padding:0 10px; cursor:pointer;}
+  .pdf-upload-btn:hover{background:#EEF3F8; border-color:var(--navy);}
+  .pdf-file-link{display:inline-flex; align-items:center; max-width:118px; height:30px; border:1px solid #F0BBB7; border-radius:8px; background:var(--red-bg); color:var(--red); text-decoration:none; font-size:11.5px; font-weight:800; padding:0 9px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:middle;}
+  .pdf-file-link:hover{filter:brightness(0.98); border-color:var(--red);}
+  @media (max-width:720px){
+    .bid-modal-summary{grid-template-columns:1fr;}
+    .bid-list-head{display:none;}
+    .bid-modal-row{grid-template-columns:28px 1fr 112px 126px 28px;}
+  }
 
   .activity-section{background:var(--surface); border:1px solid var(--border); border-radius:16px; margin-top:16px; overflow:hidden; box-shadow:0 1px 3px rgba(20,30,45,0.04);}
   .activity-header{padding:13px 16px; font-size:13px; font-weight:600; color:var(--text); cursor:pointer; display:flex; align-items:center; gap:6px; transition:background 0.15s;}
@@ -236,12 +251,11 @@
       <colgroup>
         <col style="width:280px">
         <col style="width:130px">
-        <col style="width:155px">
+        <col style="width:235px">
         <col style="width:140px">
         <col style="width:150px">
         <col style="width:90px">
-        <col style="width:300px">
-        <col style="width:430px">
+        <col style="width:340px">
       </colgroup>
       <thead>
         <tr class="col-row">
@@ -252,7 +266,6 @@
           <th>Total Price</th>
           <th>Status</th>
           <th class="notes-th">Notes</th>
-          <th>Bid / Estimates</th>
         </tr>
       </thead>
       <tbody id="budget-tbody"></tbody>
@@ -285,6 +298,24 @@
     </div>
   </div>
 </div>
+
+<div id="bid-modal" class="pdf-modal-overlay">
+  <div class="pdf-modal bid-modal-card">
+    <div class="pdf-modal-header">
+      <span id="bid-modal-title">Bid / Estimates</span>
+      <div class="pdf-modal-actions">
+        <button class="bid-modal-upload" id="bid-modal-upload" type="button">Upload PDF</button>
+        <button class="bid-modal-add secondary" id="bid-modal-add" type="button">+ Manual bid</button>
+        <button id="bid-modal-close">✕</button>
+      </div>
+    </div>
+    <div class="bid-modal-body">
+      <div id="bid-modal-summary" class="bid-modal-summary"></div>
+      <div id="bid-modal-list"></div>
+    </div>
+  </div>
+</div>
+<input id="bid-upload-input" type="file" accept=".pdf,image/*" style="display:none">
 
 <script>
 
@@ -348,20 +379,34 @@ function renderChangeLog(){
 const MAX_FILE_BYTES = 10*1024*1024;
 function uploadFile(file, onDone){
   if(file.size > MAX_FILE_BYTES){ showToast('That file is '+fmtSize(Math.round(file.size/1024))+' — please keep uploads under 10MB.', 'error'); return; }
+  if(window.location.protocol === 'file:'){
+    showToast('Uploads need the Vercel page, not the file opened from Finder.', 'error');
+    return;
+  }
+  showToast('Uploading '+file.name+'...');
   fetch('/api/upload?filename='+encodeURIComponent(file.name), {
     method:'POST',
     headers:{'Content-Type': file.type || 'application/octet-stream'},
     body: file
-  }).then(r=>r.json()).then(res=>{
-    if(res.error){ showToast(res.error, 'error'); return; }
+  }).then(async r=>{
+    let res = null;
+    try{ res = await r.json(); }catch(e){}
+    if(!r.ok || !res || res.error){
+      throw new Error((res && res.error) || 'Upload failed with status '+r.status+'.');
+    }
     onDone({fileUrl: res.url, fileName: res.fileName, fileSizeKB: res.fileSizeKB});
-  }).catch(()=>showToast('Upload failed — try again.', 'error'));
+    showToast('PDF uploaded.');
+  }).catch(err=>{
+    const msg = err && err.message ? err.message : 'Upload failed — try again.';
+    showToast(msg.includes('Failed to fetch') ? 'Upload failed — open the Vercel page and try again.' : msg, 'error');
+  });
 }
 let notesModalItemId = null;
+let bidModalItemId = null;
+let pendingBidUpload = null;
 let budget = [];
 let username = '';
 let expandedCat = {};
-let expandedItem = {};
 
 const MARKUP_RATE = 0.16;
 const NO_MARKUP_IDS = new Set(['1000-general-conditions']);
@@ -406,13 +451,123 @@ function renderTop(){
 function iconX(){ return `<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>`; }
 function iconTrash(){ return `<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h10M6.5 4.5V2.8a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1.7M4.5 4.5l.6 8.3a1 1 0 0 0 1 .9h3.8a1 1 0 0 0 1-.9l.6-8.3"/></svg>`; }
 function iconPlus(){ return `<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>`; }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function vendorFromFileName(fileName){
+  return String(fileName||'').replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();
+}
 function pdfBadgeHTML(bid, itemId){
   const hasFile = !!bid.fileUrl;
   const badge = hasFile
-    ? `<a class="pdf-badge filled" href="${bid.fileUrl}" target="_blank" rel="noopener" title="Open ${(bid.fileName||'file')} (${fmtSize(bid.fileSizeKB||0)})">PDF</a>`
-    : `<label class="pdf-badge empty" title="Upload PDF for this bid">PDF<input type="file" accept=".pdf,image/*" data-uploadbidfile="${bid.id}" data-itemid="${itemId}"></label>`;
+    ? `<a class="pdf-file-link" href="${bid.fileUrl}" target="_blank" rel="noopener" title="Open ${(bid.fileName||'file')} (${fmtSize(bid.fileSizeKB||0)})">${esc(bid.fileName||'Open PDF')}</a>`
+    : `<button type="button" class="pdf-upload-btn" data-uploadbidfile="${bid.id}" data-itemid="${itemId}">Upload</button>`;
   const removeFile = `<button class="icon-btn icon-btn-x${hasFile?'':' icon-btn-disabled'}" data-rmbidfile="${bid.id}" data-itemid="${itemId}" title="${hasFile?'Clear file':'No file attached'}">${iconX()}</button>`;
   return badge + removeFile;
+}
+
+function findItemRecord(itemId){
+  for(const g of budget){
+    const item = g.items.find(x=>x.id===itemId);
+    if(item) return {group:g, item};
+  }
+  return null;
+}
+function addBidToItem(itemId){
+  const rec = findItemRecord(itemId);
+  if(!rec) return null;
+  rec.item.bids = rec.item.bids || [];
+  const bid = {id:'b'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), vendor:'', amount:null, checked:true, fileUrl:null, fileName:null, fileSizeKB:null};
+  rec.item.bids.push(bid);
+  return bid;
+}
+function getOrCreateBid(itemId, bidId){
+  const rec = findItemRecord(itemId);
+  if(!rec) return null;
+  rec.item.bids = rec.item.bids || [];
+  if(bidId === 'virtual') return addBidToItem(itemId);
+  return rec.item.bids.find(x=>x.id===bidId);
+}
+function startBidUpload(itemId, bidId){
+  pendingBidUpload = {itemId, bidId: bidId || null};
+  const input = document.getElementById('bid-upload-input');
+  input.value = '';
+  input.click();
+}
+function handleBidUploadSelected(file){
+  if(!file || !pendingBidUpload) return;
+  const target = pendingBidUpload;
+  pendingBidUpload = null;
+  uploadFile(file, meta=>{
+    const bid = target.bidId ? getOrCreateBid(target.itemId, target.bidId) : addBidToItem(target.itemId);
+    if(!bid) return;
+    if(!bid.vendor) bid.vendor = vendorFromFileName(meta.fileName);
+    bid.fileUrl = meta.fileUrl;
+    bid.fileName = meta.fileName;
+    bid.fileSizeKB = meta.fileSizeKB;
+    logChange(`uploaded ${meta.fileName} on ${findItemTitle(target.itemId)}`);
+    afterBidChange();
+  });
+}
+function bidSummaryHTML(it){
+  const savedBids = it.bids || [];
+  const bidCount = savedBids.length;
+  const checkedCount = savedBids.filter(b=>b.checked && b.amount!=null).length;
+  const fileCount = savedBids.filter(b=>b.fileUrl).length;
+  const label = bidCount ? `${bidCount} bid${bidCount===1?'':'s'}` : 'No bids';
+  let meta = bidCount ? `${checkedCount} applied` : 'Click to add';
+  if(fileCount) meta += ` • ${fileCount} PDF${fileCount===1?'':'s'}`;
+  return `<button type="button" class="bid-summary-chip ${bidCount?'has-bids':''}" data-openbids="${it.id}" title="Review bids and PDFs">
+    <span>${label}</span><small>${meta}</small>
+  </button>`;
+}
+
+function renderBidModal(){
+  const modal = document.getElementById('bid-modal');
+  if(!bidModalItemId || modal.style.display === 'none') return;
+  const rec = findItemRecord(bidModalItemId);
+  if(!rec){ closeBidModal(); return; }
+  const it = rec.item;
+  const bids = it.bids || [];
+  const c = itemCalc(it);
+  const checkedCount = bids.filter(b=>b.checked && b.amount!=null).length;
+  const fileCount = bids.filter(b=>b.fileUrl).length;
+  document.getElementById('bid-modal-title').textContent = 'Bid / Estimates — ' + it.title;
+  document.getElementById('bid-modal-add').dataset.addbid = it.id;
+  document.getElementById('bid-modal-upload').dataset.uploadnewbid = it.id;
+  document.getElementById('bid-modal-summary').innerHTML = `
+    <div class="bid-stat"><div class="l">Estimate Cost</div><div class="v">${fmtMoney(c.projected)}</div></div>
+    <div class="bid-stat"><div class="l">Applied to Total</div><div class="v">${checkedCount}</div></div>
+    <div class="bid-stat"><div class="l">PDFs Attached</div><div class="v">${fileCount}</div></div>
+  `;
+  const list = document.getElementById('bid-modal-list');
+  if(!bids.length){
+    list.innerHTML = `<div class="bid-modal-empty">No bid PDFs or estimates attached yet.<br><br><button class="bid-modal-upload" type="button" data-uploadnewbid="${it.id}">Upload first PDF</button></div>`;
+  } else {
+    const rows = bids.map(b=>{
+      const amtStr = b.amount!=null?fmtMoney(b.amount):'';
+      return `<div class="bid-modal-row">
+        <input type="checkbox" data-bidcheck="${b.id}" data-itemid="${it.id}" ${b.checked?'checked':''} title="Apply this bid to Est. Cost to Complete">
+        <div class="mini-vendor" contenteditable="true" data-placeholder="Vendor" data-bidvendor="${b.id}" data-itemid="${it.id}">${esc(b.vendor)}</div>
+        <input type="text" class="mini-amount" placeholder="Amount" data-bidamount="${b.id}" data-itemid="${it.id}" value="${amtStr}">
+        <div>${pdfBadgeHTML(b, it.id)}</div>
+        <button class="icon-btn icon-btn-trash" data-rmbid="${b.id}" data-itemid="${it.id}" title="Remove this bid">${iconTrash()}</button>
+      </div>`;
+    }).join('');
+    list.innerHTML = `<div class="bid-list">
+      <div class="bid-list-head"><div>Apply</div><div>Vendor</div><div>Cost</div><div>PDF</div><div></div></div>
+      ${rows}
+    </div>`;
+  }
+  bindBidControlEvents(modal);
+}
+
+function openBidModal(itemId){
+  bidModalItemId = itemId;
+  document.getElementById('bid-modal').style.display = 'flex';
+  renderBidModal();
+}
+function closeBidModal(){
+  document.getElementById('bid-modal').style.display = 'none';
+  bidModalItemId = null;
 }
 
 function renderBudget(){
@@ -422,37 +577,22 @@ function renderBudget(){
     const s = catCalc(g);
     const isOpen = expandedCat[g.id];
     rows += `<tr class="cat-row" data-catexpand="${g.id}">
-      <td><span class="chev">${isOpen?'▾':'▸'}</span> <span class="cat-title-edit" contenteditable="true" data-cattitle="${g.id}">${(g.category||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</span></td>
+      <td><span class="chev">${isOpen?'▾':'▸'}</span> <span class="cat-title-edit" contenteditable="true" data-cattitle="${g.id}">${esc(g.category)}</span></td>
       <td>${fmtMoney(s.budgetAmt)}</td>
       <td>${fmtMoney(s.projected)}</td>
       <td class="${varClass(s.costDiff)}">${diffLabel(s.costDiff)}</td>
       <td>${fmtMoney(s.completePrice)}</td>
       <td></td>
       <td class="notes-cell"></td>
-      <td>${s.hasBid?fmtMoney(s.bidReceived):'<span class="v-dash">--</span>'}</td>
     </tr>`;
     if(isOpen){
       g.items.forEach(it=>{
         const c = itemCalc(it);
-        const isItemOpen = expandedItem[it.id];
-        const bids = (it.bids && it.bids.length) ? it.bids : [{id:'virtual', vendor:'', amount:null, checked:true, fileUrl:null, fileName:null, fileSizeKB:null}];
-        const bidRowsHtml = bids.map(b=>{
-          const amtStr = b.amount!=null?fmtMoney(b.amount):'';
-          return `
-          <tr class="bid-row">
-            <td class="bc-check"><input type="checkbox" data-bidcheck="${b.id}" data-itemid="${it.id}" ${b.checked?'checked':''} title="Include in Bid/Estimates Received total"></td>
-            <td class="bc-vendor"><div class="mini-vendor" contenteditable="true" data-placeholder="Vendor" data-bidvendor="${b.id}" data-itemid="${it.id}">${(b.vendor||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div></td>
-            <td class="bc-amount"><input type="text" class="mini-amount" placeholder="Amount" data-bidamount="${b.id}" data-itemid="${it.id}" value="${amtStr}"></td>
-            <td class="bc-pdf">${pdfBadgeHTML(b, it.id)}</td>
-            <td class="bc-trash"><button class="icon-btn icon-btn-trash${b.id==='virtual'?' icon-btn-disabled':''}" data-rmbid="${b.id}" data-itemid="${it.id}" title="Remove this bid">${iconTrash()}</button></td>
-            <td class="bc-add"><button class="icon-btn icon-btn-add" data-addbid="${it.id}" title="Add another bid">${iconPlus()}</button></td>
-          </tr>`;
-        }).join('');
-        const chipsHtml = `<table class="bids-subtable">${bidRowsHtml}</table>`;
-        rows += `<tr class="item-row" data-itemexpand="${it.id}">
-          <td>${isItemOpen?'▾':'▸'} <span class="item-title-edit" contenteditable="true" data-itemtitle="${it.id}">${(it.title||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</span></td>
+        const bidSummary = bidSummaryHTML(it);
+        rows += `<tr class="item-row">
+          <td><span class="chev"></span> <span class="item-title-edit" contenteditable="true" data-itemtitle="${it.id}">${esc(it.title)}</span></td>
           <td><input class="cell-input" type="text" inputmode="decimal" size="${fmtMoney(it.allowance).length+1}" data-budgetinput="${it.id}" value="${fmtMoney(it.allowance)}"></td>
-          <td>${fmtMoney(c.projected)}</td>
+          <td class="estimate-cell"><span class="estimate-value">${fmtMoney(c.projected)}</span>${bidSummary}</td>
           <td class="${varClass(c.costDiff)}">${diffLabel(c.costDiff)}</td>
           <td>${fmtMoney(c.completePrice)}</td>
           <td><select class="status-select status-${it.status||'none'}" data-statusinput="${it.id}">
@@ -460,25 +600,14 @@ function renderBudget(){
             <option value="open" ${it.status==='open'?'selected':''}>Open</option>
             <option value="closed" ${it.status==='closed'?'selected':''}>Closed</option>
           </select></td>
-          <td class="notes-cell"><div class="notes-preview" data-notespreview="${it.id}" data-placeholder="Notes...">${(it.notes||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div></td>
-          <td class="bid-chips-cell">
-            ${chipsHtml}
-          </td>
+          <td class="notes-cell"><div class="notes-preview" data-notespreview="${it.id}" data-placeholder="Notes...">${esc(it.notes)}</div></td>
         </tr>`;
-        if(isItemOpen){
-          const commentsHtml = (it.comments||[]).map(cm=>`<div class="comment"><b>${cm.author||'Anon'}</b><span class="ts">${fmtTs(cm.ts)}</span><button class="icon-btn icon-btn-x rm-comment-btn" data-rmcomment="${cm.id||cm.ts}" data-itemid="${it.id}" title="Delete comment">${iconX()}</button><div>${cm.text}</div></div>`).join('');
-          rows += `<tr class="detail-row" id="detail-${it.id}"><td colspan="8">
-            <div class="comments">${commentsHtml || '<div style="font-size:13px;color:var(--text-2);">No comments yet.</div>'}
-              <div class="comment-add"><input type="text" placeholder="Add a comment..." data-commentinput="${it.id}"><button data-commentbtn="${it.id}">Post</button></div>
-            </div>
-          </td></tr>`;
-        }
       });
     }
   });
   // Totals row
-  let T = {budgetAmt:0, bidReceived:0, projected:0, costDiff:0, price:0, completePrice:0};
-  budget.forEach(g=>{ const s = catCalc(g); T.budgetAmt+=s.budgetAmt; T.bidReceived+= s.hasBid?s.bidReceived:0; T.projected+=s.projected; T.costDiff+=s.costDiff; T.price+=s.price; T.completePrice+=s.completePrice; });
+  let T = {budgetAmt:0, projected:0, costDiff:0, completePrice:0};
+  budget.forEach(g=>{ const s = catCalc(g); T.budgetAmt+=s.budgetAmt; T.projected+=s.projected; T.costDiff+=s.costDiff; T.completePrice+=s.completePrice; });
   rows += `<tr class="cat-row" style="border-top:2px solid var(--navy);">
     <td>Totals</td>
     <td>${fmtMoney(T.budgetAmt)}</td>
@@ -487,7 +616,6 @@ function renderBudget(){
     <td>${fmtMoney(T.completePrice)}</td>
     <td></td>
     <td class="notes-cell"></td>
-    <td>${fmtMoney(T.bidReceived)}</td>
   </tr>`;
 
   document.getElementById('budget-tbody').innerHTML = rows;
@@ -496,7 +624,12 @@ function renderBudget(){
 
 function bindRowEvents(){
   document.querySelectorAll('[data-catexpand]').forEach(el=>{ el.onclick = (e)=>{ if(e.target.classList.contains('cat-title-edit')) return; const id = el.dataset.catexpand; expandedCat[id] = !expandedCat[id]; renderBudget(); }; });
-  document.querySelectorAll('[data-itemexpand]').forEach(el=>{ el.onclick = (e)=>{ if(['INPUT','SELECT','BUTTON','OPTION','LABEL','A','SPAN','TEXTAREA','DIV'].includes(e.target.tagName)) return; const id = el.dataset.itemexpand; expandedItem[id] = !expandedItem[id]; renderBudget(); }; });
+  document.querySelectorAll('[data-openbids]').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      openBidModal(el.dataset.openbids);
+    });
+  });
 
   // Editable Cost Code / category titles
   document.querySelectorAll('[data-cattitle]').forEach(el=>{
@@ -529,28 +662,6 @@ function bindRowEvents(){
       } }
     });
   });
-
-  document.querySelectorAll('[data-commentbtn]').forEach(el=>{
-    el.addEventListener('click', e=>e.stopPropagation());
-    el.onclick = (e)=>{
-      const id = el.dataset.commentbtn;
-      const input = document.querySelector(`[data-commentinput="${id}"]`);
-      const text = input.value.trim(); if(!text) return;
-      for(const g of budget){ const rec = g.items.find(x=>x.id===id); if(rec){ rec.comments = rec.comments||[]; rec.comments.push({id:'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), author: username||'Anon', text, ts: Date.now()}); break; } }
-      logChange(`commented on ${findItemTitle(id)}`);
-      saveJSON(BUDGET_KEY, budget); renderBudget();
-    };
-  });
-  document.querySelectorAll('[data-rmcomment]').forEach(el=>{
-    el.addEventListener('click', e=>{
-      e.stopPropagation();
-      const cid = el.dataset.rmcomment, itemId = el.dataset.itemid;
-      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){ rec.comments = (rec.comments||[]).filter(cm=>String(cm.id||cm.ts)!==cid); break; } }
-      logChange(`deleted a comment on ${findItemTitle(itemId)}`);
-      saveJSON(BUDGET_KEY, budget); renderBudget();
-    });
-  });
-  document.querySelectorAll('.comment-add input').forEach(el=>{ el.addEventListener('click', e=>e.stopPropagation()); });
 
   // Editable Budget cell (spreadsheet-style currency)
   document.querySelectorAll('[data-budgetinput]').forEach(el=>{
@@ -594,32 +705,24 @@ function bindRowEvents(){
       setTimeout(()=>document.getElementById('notes-modal-textarea').focus(), 50);
     });
   });
+}
 
-  // Bids array: checkbox / vendor / amount
-  function getOrCreateBid(itemId, bidId){
-    for(const g of budget){
-      const rec = g.items.find(x=>x.id===itemId);
-      if(!rec) continue;
-      rec.bids = rec.bids || [];
-      if(bidId === 'virtual'){
-        const bid = {id:'b'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), vendor:'', amount:null, checked:true, fileUrl:null, fileName:null, fileSizeKB:null};
-        rec.bids.push(bid);
-        return bid;
-      }
-      return rec.bids.find(x=>x.id===bidId);
-    }
-    return null;
-  }
-  document.querySelectorAll('[data-bidcheck]').forEach(el=>{
+function afterBidChange(){
+  saveJSON(BUDGET_KEY, budget);
+  renderBudget();
+  renderBidModal();
+}
+function bindBidControlEvents(scope){
+  scope.querySelectorAll('[data-bidcheck]').forEach(el=>{
     el.addEventListener('click', e=>e.stopPropagation());
     el.onchange = (e)=>{
       const b = getOrCreateBid(el.dataset.itemid, el.dataset.bidcheck);
       if(b) b.checked = e.target.checked;
-      logChange(`${e.target.checked?'checked':'unchecked'} a bid on ${findItemTitle(el.dataset.itemid)}`);
-      saveJSON(BUDGET_KEY, budget); renderBudget();
+      logChange(`${e.target.checked?'applied':'removed'} a bid ${e.target.checked?'to':'from'} the estimate on ${findItemTitle(el.dataset.itemid)}`);
+      afterBidChange();
     };
   });
-  document.querySelectorAll('[data-bidvendor]').forEach(el=>{
+  scope.querySelectorAll('[data-bidvendor]').forEach(el=>{
     el.addEventListener('click', e=>e.stopPropagation());
     el.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); e.target.blur(); } });
     el.addEventListener('blur', (e)=>{
@@ -627,67 +730,71 @@ function bindRowEvents(){
       const b = getOrCreateBid(el.dataset.itemid, el.dataset.bidvendor);
       if(b){ if(b.vendor === val) return; b.vendor = val; }
       logChange(`set vendor "${val}" on ${findItemTitle(el.dataset.itemid)}`);
-      saveJSON(BUDGET_KEY, budget); renderBudget();
+      afterBidChange();
     });
   });
-  document.querySelectorAll('[data-bidamount]').forEach(el=>{
+  scope.querySelectorAll('[data-bidamount]').forEach(el=>{
+    const commitBidAmount = ()=>{
+      const val = parseCurrency(el.value);
+      const b = getOrCreateBid(el.dataset.itemid, el.dataset.bidamount);
+      if(b && b.amount === val){ el.value = val!=null ? fmtMoney(val) : ''; return; }
+      if(b) b.amount = val;
+      logChange(`set bid amount ${fmtMoney(val)} on ${findItemTitle(el.dataset.itemid)}`);
+      afterBidChange();
+    };
     el.addEventListener('click', e=>e.stopPropagation());
     el.addEventListener('focus', e=>{ const raw = parseCurrency(e.target.value); e.target.value = raw!=null ? raw : ''; e.target.select(); });
     el.addEventListener('keydown', e=>{ if(e.key==='Enter') e.target.blur(); });
-    el.onchange = (e)=>{
-      const val = parseCurrency(e.target.value);
-      const b = getOrCreateBid(el.dataset.itemid, el.dataset.bidamount);
-      if(b) b.amount = val;
-      logChange(`set bid amount ${fmtMoney(val)} on ${findItemTitle(el.dataset.itemid)}`);
-      saveJSON(BUDGET_KEY, budget); renderBudget();
-    };
-  });
-  document.querySelectorAll('[data-addbid]').forEach(el=>{
-    el.addEventListener('click', e=>{
-      e.stopPropagation();
-      const itemId = el.dataset.addbid;
-      const bid = {id:'b'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), vendor:'', amount:null, checked:true, fileUrl:null, fileName:null, fileSizeKB:null};
-      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){ rec.bids = rec.bids||[]; rec.bids.push(bid); break; } }
-      logChange(`added a new bid on ${findItemTitle(itemId)}`);
-      saveJSON(BUDGET_KEY, budget); renderBudget();
+    el.addEventListener('input', ()=>{
+      clearTimeout(el.__bidAmountTimer);
+      el.__bidAmountTimer = setTimeout(commitBidAmount, 650);
+    });
+    el.addEventListener('blur', ()=>{
+      clearTimeout(el.__bidAmountTimer);
+      commitBidAmount();
     });
   });
-  document.querySelectorAll('[data-rmbid]').forEach(el=>{
+  scope.querySelectorAll('[data-addbid]').forEach(el=>{
+    el.onclick = (e)=>{
+      e.stopPropagation();
+      const itemId = el.dataset.addbid;
+      addBidToItem(itemId);
+      logChange(`added a new bid on ${findItemTitle(itemId)}`);
+      afterBidChange();
+    };
+  });
+  scope.querySelectorAll('[data-uploadnewbid]').forEach(el=>{
+    el.onclick = (e)=>{
+      e.stopPropagation();
+      startBidUpload(el.dataset.uploadnewbid, null);
+    };
+  });
+  scope.querySelectorAll('[data-rmbid]').forEach(el=>{
     el.addEventListener('click', e=>{
       e.stopPropagation();
       const bidId = el.dataset.rmbid, itemId = el.dataset.itemid;
-      if(bidId === 'virtual') return;
-      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){
-        const b = (rec.bids||[]).find(x=>x.id===bidId);
-        rec.bids = (rec.bids||[]).filter(x=>x.id!==bidId);
-        break;
-      } }
+      const rec = findItemRecord(itemId);
+      if(rec) rec.item.bids = (rec.item.bids||[]).filter(x=>x.id!==bidId);
       logChange(`removed a bid on ${findItemTitle(itemId)}`);
-      saveJSON(BUDGET_KEY, budget); renderBudget();
+      afterBidChange();
     });
   });
 
   // Per-bid PDF upload / view / remove
-  document.querySelectorAll('[data-uploadbidfile]').forEach(el=>{
-    el.addEventListener('click', e=>e.stopPropagation());
-    el.onchange = (e)=>{
-      const file = e.target.files[0]; if(!file) return;
-      const itemId = el.dataset.itemid, bidId = el.dataset.uploadbidfile;
-      uploadFile(file, meta=>{
-        const b = getOrCreateBid(itemId, bidId);
-        if(b){ b.fileUrl = meta.fileUrl; b.fileName = meta.fileName; b.fileSizeKB = meta.fileSizeKB; }
-        logChange(`uploaded ${meta.fileName} on ${findItemTitle(itemId)}`);
-        saveJSON(BUDGET_KEY, budget); renderBudget();
-      });
+  scope.querySelectorAll('[data-uploadbidfile]').forEach(el=>{
+    el.onclick = (e)=>{
+      e.stopPropagation();
+      startBidUpload(el.dataset.itemid, el.dataset.uploadbidfile);
     };
   });
-  document.querySelectorAll('[data-rmbidfile]').forEach(el=>{
+  scope.querySelectorAll('[data-rmbidfile]').forEach(el=>{
     el.addEventListener('click', e=>{
       e.stopPropagation();
       const bidId = el.dataset.rmbidfile, itemId = el.dataset.itemid;
-      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){ const b = (rec.bids||[]).find(x=>x.id===bidId); if(b){ b.fileUrl=null; b.fileName=null; b.fileSizeKB=null; } break; } }
+      const rec = findItemRecord(itemId);
+      if(rec){ const b = (rec.item.bids||[]).find(x=>x.id===bidId); if(b){ b.fileUrl=null; b.fileName=null; b.fileSizeKB=null; } }
       logChange(`removed a file on ${findItemTitle(itemId)}`);
-      saveJSON(BUDGET_KEY, budget); renderBudget();
+      afterBidChange();
     });
   });
 }
@@ -711,6 +818,12 @@ function closeNotesModal(){
 }
 document.getElementById('notes-modal-close').onclick = closeNotesModal;
 document.getElementById('notes-modal').addEventListener('click', e=>{ if(e.target.id==='notes-modal') closeNotesModal(); });
+document.getElementById('bid-modal-close').onclick = closeBidModal;
+document.getElementById('bid-modal').addEventListener('click', e=>{ if(e.target.id==='bid-modal') closeBidModal(); });
+document.getElementById('bid-upload-input').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  handleBidUploadSelected(file);
+});
 
 const gateOverlay = document.getElementById('gate-overlay');
 const gateInput = document.getElementById('gate-input');
