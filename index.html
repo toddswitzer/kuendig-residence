@@ -85,7 +85,8 @@
   .cell-input:hover{border-color:var(--border); background:var(--bg);}
   .cell-input:focus{border-color:var(--navy); background:var(--surface); outline:none;}
   .estimate-cell{text-align:right !important; white-space:normal !important;}
-  .estimate-value{display:block; font-weight:600; margin-bottom:4px;}
+  .estimate-cell-content{display:flex; align-items:center; justify-content:flex-end; gap:10px; min-height:46px;}
+  .estimate-value{display:inline-block; font-weight:600; min-width:112px;}
   .bid-summary-chip{display:inline-flex; flex-direction:column; align-items:center; gap:1px; border:1px solid var(--border); border-radius:999px; background:var(--gray-bg); color:var(--text-2); font-family:inherit; font-size:11.5px; font-weight:700; padding:4px 10px; cursor:pointer; line-height:1.1; min-width:86px;}
   .bid-summary-chip.has-bids{background:#EEF3F8; border-color:#D7DEE8; color:var(--navy);}
   .bid-summary-chip:hover{border-color:var(--navy); color:var(--navy); background:#E7EDF5;}
@@ -138,10 +139,8 @@
   .bid-pdf-slot{display:flex; align-items:center; gap:7px; flex-wrap:wrap; min-width:0;}
   .bid-modal-empty{border:1px solid var(--border); border-radius:14px; padding:22px; text-align:center; color:var(--text-2); font-size:13px; background:var(--surface);}
   .bid-modal-empty strong{display:block; color:var(--text); font-size:14px; margin-bottom:4px;}
-  .bid-modal-upload, .bid-modal-add{display:inline-flex; align-items:center; justify-content:center; gap:7px; background:var(--navy); color:#fff; border:none; border-radius:10px; padding:9px 13px; font-family:inherit; font-size:12.5px; font-weight:700; cursor:pointer; white-space:nowrap;}
-  .bid-modal-upload:hover, .bid-modal-add:hover{background:#28497a;}
-  .bid-modal-add.secondary{background:var(--gray-bg); color:var(--navy); border:1px solid var(--border);}
-  .bid-modal-add.secondary:hover{background:#EEF3F8; border-color:var(--navy);}
+  .bid-modal-add{display:inline-flex; align-items:center; justify-content:center; gap:7px; background:var(--navy); color:#fff; border:none; border-radius:10px; padding:9px 14px; font-family:inherit; font-size:12.5px; font-weight:700; cursor:pointer; white-space:nowrap;}
+  .bid-modal-add:hover{background:#28497a;}
   #bid-modal-close{background:var(--gray-bg); border:none; border-radius:9px; width:34px; height:34px; cursor:pointer; font-size:13px; color:var(--text-2);}
   #bid-modal-close:hover{background:var(--red-bg); color:var(--red);}
   .pdf-upload-btn{height:34px; display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:999px; background:var(--gray-bg); color:var(--navy); font-family:inherit; font-size:12px; font-weight:700; padding:0 12px; cursor:pointer;}
@@ -150,9 +149,6 @@
   .pdf-file-link span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .pdf-file-link svg{flex-shrink:0;}
   .pdf-file-link:hover{filter:brightness(0.98); border-color:var(--red);}
-  .bid-action-link{border:none; background:transparent; color:var(--navy); font-family:inherit; font-size:11.5px; font-weight:700; padding:3px 0; cursor:pointer;}
-  .bid-action-link:hover{text-decoration:underline;}
-  .bid-action-link.danger{color:var(--red);}
   .bid-remove-btn{display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border:1px solid var(--border); border-radius:10px; background:var(--gray-bg); color:var(--text-3); cursor:pointer; transition:all 0.15s;}
   .bid-remove-btn:hover{background:var(--red-bg); border-color:var(--red); color:var(--red);}
   @media (max-width:720px){
@@ -322,8 +318,7 @@
     <div class="pdf-modal-header">
       <span id="bid-modal-title">Bid / Estimates</span>
       <div class="pdf-modal-actions">
-        <button class="bid-modal-upload" id="bid-modal-upload" type="button">Upload PDF</button>
-        <button class="bid-modal-add secondary" id="bid-modal-add" type="button">+ Manual bid</button>
+        <button class="bid-modal-add" id="bid-modal-add" type="button">+ Bid</button>
         <button id="bid-modal-close">✕</button>
       </div>
     </div>
@@ -478,11 +473,7 @@ function vendorFromFileName(fileName){
 function pdfBadgeHTML(bid, itemId){
   const hasFile = !!bid.fileUrl;
   if(hasFile){
-    return `
-      <a class="pdf-file-link" href="${bid.fileUrl}" target="_blank" rel="noopener" title="Open ${(bid.fileName||'file')} (${fmtSize(bid.fileSizeKB||0)})">${iconFile()}<span>${esc(bid.fileName||'Open PDF')}</span></a>
-      <button type="button" class="bid-action-link" data-uploadbidfile="${bid.id}" data-itemid="${itemId}">Replace</button>
-      <button type="button" class="bid-action-link danger" data-rmbidfile="${bid.id}" data-itemid="${itemId}">Remove</button>
-    `;
+    return `<a class="pdf-file-link" href="${bid.fileUrl}" target="_blank" rel="noopener" title="Open ${(bid.fileName||'file')} (${fmtSize(bid.fileSizeKB||0)})">${iconFile()}<span>${esc(bid.fileName||'Open PDF')}</span></a>`;
   }
   return `<button type="button" class="pdf-upload-btn" data-uploadbidfile="${bid.id}" data-itemid="${itemId}">${iconUpload()} Upload file</button>`;
 }
@@ -561,7 +552,6 @@ function renderBidModal(){
   const fileCount = bids.filter(b=>b.fileUrl).length;
   document.getElementById('bid-modal-title').textContent = 'Bid / Estimates — ' + it.title;
   document.getElementById('bid-modal-add').dataset.addbid = it.id;
-  document.getElementById('bid-modal-upload').dataset.uploadnewbid = it.id;
   document.getElementById('bid-modal-summary').innerHTML = `
     <div class="bid-stat primary"><div class="l">Est. Cost to Complete</div><div class="v">${fmtMoney(c.projected)}</div><div class="hint">${checkedCount ? 'Using selected bid cost' : 'Using budgeted cost'}</div></div>
     <div class="bid-stat"><div class="l">Selected Bids</div><div class="v">${checkedCount} of ${bids.length}</div><div class="hint">${checkedCount ? fmtMoney(appliedTotal) : 'No bid costs applied'}</div></div>
@@ -636,7 +626,7 @@ function renderBudget(){
         rows += `<tr class="item-row">
           <td><span class="chev"></span> <span class="item-title-edit" contenteditable="true" data-itemtitle="${it.id}">${esc(it.title)}</span></td>
           <td><input class="cell-input" type="text" inputmode="decimal" size="${fmtMoney(it.allowance).length+1}" data-budgetinput="${it.id}" value="${fmtMoney(it.allowance)}"></td>
-          <td class="estimate-cell"><span class="estimate-value">${fmtMoney(c.projected)}</span>${bidSummary}</td>
+          <td class="estimate-cell"><div class="estimate-cell-content">${bidSummary}<span class="estimate-value">${fmtMoney(c.projected)}</span></div></td>
           <td class="${varClass(c.costDiff)}">${diffLabel(c.costDiff)}</td>
           <td>${fmtMoney(c.completePrice)}</td>
           <td><select class="status-select status-${it.status||'none'}" data-statusinput="${it.id}">
