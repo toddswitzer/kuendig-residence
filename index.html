@@ -505,14 +505,12 @@ function varClass(n){ if(n===null||n===undefined) return 'v-dash'; return n<0 ? 
 function diffLabel(n){ if(n===0) return fmtMoney(0); return n<0 ? `${fmtMoney(Math.abs(n))} over` : `${fmtMoney(n)} under`; }
 
 function renderTop(){
-  let totalBudgetPrice=0, totalProjectedCost=0, totalPriceDiff=0, totalProjectedPrice=0;
-  budget.forEach(g=>{ const s = catCalc(g); totalBudgetPrice+=s.price; totalProjectedCost+=s.projected; totalPriceDiff+=s.priceDiff; totalProjectedPrice+=s.completePrice; });
-  const contractorFee = totalProjectedPrice - totalProjectedCost;
+  let totalBudgetPrice=0, totalPriceDiff=0, totalProjectedPrice=0;
+  budget.forEach(g=>{ const s = catCalc(g); totalBudgetPrice+=s.price; totalPriceDiff+=s.priceDiff; totalProjectedPrice+=s.completePrice; });
   document.getElementById('summary-top').innerHTML = `
     <div class="scard"><div class="l">Budgeted Price</div><div class="v">${fmtMoney(totalBudgetPrice)}</div></div>
-    <div class="scard"><div class="l">Est. Price to Complete</div><div class="v">${fmtMoney(totalProjectedPrice)}</div></div>
     <div class="scard"><div class="l">Price Difference</div><div class="v ${varClass(totalPriceDiff)}">${diffLabel(totalPriceDiff)}</div></div>
-    <div class="scard"><div class="l">Contractor Fee Included</div><div class="v">${fmtMoney(contractorFee)}</div><div class="tag">16% on eligible costs</div></div>
+    <div class="scard"><div class="l">Est. Price to Complete</div><div class="v">${fmtMoney(totalProjectedPrice)}</div></div>
   `;
   document.getElementById('summary-bottom').innerHTML = '';
 }
