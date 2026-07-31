@@ -96,9 +96,11 @@
   .notes-preview{width:100%; max-width:260px; font-family:inherit; font-size:12.5px; padding:7px 8px; color:var(--text-2); line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; border-radius:6px; border:1px solid transparent;}
   .notes-preview:empty:before{content:attr(data-placeholder); color:var(--text-3);}
   .notes-preview:hover{border-color:var(--border); background:var(--bg); color:var(--text);}
-  .comments-preview{max-width:260px; border:1px solid transparent; background:transparent; color:var(--text-3); font-family:inherit; font-size:11.5px; line-height:1.3; padding:5px 8px; border-radius:6px; text-align:left; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .comments-preview{max-width:260px; border:1px solid transparent; background:transparent; color:var(--text-3); font-family:inherit; font-size:11.5px; line-height:1.3; padding:5px 8px; border-radius:6px; text-align:left; cursor:pointer; overflow:hidden; display:flex; flex-direction:column; align-items:flex-start; gap:2px;}
   .comments-preview.has-comments{color:var(--navy); background:#EEF3F8; border-color:#D7DEE8; font-weight:700;}
   .comments-preview:hover{border-color:var(--border); background:var(--bg); color:var(--navy);}
+  .comments-preview-count{max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .comments-preview-text{max-width:100%; color:var(--text-2); font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 
   .status-select{border:1px solid var(--border); border-radius:9px; padding:7px 8px; font-family:inherit; font-size:11.5px; font-weight:800; cursor:pointer; width:92px; min-width:92px; appearance:none; -webkit-appearance:none; text-align:center; letter-spacing:0.03em; text-transform:uppercase; box-shadow:0 1px 2px rgba(20,30,45,0.05);}
   .status-select:focus{outline:2px solid var(--navy); outline-offset:1px;}
@@ -199,15 +201,25 @@
   .notes-modal-body{padding:18px;}
   .notes-modal-textarea{width:100%; min-height:220px; font-family:inherit; font-size:14px; line-height:1.5; border:1px solid var(--border); border-radius:10px; padding:14px; color:var(--text); background:var(--bg); resize:vertical;}
   .notes-modal-textarea:focus{outline:none; border-color:var(--navy); background:var(--surface);}
+  .notes-save-btn{background:var(--navy); color:#fff; border:none; border-radius:9px; padding:8px 12px; font-family:inherit; font-size:12.5px; font-weight:700; cursor:pointer;}
+  .notes-save-btn:hover{background:#28497a;}
   #notes-modal-close{background:var(--gray-bg); border:none; border-radius:7px; width:28px; height:28px; cursor:pointer; font-size:13px; color:var(--text-2);}
   #notes-modal-close:hover{background:var(--red-bg); color:var(--red);}
   .comments-modal-card{max-width:560px; height:auto; max-height:82vh;}
   .comments-modal-body{padding:18px; overflow:auto;}
   .comments-thread-list{display:flex; flex-direction:column; gap:10px; margin-bottom:14px; max-height:310px; overflow:auto;}
   .comment-entry{border:1px solid var(--border); border-radius:10px; background:var(--bg); padding:10px 12px;}
-  .comment-entry .comment-meta{font-size:11px; color:var(--text-2); font-weight:700; margin-bottom:5px;}
+  .comment-entry .comment-meta{font-size:11px; color:var(--text-2); font-weight:700; margin-bottom:5px; display:flex; align-items:center; gap:6px;}
   .comment-entry .comment-meta span{color:var(--text-3); font-weight:500; margin-left:6px;}
+  .comment-actions{margin-left:auto; display:flex; gap:6px;}
+  .comment-action-btn{border:none; background:transparent; color:var(--navy); font-family:inherit; font-size:11px; font-weight:700; padding:2px 4px; cursor:pointer; border-radius:5px;}
+  .comment-action-btn:hover{background:#EEF3F8;}
+  .comment-action-btn.delete{color:var(--red);}
+  .comment-action-btn.delete:hover{background:var(--red-bg);}
   .comment-entry .comment-text{font-size:13px; color:var(--text); line-height:1.45; white-space:pre-wrap;}
+  .comment-edit-textarea{width:100%; min-height:82px; font-family:inherit; font-size:13px; line-height:1.45; border:1px solid var(--border); border-radius:9px; padding:9px 10px; color:var(--text); background:var(--surface); resize:vertical;}
+  .comment-edit-textarea:focus{outline:none; border-color:var(--navy);}
+  .comment-edit-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:8px;}
   .comments-empty{border:1px dashed var(--border); border-radius:10px; padding:18px; text-align:center; color:var(--text-2); font-size:13px; background:var(--bg);}
   .comments-compose{display:flex; gap:10px; align-items:flex-end;}
   .comments-compose textarea{flex:1; min-height:80px; font-family:inherit; font-size:13px; line-height:1.45; border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); background:var(--bg); resize:vertical;}
@@ -323,6 +335,7 @@
     <div class="pdf-modal-header">
       <span id="notes-modal-title">Notes</span>
       <div class="pdf-modal-actions">
+        <button id="notes-modal-save" class="notes-save-btn" type="button">Save</button>
         <button id="notes-modal-close">✕</button>
       </div>
     </div>
@@ -584,8 +597,10 @@ function commentsPreviewHTML(it){
   const comments = it.comments || [];
   const count = comments.length;
   const latest = count ? comments[comments.length-1] : null;
-  const label = count ? `${count} comment${count===1?'':'s'}${latest && latest.author ? ` • ${latest.author}` : ''}` : 'Comment...';
-  return `<button type="button" class="comments-preview ${count?'has-comments':''}" data-comments="${it.id}" title="Open comment thread">${esc(label)}</button>`;
+  if(!count) return `<button type="button" class="comments-preview" data-comments="${it.id}" title="Open comment thread"><span class="comments-preview-count">Comment...</span></button>`;
+  const label = `${count} comment${count===1?'':'s'}${latest && latest.author ? ` • ${latest.author}` : ''}`;
+  const preview = String((latest && latest.text) || '').replace(/\s+/g, ' ').trim() || 'Open comment thread';
+  return `<button type="button" class="comments-preview has-comments" data-comments="${it.id}" title="Open comment thread"><span class="comments-preview-count">${esc(label)}</span><span class="comments-preview-text">${esc(preview)}</span></button>`;
 }
 
 function renderBidModal(){
@@ -624,7 +639,7 @@ function renderBidModal(){
       const amtStr = bidCost!=null?fmtMoney(bidCost):'';
       const clientPrice = bidCost!=null ? priceFor(it.id, bidCost) : null;
       const markupFee = bidCost!=null ? clientPrice - bidCost : null;
-      const feeLabel = NO_MARKUP_IDS.has(it.id) ? 'Fee' : '16% Fee';
+      const feeLabel = 'Builder Fee';
       return `<div class="bid-card ${b.checked?'is-applied':''}">
         <label class="bid-apply">
           <input type="checkbox" data-bidcheck="${b.id}" data-itemid="${it.id}" ${b.checked?'checked':''} title="Apply this bid to Est. Price to Complete">
@@ -942,7 +957,7 @@ function bindBidControlEvents(scope){
 }
 
 
-function closeNotesModal(){
+function saveNotesModal(showSaved){
   if(notesModalItemId){
     const val = document.getElementById('notes-modal-textarea').value;
     for(const g of budget){ const rec = g.items.find(x=>x.id===notesModalItemId); if(rec){
@@ -950,13 +965,25 @@ function closeNotesModal(){
         rec.notes = val;
         logChange(`updated notes on ${findItemTitle(notesModalItemId)}`);
         saveJSON(BUDGET_KEY, budget);
+        if(showSaved) showToast('Notes saved.');
+      } else if(showSaved){
+        showToast('Notes already saved.');
       }
       break;
     } }
   }
+}
+function closeNotesModal(){
+  saveNotesModal(false);
   document.getElementById('notes-modal').style.display = 'none';
   notesModalItemId = null;
   renderBudget();
+}
+let editingCommentIndex = null;
+function sameCommentAuthor(comment){
+  const current = String(username || 'Anon').trim().toLowerCase();
+  const author = String((comment && comment.author) || 'Anon').trim().toLowerCase();
+  return !!current && current === author;
 }
 function renderCommentsModal(){
   if(!commentsModalItemId) return;
@@ -964,13 +991,73 @@ function renderCommentsModal(){
   if(!rec) return;
   const comments = rec.item.comments || [];
   document.getElementById('comments-thread-list').innerHTML = comments.length
-    ? comments.map(c=>`<div class="comment-entry"><div class="comment-meta">${esc(c.author||'Anon')}<span>${fmtTs(c.ts||Date.now())}</span></div><div class="comment-text">${esc(c.text||'')}</div></div>`).join('')
+    ? comments.map((c,i)=>{
+      const own = sameCommentAuthor(c);
+      const edited = c.editedTs ? ' · edited' : '';
+      const actions = own ? `<div class="comment-actions"><button type="button" class="comment-action-btn" data-editcomment="${i}">Edit</button><button type="button" class="comment-action-btn delete" data-deletecomment="${i}">Delete</button></div>` : '';
+      const body = editingCommentIndex === i
+        ? `<textarea class="comment-edit-textarea" data-commenteditbox="${i}">${esc(c.text||'')}</textarea><div class="comment-edit-actions"><button type="button" class="comment-action-btn" data-cancelcomment="${i}">Cancel</button><button type="button" class="comments-add-btn" data-savecomment="${i}">Save</button></div>`
+        : `<div class="comment-text">${esc(c.text||'')}</div>`;
+      return `<div class="comment-entry"><div class="comment-meta">${esc(c.author||'Anon')}<span>${fmtTs(c.ts||Date.now())}${edited}</span>${actions}</div>${body}</div>`;
+    }).join('')
     : '<div class="comments-empty">No comments yet.</div>';
+  bindCommentThreadEvents();
+}
+function bindCommentThreadEvents(){
+  const list = document.getElementById('comments-thread-list');
+  list.querySelectorAll('[data-editcomment]').forEach(el=>{
+    el.onclick = ()=>{
+      editingCommentIndex = Number(el.dataset.editcomment);
+      renderCommentsModal();
+      const box = document.querySelector(`[data-commenteditbox="${editingCommentIndex}"]`);
+      if(box) setTimeout(()=>{ box.focus(); box.select(); }, 20);
+    };
+  });
+  list.querySelectorAll('[data-cancelcomment]').forEach(el=>{
+    el.onclick = ()=>{ editingCommentIndex = null; renderCommentsModal(); };
+  });
+  list.querySelectorAll('[data-savecomment]').forEach(el=>{
+    el.onclick = ()=>{
+      const idx = Number(el.dataset.savecomment);
+      const rec = findItemRecord(commentsModalItemId);
+      const box = list.querySelector(`[data-commenteditbox="${idx}"]`);
+      if(!rec || !box) return;
+      const comment = (rec.item.comments || [])[idx];
+      if(!comment || !sameCommentAuthor(comment)) return;
+      const text = box.value.trim();
+      if(!text) return;
+      if(comment.text !== text){
+        comment.text = text;
+        comment.editedTs = Date.now();
+        logChange(`edited a comment on ${findItemTitle(commentsModalItemId)}`);
+        saveJSON(BUDGET_KEY, budget);
+      }
+      editingCommentIndex = null;
+      renderCommentsModal();
+      renderBudget();
+    };
+  });
+  list.querySelectorAll('[data-deletecomment]').forEach(el=>{
+    el.onclick = ()=>{
+      const idx = Number(el.dataset.deletecomment);
+      const rec = findItemRecord(commentsModalItemId);
+      if(!rec) return;
+      const comment = (rec.item.comments || [])[idx];
+      if(!comment || !sameCommentAuthor(comment)) return;
+      rec.item.comments.splice(idx, 1);
+      editingCommentIndex = null;
+      logChange(`deleted a comment on ${findItemTitle(commentsModalItemId)}`);
+      saveJSON(BUDGET_KEY, budget);
+      renderCommentsModal();
+      renderBudget();
+    };
+  });
 }
 function openCommentsModal(itemId){
   const rec = findItemRecord(itemId);
   if(!rec) return;
   commentsModalItemId = itemId;
+  editingCommentIndex = null;
   rec.item.comments = rec.item.comments || [];
   document.getElementById('comments-modal-title').textContent = 'Comments — ' + rec.item.title;
   document.getElementById('comments-modal-textarea').value = '';
@@ -981,6 +1068,7 @@ function openCommentsModal(itemId){
 function closeCommentsModal(){
   document.getElementById('comments-modal').style.display = 'none';
   commentsModalItemId = null;
+  editingCommentIndex = null;
   renderBudget();
 }
 function addComment(){
@@ -998,6 +1086,7 @@ function addComment(){
   renderBudget();
 }
 document.getElementById('notes-modal-close').onclick = closeNotesModal;
+document.getElementById('notes-modal-save').onclick = ()=>{ saveNotesModal(true); closeNotesModal(); };
 document.getElementById('notes-modal').addEventListener('click', e=>{ if(e.target.id==='notes-modal') closeNotesModal(); });
 document.getElementById('comments-modal-close').onclick = closeCommentsModal;
 document.getElementById('comments-modal').addEventListener('click', e=>{ if(e.target.id==='comments-modal') closeCommentsModal(); });
