@@ -58,7 +58,7 @@
   .banner p b{font-weight:600;}
 
   .table-scroll{overflow-x:auto; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:0 1px 3px rgba(20,30,45,0.04), 0 10px 24px -16px rgba(20,30,45,0.14);}
-  table.budget-table{border-collapse:collapse; width:100%; min-width:1365px; font-size:13px; table-layout:fixed;}
+  table.budget-table{border-collapse:collapse; width:100%; min-width:1265px; font-size:13px; table-layout:fixed;}
   table.budget-table th, table.budget-table td{padding:9px 12px; text-align:right; white-space:nowrap; border-bottom:1px solid var(--border);}
   table.budget-table th:first-child, table.budget-table td:first-child{text-align:left;}
   table.budget-table td.notes-cell, table.budget-table th.notes-th{text-align:left; white-space:normal; max-width:300px;}
@@ -140,6 +140,7 @@
   .bid-field-label{font-size:10px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.05em; font-weight:700; margin-bottom:5px;}
   .bid-card .mini-vendor{font-size:13px; min-height:34px; border-radius:8px; padding:8px 9px;}
   .bid-card .mini-amount{font-size:13px; height:34px; border-radius:8px; padding:8px 9px;}
+  .bid-price-preview{font-size:10.5px; color:var(--text-2); margin-top:4px; font-weight:600;}
   .bid-pdf-slot{display:flex; align-items:center; gap:7px; flex-wrap:wrap; min-width:0;}
   .bid-modal-empty{border:1px solid var(--border); border-radius:14px; padding:22px; text-align:center; color:var(--text-2); font-size:13px; background:var(--surface);}
   .bid-modal-empty strong{display:block; color:var(--text); font-size:14px; margin-bottom:4px;}
@@ -271,11 +272,11 @@
   <div class="banner">
     <div class="tag">Cost vs. price</div>
     <ul class="howto-list">
-      <li><b>Budgeted Cost</b> is the original Draw Sheet price converted back to internal cost before contractor fee.</li>
-      <li><b>Est. Cost to Complete</b> uses the Draw Sheet new estimate converted to cost, unless checked bid costs are applied.</li>
-      <li><b>Cost Difference</b> shows whether the current estimate is over or under the original budgeted cost.</li>
-      <li><b>Total Price</b> is the client-facing projected price with McCamy's 16% contractor fee applied, except General Conditions.</li>
-      <li><b>Bid / Estimates</b> are vendor cost quotes; check the box to include a bid cost in the projected cost.</li>
+      <li><b>This table shows price</b> so clients are comparing the numbers they will see on draws and invoices.</li>
+      <li><b>Budgeted Price</b> comes from the original Draw Sheet budget.</li>
+      <li><b>Est. Price to Complete</b> comes from the Draw Sheet new estimate, unless checked bid costs are applied.</li>
+      <li><b>Price Difference</b> shows whether the current estimate is over or under the original budgeted price.</li>
+      <li><b>Bid / Estimates</b> are entered as vendor costs; when applied, the table adds McCamy's 16% contractor fee automatically, except General Conditions.</li>
     </ul>
   </div>
 
@@ -283,9 +284,8 @@
     <table class="budget-table">
       <colgroup>
         <col style="width:280px">
-        <col style="width:130px">
-        <col style="width:235px">
-        <col style="width:140px">
+        <col style="width:150px">
+        <col style="width:255px">
         <col style="width:150px">
         <col style="width:90px">
         <col style="width:340px">
@@ -293,10 +293,9 @@
       <thead>
         <tr class="col-row">
           <th>Cost Code</th>
-          <th>Budgeted Cost</th>
-          <th>Est. Cost to Complete</th>
-          <th>Cost Difference</th>
-          <th>Total Price</th>
+          <th>Budgeted Price</th>
+          <th>Est. Price to Complete</th>
+          <th>Price Difference</th>
           <th>Status</th>
           <th class="notes-th">Notes</th>
         </tr>
@@ -305,7 +304,7 @@
     </table>
   </div>
 
-  <div class="foot-note">Cost Difference = Budgeted Cost minus Estimated Cost to Complete. Draw Sheet prices are converted to cost internally; Total Price adds the 16% contractor fee, except General Conditions.</div>
+  <div class="foot-note">Price Difference = Budgeted Price minus Estimated Price to Complete. Vendor bid entries remain cost internally; applied bids are marked up by 16% in the table, except General Conditions.</div>
 
   <div class="activity-section">
     <div class="activity-header" id="activity-toggle">📋 Activity Log <span id="activity-count"></span> <span class="chev" id="activity-chev">▸</span></div>
@@ -462,7 +461,8 @@ let expandedCat = {};
 
 const MARKUP_RATE = 0.16;
 const NO_MARKUP_IDS = new Set(['1000-general-conditions']);
-function priceFor(itemId, amount){ const rate = NO_MARKUP_IDS.has(itemId) ? 0 : MARKUP_RATE; return amount * (1+rate); }
+function priceFor(itemId, amount){ const rate = NO_MARKUP_IDS.has(itemId) ? 0 : MARKUP_RATE; return Number((amount * (1+rate)).toFixed(2)); }
+function costFromPrice(itemId, amount){ const rate = NO_MARKUP_IDS.has(itemId) ? 0 : MARKUP_RATE; return Number((amount / (1+rate)).toFixed(2)); }
 function itemCalc(it){
   const budgetAmt = Number(it.allowance||0);
   const manualEstimate = it.estimate!=null ? Number(it.estimate||0) : budgetAmt;
@@ -474,14 +474,15 @@ function itemCalc(it){
   const costDiff = budgetAmt - projected;
   const price = priceFor(it.id, budgetAmt);
   const completePrice = priceFor(it.id, projected);
-  return {budgetAmt, manualEstimate, bidReceived, hasBid, checkedCount: checked.length, projected, costDiff, price, completePrice};
+  const priceDiff = price - completePrice;
+  return {budgetAmt, manualEstimate, bidReceived, hasBid, checkedCount: checked.length, projected, costDiff, price, completePrice, priceDiff};
 }
 function catCalc(g){
-  const sums = {budgetAmt:0, bidReceived:0, hasBid:false, projected:0, costDiff:0, price:0, completePrice:0};
+  const sums = {budgetAmt:0, bidReceived:0, hasBid:false, projected:0, costDiff:0, price:0, completePrice:0, priceDiff:0};
   g.items.forEach(it=>{
     const c = itemCalc(it);
     sums.budgetAmt += c.budgetAmt; sums.projected += c.projected; sums.costDiff += c.costDiff;
-    sums.price += c.price; sums.completePrice += c.completePrice;
+    sums.price += c.price; sums.completePrice += c.completePrice; sums.priceDiff += c.priceDiff;
     if(c.hasBid){ sums.bidReceived += c.bidReceived; sums.hasBid = true; }
   });
   return sums;
@@ -490,13 +491,14 @@ function varClass(n){ if(n===null||n===undefined) return 'v-dash'; return n<0 ? 
 function diffLabel(n){ if(n===0) return fmtMoney(0); return n<0 ? `${fmtMoney(Math.abs(n))} over` : `${fmtMoney(n)} under`; }
 
 function renderTop(){
-  let totalBudget=0, totalProjected=0, totalCostDiff=0, totalPrice=0;
-  budget.forEach(g=>{ const s = catCalc(g); totalBudget+=s.budgetAmt; totalProjected+=s.projected; totalCostDiff+=s.costDiff; totalPrice+=s.completePrice; });
+  let totalBudgetPrice=0, totalProjectedCost=0, totalPriceDiff=0, totalProjectedPrice=0;
+  budget.forEach(g=>{ const s = catCalc(g); totalBudgetPrice+=s.price; totalProjectedCost+=s.projected; totalPriceDiff+=s.priceDiff; totalProjectedPrice+=s.completePrice; });
+  const contractorFee = totalProjectedPrice - totalProjectedCost;
   document.getElementById('summary-top').innerHTML = `
-    <div class="scard"><div class="l">Budgeted Cost</div><div class="v">${fmtMoney(totalBudget)}</div></div>
-    <div class="scard"><div class="l">Est. Cost to Complete</div><div class="v">${fmtMoney(totalProjected)}</div></div>
-    <div class="scard"><div class="l">Cost Difference</div><div class="v ${varClass(totalCostDiff)}">${diffLabel(totalCostDiff)}</div></div>
-    <div class="scard"><div class="l">Total Price</div><div class="v">${fmtMoney(totalPrice)}</div><div class="tag">Includes 16% contractor fee</div></div>
+    <div class="scard"><div class="l">Budgeted Price</div><div class="v">${fmtMoney(totalBudgetPrice)}</div></div>
+    <div class="scard"><div class="l">Est. Price to Complete</div><div class="v">${fmtMoney(totalProjectedPrice)}</div></div>
+    <div class="scard"><div class="l">Price Difference</div><div class="v ${varClass(totalPriceDiff)}">${diffLabel(totalPriceDiff)}</div></div>
+    <div class="scard"><div class="l">Contractor Fee Included</div><div class="v">${fmtMoney(contractorFee)}</div><div class="tag">16% on eligible costs</div></div>
   `;
   document.getElementById('summary-bottom').innerHTML = '';
 }
@@ -596,18 +598,20 @@ function renderBidModal(){
   const appliedBids = bids.filter(b=>b.checked && b.amount!=null);
   const checkedCount = appliedBids.length;
   const appliedTotal = appliedBids.reduce((sum,b)=>sum+Number(b.amount||0),0);
+  const appliedPrice = priceFor(it.id, appliedTotal);
   const fileCount = bids.filter(b=>b.fileUrl).length;
+  const feeLabel = NO_MARKUP_IDS.has(it.id) ? 'No contractor fee on this line' : 'Includes 16% contractor fee';
   document.getElementById('bid-modal-title').textContent = 'Bid / Estimates — ' + it.title;
   document.getElementById('bid-modal-add').dataset.addbid = it.id;
   document.getElementById('bid-modal-summary').innerHTML = `
-    <div class="bid-stat primary"><div class="l">Est. Cost to Complete</div><div class="v">${fmtMoney(c.projected)}</div><div class="hint">${checkedCount ? 'Using selected bid cost' : 'Using budgeted cost'}</div></div>
-    <div class="bid-stat"><div class="l">Selected Bids</div><div class="v">${checkedCount} of ${bids.length}</div><div class="hint">${checkedCount ? fmtMoney(appliedTotal) : 'No bid costs applied'}</div></div>
+    <div class="bid-stat primary"><div class="l">Est. Price to Complete</div><div class="v">${fmtMoney(c.completePrice)}</div><div class="hint">${checkedCount ? `Using selected bid cost. ${feeLabel}.` : `Using Draw Sheet price. ${feeLabel}.`}</div></div>
+    <div class="bid-stat"><div class="l">Selected Bids</div><div class="v">${checkedCount} of ${bids.length}</div><div class="hint">${checkedCount ? `${fmtMoney(appliedTotal)} cost -> ${fmtMoney(appliedPrice)} price` : 'No bid costs applied'}</div></div>
     <div class="bid-stat"><div class="l">Files Attached</div><div class="v">${fileCount}</div><div class="hint">${fileCount===1 ? '1 PDF/image available' : `${fileCount} PDFs/images available`}</div></div>
   `;
   const list = document.getElementById('bid-modal-list');
   const uploadStrip = `
     <button type="button" class="bid-upload-strip" data-dropupload="${it.id}" title="Click or drop a PDF/image to add a bid">
-      <span><strong>Click or drop a PDF/image to add a bid</strong><small>Creates a bid row automatically. Add the cost, then check Apply to include it.</small></span>
+      <span><strong>Click or drop a PDF/image to add a bid</strong><small>Creates a bid row automatically. Add vendor cost, then check Apply to show the marked-up price.</small></span>
       ${iconUpload()}
     </button>
   `;
@@ -616,18 +620,20 @@ function renderBidModal(){
   } else {
     const rows = bids.map(b=>{
       const amtStr = b.amount!=null?fmtMoney(b.amount):'';
+      const pricePreview = b.amount!=null ? `${fmtMoney(priceFor(it.id, Number(b.amount||0)))} client price` : 'Client price updates from cost';
       return `<div class="bid-card ${b.checked?'is-applied':''}">
         <label class="bid-apply">
-          <input type="checkbox" data-bidcheck="${b.id}" data-itemid="${it.id}" ${b.checked?'checked':''} title="Apply this bid to Est. Cost to Complete">
-          <span>Apply<small>Include cost</small></span>
+          <input type="checkbox" data-bidcheck="${b.id}" data-itemid="${it.id}" ${b.checked?'checked':''} title="Apply this bid to Est. Price to Complete">
+          <span>Apply<small>Use price</small></span>
         </label>
         <div>
           <div class="bid-field-label">Vendor</div>
           <div class="mini-vendor" contenteditable="true" data-placeholder="Vendor" data-bidvendor="${b.id}" data-itemid="${it.id}">${esc(b.vendor)}</div>
         </div>
         <div>
-          <div class="bid-field-label">Cost</div>
+          <div class="bid-field-label">Vendor Cost</div>
           <input type="text" class="mini-amount" placeholder="Amount" data-bidamount="${b.id}" data-itemid="${it.id}" value="${amtStr}">
+          <div class="bid-price-preview">${pricePreview}</div>
         </div>
         <div>
           <div class="bid-field-label">PDF / Image</div>
@@ -659,10 +665,9 @@ function renderBudget(){
     const isOpen = expandedCat[g.id];
     rows += `<tr class="cat-row" data-catexpand="${g.id}">
       <td><span class="chev">${isOpen?'▾':'▸'}</span> <span class="cat-title-edit" contenteditable="true" data-cattitle="${g.id}">${esc(g.category)}</span></td>
-      <td>${fmtMoney(s.budgetAmt)}</td>
-      <td>${fmtMoney(s.projected)}</td>
-      <td class="${varClass(s.costDiff)}">${diffLabel(s.costDiff)}</td>
+      <td>${fmtMoney(s.price)}</td>
       <td>${fmtMoney(s.completePrice)}</td>
+      <td class="${varClass(s.priceDiff)}">${diffLabel(s.priceDiff)}</td>
       <td></td>
       <td class="notes-cell"></td>
     </tr>`;
@@ -673,10 +678,9 @@ function renderBudget(){
         const commentsSummary = commentsPreviewHTML(it);
         rows += `<tr class="item-row">
           <td><span class="chev"></span> <span class="item-title-edit" contenteditable="true" data-itemtitle="${it.id}">${esc(it.title)}</span></td>
-          <td><input class="cell-input" type="text" inputmode="decimal" size="${fmtMoney(it.allowance).length+1}" data-budgetinput="${it.id}" value="${fmtMoney(it.allowance)}"></td>
-          <td class="estimate-cell"><div class="estimate-cell-content">${bidSummary}<input class="cell-input estimate-input" type="text" inputmode="decimal" data-estimateinput="${it.id}" value="${fmtMoney(c.projected)}" title="${c.hasBid?'Editing this will switch back to a manual cost estimate.':'Edit Est. Cost to Complete'}"></div></td>
-          <td class="${varClass(c.costDiff)}">${diffLabel(c.costDiff)}</td>
-          <td>${fmtMoney(c.completePrice)}</td>
+          <td><input class="cell-input" type="text" inputmode="decimal" size="${fmtMoney(c.price).length+1}" data-budgetinput="${it.id}" value="${fmtMoney(c.price)}"></td>
+          <td class="estimate-cell"><div class="estimate-cell-content">${bidSummary}<input class="cell-input estimate-input" type="text" inputmode="decimal" data-estimateinput="${it.id}" value="${fmtMoney(c.completePrice)}" title="${c.hasBid?'Editing this will switch back to a manual price estimate.':'Edit Est. Price to Complete'}"></div></td>
+          <td class="${varClass(c.priceDiff)}">${diffLabel(c.priceDiff)}</td>
           <td><select class="status-select status-${it.status||'none'}" data-statusinput="${it.id}">
             <option value="" ${!it.status?'selected':''}>—</option>
             <option value="open" ${it.status==='open'?'selected':''}>Open</option>
@@ -688,14 +692,13 @@ function renderBudget(){
     }
   });
   // Totals row
-  let T = {budgetAmt:0, projected:0, costDiff:0, completePrice:0};
-  budget.forEach(g=>{ const s = catCalc(g); T.budgetAmt+=s.budgetAmt; T.projected+=s.projected; T.costDiff+=s.costDiff; T.completePrice+=s.completePrice; });
+  let T = {price:0, completePrice:0, priceDiff:0};
+  budget.forEach(g=>{ const s = catCalc(g); T.price+=s.price; T.completePrice+=s.completePrice; T.priceDiff+=s.priceDiff; });
   rows += `<tr class="cat-row" style="border-top:2px solid var(--navy);">
     <td>Totals</td>
-    <td>${fmtMoney(T.budgetAmt)}</td>
-    <td>${fmtMoney(T.projected)}</td>
-    <td class="${varClass(T.costDiff)}">${diffLabel(T.costDiff)}</td>
+    <td>${fmtMoney(T.price)}</td>
     <td>${fmtMoney(T.completePrice)}</td>
+    <td class="${varClass(T.priceDiff)}">${diffLabel(T.priceDiff)}</td>
     <td></td>
     <td class="notes-cell"></td>
   </tr>`;
@@ -754,13 +757,14 @@ function bindRowEvents(){
       const itemId = el.dataset.budgetinput;
       const val = parseCurrency(e.target.value);
       if(val===null){ renderBudget(); return; }
-      for(const g of budget){ const rec = g.items.find(x=>x.id===itemId); if(rec){ rec.allowance = val; break; } }
-      logChange(`set ${findItemTitle(itemId)} budget to ${fmtMoney(val)}`);
+      const rec = findItemRecord(itemId);
+      if(rec) rec.item.allowance = costFromPrice(itemId, val);
+      logChange(`set ${findItemTitle(itemId)} budget price to ${fmtMoney(val)}`);
       saveJSON(BUDGET_KEY, budget); renderBudget();
     };
   });
 
-  // Editable Est. Cost to Complete cell. Direct edits switch that row to a manual estimate.
+  // Editable Est. Price to Complete cell. Direct edits switch that row to a manual estimate.
   document.querySelectorAll('[data-estimateinput]').forEach(el=>{
     el.addEventListener('click', e=>e.stopPropagation());
     el.addEventListener('focus', e=>{ const raw = parseCurrency(e.target.value); e.target.value = raw!=null ? raw : ''; e.target.select(); });
@@ -771,10 +775,10 @@ function bindRowEvents(){
       if(val===null){ renderBudget(); return; }
       const rec = findItemRecord(itemId);
       if(rec){
-        rec.item.estimate = val;
+        rec.item.estimate = costFromPrice(itemId, val);
         (rec.item.bids||[]).forEach(b=>{ b.checked = false; });
       }
-      logChange(`set ${findItemTitle(itemId)} cost to complete to ${fmtMoney(val)}`);
+      logChange(`set ${findItemTitle(itemId)} price to complete to ${fmtMoney(val)}`);
       saveJSON(BUDGET_KEY, budget); renderBudget();
     };
   });
