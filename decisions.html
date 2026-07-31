@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuendig Residence - Decision Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F5F7; --surface:#FFFFFF; --text:#1D1D1F; --text-2:#6E6E73; --text-3:#A1A1A6;
+    --border:#E5E5E7; --navy:#1F3A5C; --brass:#B98A3D;
+    --red:#E0453C; --amber:#C9820A; --green:#2FA84F; --blue:#2D5488;
+    --red-bg:#FDECEC; --amber-bg:#FBF1DE; --green-bg:#E7F6EB; --blue-bg:#EEF3F8; --gray-bg:#F0F0F2;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; -webkit-font-smoothing:antialiased;}
+  .board{background:linear-gradient(180deg,#F7F7FA 0%,#F2F2F5 100%); min-height:100vh; padding:0 24px 60px;}
+  .top-accent{height:5px; background:linear-gradient(90deg,var(--navy) 0%,#2d5488 45%,var(--brass) 100%); margin:0 -24px 28px; border-radius:0 0 6px 6px;}
+  .wrap{width:100%; max-width:none; margin:0 auto;}
+  .masthead{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; gap:14px; flex-wrap:wrap;}
+  .masthead-left{display:flex; align-items:center; gap:16px;}
+  .logo-img{height:60px; width:60px; border-radius:50%; box-shadow:0 3px 12px rgba(31,58,92,0.18); display:block; border:1px solid var(--border);}
+  h1{font-size:22px; font-weight:700; margin:0; letter-spacing:-0.01em;}
+  .sub{font-size:13px; color:var(--text-2); margin-top:3px;}
+  .asof{font-size:12px; color:var(--text-3); text-align:right;}
+  .asof b{color:var(--text); font-size:14px; font-weight:600;}
+  .page-links{display:flex; justify-content:flex-end; gap:8px; margin-top:8px;}
+  .page-link{border:1px solid var(--border); background:var(--surface); color:var(--navy); border-radius:8px; padding:6px 9px; font-size:12px; font-weight:700; text-decoration:none;}
+  .page-link:hover{background:var(--blue-bg); border-color:#D7DEE8;}
+
+  .summary-cards{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px;}
+  .scard{flex:1 1 230px; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px 18px; box-shadow:0 1px 3px rgba(20,30,45,0.04),0 8px 20px -12px rgba(20,30,45,0.10); position:relative; overflow:hidden;}
+  .scard::before{content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--navy);}
+  .scard:nth-child(2)::before{background:var(--red);}
+  .scard:nth-child(3)::before{background:var(--brass);}
+  .scard .l{font-size:11px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px; font-weight:700;}
+  .scard .v{font-size:23px; font-weight:800; letter-spacing:-0.01em;}
+  .scard .tag{font-size:11.5px; color:var(--text-2); margin-top:4px; font-weight:600;}
+  .tag-danger{color:var(--red) !important;}
+
+  .banner{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px 18px; margin-bottom:18px; box-shadow:0 1px 3px rgba(20,30,45,0.04);}
+  .banner .tag{font-size:12px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:6px;}
+  .banner p{font-size:13.5px; line-height:1.55; margin:6px 0 0; color:var(--text);}
+  .source-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:12px;}
+  .source-chip{background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px;}
+  .source-chip b{display:block; font-size:12px; color:var(--text); margin-bottom:3px;}
+  .source-chip span{font-size:12px; color:var(--text-2); line-height:1.4;}
+
+  .toolbar{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+  .filter-group{display:flex; gap:8px; flex-wrap:wrap;}
+  .filter-btn{border:1px solid var(--border); background:var(--surface); color:var(--text-2); border-radius:8px; padding:7px 10px; font:inherit; font-size:12px; font-weight:700; cursor:pointer;}
+  .filter-btn.active{background:var(--navy); border-color:var(--navy); color:#fff;}
+  .save-state{font-size:12px; color:var(--text-3); font-weight:600;}
+
+  .table-scroll{overflow-x:auto; width:100%; background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:0 1px 3px rgba(20,30,45,0.04),0 10px 24px -16px rgba(20,30,45,0.14);}
+  table.decision-table{border-collapse:collapse; width:100%; min-width:1220px; font-size:13px; table-layout:fixed;}
+  table.decision-table th, table.decision-table td{padding:10px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--border);}
+  table.decision-table thead th{background:var(--gray-bg); color:var(--text-2); font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; font-weight:800; position:sticky; top:0; border-bottom:2px solid var(--border);}
+  table.decision-table th:nth-child(3), table.decision-table td:nth-child(3){border-left:2px solid #D7DEE8;}
+  tr.decision-row:hover td{background:#FAFAFC;}
+  .decision-name{font-weight:800; font-size:13.5px; margin-bottom:5px;}
+  .decision-detail{color:var(--text-2); font-size:12px; line-height:1.45; white-space:normal;}
+  .source-note{font-size:11px; color:var(--text-3); margin-top:6px; line-height:1.35;}
+  .schedule-gate{font-weight:700; color:var(--text); line-height:1.35;}
+  .schedule-note{color:var(--text-2); font-size:12px; line-height:1.4; margin-top:4px;}
+  .date-input{font:inherit; width:132px; border:1px solid transparent; background:transparent; color:var(--text); border-radius:6px; padding:5px 6px; font-weight:700;}
+  .date-input:hover,.date-input:focus{border-color:var(--border); background:var(--bg); outline:none;}
+  .date-note{font-size:11.5px; color:var(--text-2); margin-top:5px; line-height:1.35;}
+  .date-note.is-due{color:var(--red); font-weight:700;}
+  .status-select{border:1px solid var(--border); border-radius:9px; padding:7px 8px; font-family:inherit; font-size:11.5px; font-weight:800; cursor:pointer; width:118px; min-width:118px; appearance:none; -webkit-appearance:none; text-align:center; letter-spacing:0.03em; text-transform:uppercase; box-shadow:0 1px 2px rgba(20,30,45,0.05);}
+  .status-select:focus{outline:2px solid var(--navy); outline-offset:1px;}
+  .status-blocked{background:var(--red); color:#fff; border-color:#B7352E;}
+  .status-at-risk{background:#F6B83F; color:#3F2A00; border-color:#C9820A;}
+  .status-needs-review{background:var(--blue-bg); color:var(--navy); border-color:#C9D7E8;}
+  .status-upcoming{background:var(--gray-bg); color:var(--text-2); border-color:var(--border);}
+  .status-decided{background:#208C46; color:#fff; border-color:#176C34;}
+  .owner-input{width:100%; min-height:33px; border:1px solid transparent; background:var(--bg); color:var(--text); border-radius:8px; padding:8px 9px; font:inherit; font-size:12.5px; font-weight:600;}
+  .owner-input:focus{border-color:var(--navy); outline:none; background:var(--surface);}
+  .next-input{width:100%; min-height:58px; resize:vertical; border:1px solid transparent; background:var(--bg); color:var(--text); border-radius:8px; padding:8px 9px; font:inherit; font-size:12.5px; line-height:1.4;}
+  .next-input:focus{border-color:var(--navy); outline:none; background:var(--surface);}
+  .count-pill{display:inline-flex; align-items:center; justify-content:center; min-width:34px; height:28px; border-radius:8px; background:var(--blue-bg); color:var(--navy); font-size:12px; font-weight:800; border:1px solid #D7DEE8;}
+  .mccamy-footer{margin-top:28px; padding-top:16px; border-top:1px solid var(--border); text-align:center;}
+  .mccamy-footer div{font-size:12px; color:var(--text-2);}
+  .mccamy-footer-sub{color:var(--text-3) !important; font-style:italic; margin-top:4px; font-size:11px !important;}
+
+  @media (max-width:820px){
+    .board{padding:0 14px 44px;}
+    .top-accent{margin:0 -14px 22px;}
+    .source-grid{grid-template-columns:1fr;}
+    .masthead{align-items:flex-start;}
+    .asof{text-align:left;}
+    table.decision-table{min-width:0;}
+    table.decision-table, table.decision-table tbody, table.decision-table tr, table.decision-table td{display:block; width:100%;}
+    table.decision-table thead{display:none;}
+    table.decision-table tr{border-bottom:1px solid var(--border); padding:8px 0;}
+    table.decision-table td{border-bottom:none; padding:8px 12px;}
+    table.decision-table td::before{content:attr(data-label); display:block; color:var(--text-3); font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; font-weight:800; margin-bottom:4px;}
+  }
+</style>
+</head>
+<body>
+<div class="board">
+  <div class="top-accent"></div>
+  <div class="wrap">
+    <div class="masthead">
+      <div class="masthead-left">
+        <img class="logo-img" src="assets/mccamy-logo.png" alt="McCamy Construction">
+        <div>
+          <h1>Kuendig Residence - Decision Tracker</h1>
+          <div class="sub">825 Blows Ferry Road, Knoxville, TN - schedule-linked selections log</div>
+        </div>
+      </div>
+      <div>
+        <div class="asof">As of<br><b id="asof-date"></b></div>
+        <div class="page-links"><a class="page-link" href="/">Budget Tracker</a></div>
+      </div>
+    </div>
+
+    <div class="summary-cards" id="summary-cards"></div>
+
+    <div class="banner">
+      <div class="tag">Decision focus</div>
+      <p>This page groups the interior design spec workbook into construction-friendly decision areas and ties each area to the next relevant schedule gate.</p>
+      <div class="source-grid">
+        <div class="source-chip"><b>Source selections</b><span>Kuendig_CJI Construction Selections 07_24_26.xlsx</span></div>
+        <div class="source-chip"><b>Source schedule</b><span>Schedule_Gantt_Kuendig - Custom Home, dated July 24, 2026</span></div>
+        <div class="source-chip"><b>Near-term gate</b><span>Rough MEPs run July 9 - August 24, 2026; insulation starts September 14.</span></div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="filter-group" id="filter-group">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="now">Priority Now</button>
+        <button class="filter-btn" data-filter="open">Open</button>
+        <button class="filter-btn" data-filter="decided">Decided</button>
+      </div>
+      <div class="save-state" id="save-state">Loading...</div>
+    </div>
+
+    <div class="table-scroll">
+      <table class="decision-table">
+        <colgroup>
+          <col style="width:285px">
+          <col style="width:210px">
+          <col style="width:165px">
+          <col style="width:135px">
+          <col style="width:170px">
+          <col style="width:290px">
+          <col style="width:85px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Decision Area</th>
+            <th>Schedule Gate</th>
+            <th>Needed By</th>
+            <th>Status</th>
+            <th>Owner</th>
+            <th>Next Call</th>
+            <th>Flags</th>
+          </tr>
+        </thead>
+        <tbody id="decision-body"></tbody>
+      </table>
+    </div>
+
+    <div class="mccamy-footer">
+      <div>McCamy Construction - 825 Blows Ferry Road, Knoxville, TN - (865) 247-7068</div>
+      <div class="mccamy-footer-sub">Decision dates are targets from the current construction schedule and should be reviewed weekly.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA_VERSION = 'decision-log-2026-07-31-v1';
+const LOCAL_KEY = 'kuendig-decision-log-v1';
+const TODAY = new Date();
+TODAY.setHours(12,0,0,0);
+const STATUSES = {
+  'blocked': 'Blocked',
+  'at-risk': 'At Risk',
+  'needs-review': 'Needs Review',
+  'upcoming': 'Upcoming',
+  'decided': 'Decided'
+};
+const SEED_DECISIONS = [
+  {id:'exterior-pool', area:'Exterior / Pool', status:'blocked', owner:'Dave & Ellen / CJI', due:'2026-08-03', flags:10, schedule:'Pool Phase 1 active; CMU chimney starts Aug 7; siding/decking starts Sep 2', source:'EXTERIOR: 9 flags; EXT. Lighting: 1 flag', decision:'Pool gunite, waterline tile, coping, rear porch pattern, stair tread edge, and exterior lighting.', next:'Confirm pool finishes and exterior stone/patio edge decisions.'},
+  {id:'plumbing', area:'Plumbing Fixtures', status:'at-risk', owner:'Dave & Ellen', due:'2026-08-07', flags:9, schedule:'Rough MEPs run Jul 9 - Aug 24', source:'PLUMBING: 9 flagged rows', decision:'Fixture and rough-in-sensitive plumbing calls for bar, mudroom, powder, and primary bath.', next:'Resolve any sink, toilet, faucet, and finish questions that affect rough plumbing.'},
+  {id:'electrical-vents', area:'Switches / Outlets / Vents', status:'at-risk', owner:'Dave & Ellen / McCamy', due:'2026-08-07', flags:5, schedule:'Rough MEPs run Jul 9 - Aug 24', source:'SWITCH OUTLET VENTS: 5 flagged rows', decision:'Switch style, outlet finish, floor/wall vent locations, and air-return finish.', next:'Confirm switch/outlet direction and vent locations before rough-ins close.'},
+  {id:'fireplaces', area:'Fireplaces', status:'at-risk', owner:'Dave & Ellen / CJI', due:'2026-08-07', flags:2, schedule:'CMU stairwell/chimney starts Aug 7; masonry is active', source:'FIREPLACES: 2 flagged rows', decision:'Family room mantel direction and covered porch fireplace material.', next:'Lock mantel and porch fireplace direction for chimney/masonry coordination.'},
+  {id:'cabinets-appliances', area:'Cabinets & Panel-Ready Appliances', status:'at-risk', owner:'Dave & Ellen / CJI / Cabinetmaker', due:'2026-08-15', flags:18, schedule:'Rough MEPs through Aug 24; cabinet install starts Feb 23, 2027', source:'CABINET: 15 flags; APPLIANCES: 3 flags', decision:'Cabinet finishes, hood direction, appliance-panel vents, island finish, freezer swing, and command center.', next:'Finalize cabinet/appliance items that affect shop drawings and MEP rough-ins.'},
+  {id:'bath-blocking', area:'Bath Accessories / Blocking', status:'needs-review', owner:'Dave & Ellen / CJI', due:'2026-09-04', flags:3, schedule:'Insulation starts Sep 14; drywall starts Sep 28', source:'BATH ACC + BLOCKING: 3 flagged rows', decision:'Towel bars, robe hooks, niches, mirror/blocking, and accessory locations.', next:'Confirm blocking locations before walls close.'},
+  {id:'ceilings-millwork', area:'Ceilings / Millwork', status:'needs-review', owner:'Dave & Ellen / CJI', due:'2026-09-04', flags:8, schedule:'Drywall starts Sep 28; trim carpentry starts Mar 8, 2027', source:'CEILINGS MILLWORK: 8 flagged rows', decision:'Raised panels, stair details, pantry wall boards, ceiling medallions, beams, and built-ins.', next:'Separate decisions needed before drywall from finish-only trim decisions.'},
+  {id:'siding-decking', area:'Siding / Decking', status:'needs-review', owner:'Todd / McCamy', due:'2026-08-14', flags:4, schedule:'Siding / Decking starts Sep 2', source:'EXTERIOR selections and field conditions', decision:'Confirm exterior trim/siding/deck assumptions before field work starts.', next:'Review exterior selections against field conditions and schedule gate.'},
+  {id:'tile', area:'Tile', status:'upcoming', owner:'Dave & Ellen / CJI', due:'2026-10-16', flags:6, schedule:'Tile starts Nov 23', source:'TILE: 6 flagged rows', decision:'Primary bath tile/slab decisions, study fireplace tile, and laundry backsplash.', next:'Move tile package from TBD to review-ready before ordering lead time.'},
+  {id:'flooring', area:'Flooring', status:'upcoming', owner:'Dave & Ellen / CJI', due:'2026-11-20', flags:20, schedule:'Flooring starts Jan 12, 2027', source:'FLOORING: 20 flagged rows', decision:'Hardwood borders, Rubio/stain samples, marble/brick grout, and transition details.', next:'Approve floor finish samples and grout/transition details.'},
+  {id:'countertops', area:'Countertops', status:'upcoming', owner:'Dave & Ellen / CJI', due:'2027-01-15', flags:18, schedule:'Cabinet install starts Feb 23; countertop measure/fabricate/install starts Mar 23', source:'COUNTERTOP: 18 flagged rows', decision:'Kitchen perimeter/island material, bar/pantry/mudroom surfaces, edge profiles, and depths.', next:'Select slab/material direction before cabinetry is locked.'},
+  {id:'doors-hardware', area:'Doors / Hardware', status:'upcoming', owner:'Dave & Ellen / CJI', due:'2027-01-15', flags:20, schedule:'Trim carpentry starts Mar 8; hardware/accessories start Aug 13', source:'DOOR WINDOW: 14 flags; DOOR + CABINET HARDWARE: 6 flags', decision:'Interior door paint/specs, cremone, privacy/entry hardware, and unlacquered brass details.', next:'Confirm interior door and hardware package before trim ordering.'},
+  {id:'paint-wallpaper', area:'Paint / Wallpaper', status:'upcoming', owner:'Dave & Ellen / CJI', due:'2027-04-30', flags:5, schedule:'Interior paint primer starts Nov 2; final paint/wallpaper starts Jun 25, 2027', source:'PAINT room notes and General Finishes', decision:'Wall, ceiling, window, trim, cabinet color, and wallpaper decisions.', next:'Keep room-by-room palette decisions organized ahead of final finishes.'}
+];
+
+let decisions = [];
+let activeFilter = 'all';
+let saveTimer = null;
+
+function cloneSeed(){ return JSON.parse(JSON.stringify(SEED_DECISIONS)); }
+function esc(s){ return String(s||'').replace(/[&<>]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+function fmtDate(s){
+  const d = new Date(s + 'T12:00:00');
+  if(Number.isNaN(d.getTime())) return s || '';
+  return d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+}
+function daysUntil(s){
+  const d = new Date(s + 'T12:00:00');
+  if(Number.isNaN(d.getTime())) return null;
+  return Math.ceil((d - TODAY) / 86400000);
+}
+function dueLabel(row){
+  if(row.status === 'decided') return 'Complete';
+  const days = daysUntil(row.due);
+  if(days === null) return '';
+  if(days < 0) return `${Math.abs(days)} days overdue`;
+  if(days === 0) return 'Due today';
+  if(days <= 14) return `${days} days out`;
+  return fmtDate(row.due);
+}
+function isPriorityNow(row){
+  const days = daysUntil(row.due);
+  return row.status !== 'decided' && days !== null && days <= 21;
+}
+function mergeState(payload){
+  const seed = cloneSeed();
+  const saved = payload && Array.isArray(payload.decisions) ? payload.decisions : null;
+  if(!saved) return seed;
+  const savedMap = Object.fromEntries(saved.map(row=>[row.id,row]));
+  return seed.map(row=>Object.assign({}, row, savedMap[row.id] || {}, {
+    area: row.area,
+    schedule: row.schedule,
+    source: row.source,
+    decision: row.decision,
+    flags: row.flags
+  }));
+}
+function setSaveState(text, tone){
+  const el = document.getElementById('save-state');
+  el.textContent = text;
+  el.style.color = tone === 'bad' ? 'var(--red)' : (tone === 'good' ? 'var(--green)' : 'var(--text-3)');
+}
+function saveState(){
+  clearTimeout(saveTimer);
+  setSaveState('Saving...', '');
+  saveTimer = setTimeout(()=>{
+    const payload = {dataVersion: DATA_VERSION, decisions, updatedAt: Date.now()};
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(payload));
+    fetch('/api/decisions', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)})
+      .then(r=>{ if(!r.ok) throw new Error('save failed'); setSaveState('Saved', 'good'); })
+      .catch(()=>setSaveState('Saved locally', 'bad'));
+  }, 350);
+}
+function renderSummary(){
+  const open = decisions.filter(d=>d.status !== 'decided').length;
+  const priority = decisions.filter(isPriorityNow).length;
+  const sortedOpen = decisions.filter(d=>d.status !== 'decided').slice().sort((a,b)=>String(a.due).localeCompare(String(b.due)));
+  const next = sortedOpen[0];
+  const flagged = decisions.reduce((sum,d)=>sum + Number(d.flags||0), 0);
+  document.getElementById('summary-cards').innerHTML = `
+    <div class="scard"><div class="l">Open Decision Areas</div><div class="v">${open}</div><div class="tag">${flagged} spec flags grouped into this list</div></div>
+    <div class="scard"><div class="l">Priority Now</div><div class="v ${priority ? 'tag-danger' : ''}">${priority}</div><div class="tag">${priority ? 'Due within 21 days' : 'No near-term blockers'}</div></div>
+    <div class="scard"><div class="l">Next Target</div><div class="v">${next ? fmtDate(next.due) : 'Clear'}</div><div class="tag">${next ? esc(next.area) : 'All decisions marked decided'}</div></div>
+  `;
+}
+function shouldShow(row){
+  if(activeFilter === 'all') return true;
+  if(activeFilter === 'now') return isPriorityNow(row);
+  if(activeFilter === 'open') return row.status !== 'decided';
+  if(activeFilter === 'decided') return row.status === 'decided';
+  return true;
+}
+function renderTable(){
+  renderSummary();
+  const rows = decisions.filter(shouldShow).map(row=>{
+    const dueText = dueLabel(row);
+    const dueClass = isPriorityNow(row) ? 'is-due' : '';
+    return `<tr class="decision-row">
+      <td data-label="Decision Area">
+        <div class="decision-name">${esc(row.area)}</div>
+        <div class="decision-detail">${esc(row.decision)}</div>
+        <div class="source-note">${esc(row.source)}</div>
+      </td>
+      <td data-label="Schedule Gate">
+        <div class="schedule-gate">${esc(row.schedule.split(';')[0])}</div>
+        <div class="schedule-note">${esc(row.schedule.split(';').slice(1).join('; ').trim())}</div>
+      </td>
+      <td data-label="Needed By">
+        <input class="date-input" type="date" data-due="${row.id}" value="${esc(row.due)}">
+        <div class="date-note ${dueClass}">${esc(dueText)}</div>
+      </td>
+      <td data-label="Status">
+        <select class="status-select status-${row.status}" data-status="${row.id}">
+          ${Object.entries(STATUSES).map(([value,label])=>`<option value="${value}" ${row.status===value?'selected':''}>${label}</option>`).join('')}
+        </select>
+      </td>
+      <td data-label="Owner"><input class="owner-input" data-owner="${row.id}" value="${esc(row.owner)}"></td>
+      <td data-label="Next Call"><textarea class="next-input" data-next="${row.id}">${esc(row.next)}</textarea></td>
+      <td data-label="Flags"><span class="count-pill">${Number(row.flags||0)}</span></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('decision-body').innerHTML = rows || `<tr><td colspan="7">No decisions match this filter.</td></tr>`;
+  bindTableEvents();
+}
+function findRow(id){ return decisions.find(row=>row.id === id); }
+function bindTableEvents(){
+  document.querySelectorAll('[data-status]').forEach(el=>{
+    el.onchange = ()=>{
+      const row = findRow(el.dataset.status);
+      if(!row) return;
+      row.status = el.value;
+      saveState();
+      renderTable();
+    };
+  });
+  document.querySelectorAll('[data-owner]').forEach(el=>{
+    el.onchange = ()=>{
+      const row = findRow(el.dataset.owner);
+      if(row) row.owner = el.value.trim();
+      saveState();
+    };
+  });
+  document.querySelectorAll('[data-due]').forEach(el=>{
+    el.onchange = ()=>{
+      const row = findRow(el.dataset.due);
+      if(row) row.due = el.value;
+      saveState();
+      renderTable();
+    };
+  });
+  document.querySelectorAll('[data-next]').forEach(el=>{
+    el.onchange = ()=>{
+      const row = findRow(el.dataset.next);
+      if(row) row.next = el.value.trim();
+      saveState();
+    };
+  });
+}
+document.getElementById('filter-group').addEventListener('click', e=>{
+  const btn = e.target.closest('[data-filter]');
+  if(!btn) return;
+  activeFilter = btn.dataset.filter;
+  document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active', b === btn));
+  renderTable();
+});
+
+document.getElementById('asof-date').textContent = TODAY.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+fetch('/api/decisions')
+  .then(r=>r.ok ? r.json() : null)
+  .then(data=>{
+    if(!data){
+      const local = localStorage.getItem(LOCAL_KEY);
+      data = local ? JSON.parse(local) : null;
+    }
+    decisions = mergeState(data);
+    setSaveState(data ? 'Saved' : 'Ready', data ? 'good' : '');
+    renderTable();
+  })
+  .catch(()=>{
+    const local = localStorage.getItem(LOCAL_KEY);
+    decisions = mergeState(local ? JSON.parse(local) : null);
+    setSaveState('Local mode', 'bad');
+    renderTable();
+  });
+</script>
+</body>
+</html>
