@@ -86,21 +86,25 @@
   .cell-input:focus{border-color:var(--navy); background:var(--surface); outline:none;}
   .estimate-cell{text-align:right !important; white-space:normal !important;}
   .estimate-cell-content{display:flex; align-items:center; justify-content:flex-end; gap:10px; min-height:46px;}
-  .estimate-value{display:inline-block; font-weight:600; min-width:112px;}
-  .bid-summary-chip{display:inline-flex; flex-direction:column; align-items:center; gap:1px; border:1px solid var(--border); border-radius:999px; background:var(--gray-bg); color:var(--text-2); font-family:inherit; font-size:11.5px; font-weight:700; padding:4px 10px; cursor:pointer; line-height:1.1; min-width:86px;}
+  .estimate-input{font-weight:600; min-width:112px; width:118px; padding:5px 6px;}
+  .bid-summary-chip{display:inline-flex; flex-direction:column; align-items:center; gap:1px; border:1px solid var(--border); border-radius:8px; background:var(--gray-bg); color:var(--text-2); font-family:inherit; font-size:11px; font-weight:700; padding:5px 8px; cursor:pointer; line-height:1.1; min-width:82px; box-shadow:0 1px 2px rgba(20,30,45,0.04);}
   .bid-summary-chip.has-bids{background:#EEF3F8; border-color:#D7DEE8; color:var(--navy);}
   .bid-summary-chip:hover{border-color:var(--navy); color:var(--navy); background:#E7EDF5;}
   .bid-summary-chip small{display:block; font-size:9.5px; line-height:1.1; color:var(--text-3); font-weight:700; white-space:nowrap;}
   .bid-summary-chip.has-bids small{color:#5B6F89;}
+  .notes-stack{display:flex; flex-direction:column; align-items:flex-start; gap:5px; min-width:0;}
   .notes-preview{width:100%; max-width:260px; font-family:inherit; font-size:12.5px; padding:7px 8px; color:var(--text-2); line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; border-radius:6px; border:1px solid transparent;}
   .notes-preview:empty:before{content:attr(data-placeholder); color:var(--text-3);}
   .notes-preview:hover{border-color:var(--border); background:var(--bg); color:var(--text);}
+  .comments-preview{max-width:260px; border:1px solid transparent; background:transparent; color:var(--text-3); font-family:inherit; font-size:11.5px; line-height:1.3; padding:5px 8px; border-radius:6px; text-align:left; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .comments-preview.has-comments{color:var(--navy); background:#EEF3F8; border-color:#D7DEE8; font-weight:700;}
+  .comments-preview:hover{border-color:var(--border); background:var(--bg); color:var(--navy);}
 
-  .status-select{border:none; border-radius:7px; padding:6px 6px; font-family:inherit; font-size:11.5px; font-weight:700; cursor:pointer; width:80px; min-width:80px; appearance:none; -webkit-appearance:none; text-align:center; letter-spacing:0.01em;}
+  .status-select{border:1px solid var(--border); border-radius:9px; padding:7px 8px; font-family:inherit; font-size:11.5px; font-weight:800; cursor:pointer; width:92px; min-width:92px; appearance:none; -webkit-appearance:none; text-align:center; letter-spacing:0.03em; text-transform:uppercase; box-shadow:0 1px 2px rgba(20,30,45,0.05);}
   .status-select:focus{outline:2px solid var(--navy); outline-offset:1px;}
-  .status-select.status-none{background:var(--gray-bg); color:var(--text-3);}
-  .status-select.status-open{background:var(--amber-bg); color:#8a5d00;}
-  .status-select.status-closed{background:var(--green-bg); color:#1c7a3c;}
+  .status-select.status-none{background:var(--gray-bg); color:var(--text-3); border-color:var(--border);}
+  .status-select.status-open{background:#F6B83F; color:#3F2A00; border-color:#C9820A;}
+  .status-select.status-closed{background:#208C46; color:#fff; border-color:#176C34;}
 
   .mini-vendor{width:100%; min-width:0; white-space:pre-wrap; overflow-wrap:anywhere; word-break:break-word; cursor:text; font-family:inherit; font-size:12px; border:1px solid transparent; border-radius:5px; padding:5px 6px; background:var(--bg); color:var(--text); line-height:1.35;}
   .mini-vendor:focus{border-color:var(--navy); outline:none; background:var(--surface);}
@@ -195,6 +199,21 @@
   .notes-modal-textarea:focus{outline:none; border-color:var(--navy); background:var(--surface);}
   #notes-modal-close{background:var(--gray-bg); border:none; border-radius:7px; width:28px; height:28px; cursor:pointer; font-size:13px; color:var(--text-2);}
   #notes-modal-close:hover{background:var(--red-bg); color:var(--red);}
+  .comments-modal-card{max-width:560px; height:auto; max-height:82vh;}
+  .comments-modal-body{padding:18px; overflow:auto;}
+  .comments-thread-list{display:flex; flex-direction:column; gap:10px; margin-bottom:14px; max-height:310px; overflow:auto;}
+  .comment-entry{border:1px solid var(--border); border-radius:10px; background:var(--bg); padding:10px 12px;}
+  .comment-entry .comment-meta{font-size:11px; color:var(--text-2); font-weight:700; margin-bottom:5px;}
+  .comment-entry .comment-meta span{color:var(--text-3); font-weight:500; margin-left:6px;}
+  .comment-entry .comment-text{font-size:13px; color:var(--text); line-height:1.45; white-space:pre-wrap;}
+  .comments-empty{border:1px dashed var(--border); border-radius:10px; padding:18px; text-align:center; color:var(--text-2); font-size:13px; background:var(--bg);}
+  .comments-compose{display:flex; gap:10px; align-items:flex-end;}
+  .comments-compose textarea{flex:1; min-height:80px; font-family:inherit; font-size:13px; line-height:1.45; border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); background:var(--bg); resize:vertical;}
+  .comments-compose textarea:focus{outline:none; border-color:var(--navy); background:var(--surface);}
+  .comments-add-btn{background:var(--navy); color:#fff; border:none; border-radius:10px; padding:10px 13px; font-family:inherit; font-size:12.5px; font-weight:700; cursor:pointer;}
+  .comments-add-btn:hover{background:#28497a;}
+  #comments-modal-close{background:var(--gray-bg); border:none; border-radius:7px; width:28px; height:28px; cursor:pointer; font-size:13px; color:var(--text-2);}
+  #comments-modal-close:hover{background:var(--red-bg); color:var(--red);}
   .pdf-modal-body{flex:1; overflow:auto; background:#525659; display:flex; flex-direction:column; align-items:center; padding:20px; gap:16px;}
   #pdf-pages-container{display:flex; flex-direction:column; align-items:center; gap:16px;}
   .pdf-page-canvas{box-shadow:0 4px 16px rgba(0,0,0,0.3); background:#fff; max-width:100%;}
@@ -252,11 +271,11 @@
   <div class="banner">
     <div class="tag">Cost vs. price</div>
     <ul class="howto-list">
-      <li><b>Budgeted Cost</b> is the original BuilderTrend cost allowance before contractor fee.</li>
-      <li><b>Est. Cost to Complete</b> uses checked bids when available, otherwise the original budgeted cost.</li>
+      <li><b>Budgeted Cost</b> is the original Draw Sheet price converted back to internal cost before contractor fee.</li>
+      <li><b>Est. Cost to Complete</b> uses the Draw Sheet new estimate converted to cost, unless checked bid costs are applied.</li>
       <li><b>Cost Difference</b> shows whether the current estimate is over or under the original budgeted cost.</li>
       <li><b>Total Price</b> is the client-facing projected price with McCamy's 16% contractor fee applied, except General Conditions.</li>
-      <li><b>Bid / Estimates</b> are supporting quotes; check the box to include a bid in the projected cost.</li>
+      <li><b>Bid / Estimates</b> are vendor cost quotes; check the box to include a bid cost in the projected cost.</li>
     </ul>
   </div>
 
@@ -286,7 +305,7 @@
     </table>
   </div>
 
-  <div class="foot-note">Cost Difference = Budgeted Cost minus Estimated Cost to Complete. Total Price is the projected client price after the 16% contractor fee, except General Conditions.</div>
+  <div class="foot-note">Cost Difference = Budgeted Cost minus Estimated Cost to Complete. Draw Sheet prices are converted to cost internally; Total Price adds the 16% contractor fee, except General Conditions.</div>
 
   <div class="activity-section">
     <div class="activity-header" id="activity-toggle">📋 Activity Log <span id="activity-count"></span> <span class="chev" id="activity-chev">▸</span></div>
@@ -313,6 +332,24 @@
   </div>
 </div>
 
+<div id="comments-modal" class="pdf-modal-overlay">
+  <div class="pdf-modal comments-modal-card">
+    <div class="pdf-modal-header">
+      <span id="comments-modal-title">Comments</span>
+      <div class="pdf-modal-actions">
+        <button id="comments-modal-close">✕</button>
+      </div>
+    </div>
+    <div class="comments-modal-body">
+      <div id="comments-thread-list" class="comments-thread-list"></div>
+      <div class="comments-compose">
+        <textarea id="comments-modal-textarea" placeholder="Add a comment..."></textarea>
+        <button id="comments-add-btn" class="comments-add-btn" type="button">Post</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="bid-modal" class="pdf-modal-overlay">
   <div class="pdf-modal bid-modal-card">
     <div class="pdf-modal-header">
@@ -332,16 +369,17 @@
 
 <script>
 
-const seedBudgetGroups = [{"id": "1000-job-startup-and-site-work", "category": "1000- Job Startup and Site Work", "items": [{"id": "1010-building-permits", "title": "1010- Building Permits", "allowance": 8500.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "1400-temporary-utilities", "title": "1400- Temporary Utilities", "allowance": 3200.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "1430-utility-fees", "title": "1430- Utility Fees", "allowance": 3500.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2000-surveying", "title": "2000- Surveying", "allowance": 5000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2005-excavation", "title": "2005- Excavation", "allowance": 75000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2011-plumbing-underground", "title": "2011- Plumbing Underground", "allowance": 10000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2012-electrical-underground", "title": "2012- Electrical Underground", "allowance": 10000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2300-termite-treatment", "title": "2300- Termite Treatment", "allowance": 1200.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1100-foundation-waterproofing", "category": "1100- Foundation & Waterproofing", "items": [{"id": "2100-footings-foundation", "title": "2100- Footings & Foundation", "allowance": 263449.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2200-waterproofing", "title": "2200- Waterproofing", "allowance": 23728.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "2500-gravel", "title": "2500- Gravel", "allowance": 65000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "3100-structural-steel", "title": "3100- Structural Steel", "allowance": 87621.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1200-framing-roofing", "category": "1200- Framing & Roofing", "items": [{"id": "3110-framing-material", "title": "3110- Framing Material", "allowance": 216750.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "3210-framing-labor", "title": "3210- Framing Labor", "allowance": 137275.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4100-roofing", "title": "4100- Roofing", "allowance": 103660.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4150-roofing-labor", "title": "4150- Roofing Labor", "allowance": 40000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4160-roofing", "title": "4160- Roofing", "allowance": 40000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1300-exterior-finishes", "category": "1300- Exterior Finishes", "items": [{"id": "3401-exterior-siding-m-l", "title": "3401- Exterior Siding M&L", "allowance": 85000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "3402-exterior-siding", "title": "3402- Exterior Siding", "allowance": 100000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "3910-gutters-downspouts", "title": "3910- Gutters & downspouts", "allowance": 49200.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4220-stone", "title": "4220- Stone ", "allowance": 105639.5, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4230-stone-labor", "title": "4230- Stone Labor", "allowance": 105840.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4601-exterior-paint", "title": "4601- Exterior Paint", "allowance": 50000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4900-mailbox", "title": "4900 Mailbox", "allowance": 2000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1301-porches-decks", "category": "1301- Porches & Decks", "items": [{"id": "6452-deck", "title": "6452- Deck", "allowance": 50000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1302-windows-doors", "category": "1302- Windows & Doors", "items": [{"id": "3300-windows", "title": "3300- Windows", "allowance": 105487.37, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "4300-exterior-doors", "title": "4300- Exterior Doors", "allowance": 38000.0, "actual": 67010.99, "notes": "Approved package total 7/9/26 (standard raised panel + glass, Dallas Millwork/Witt Building). Not reflected in BuilderTrend.", "comments": []}, {"id": "4350-garage-doors", "title": "4350- Garage Doors", "allowance": 25000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1400-mep", "category": "1400- MEP", "items": [{"id": "3720-plumbing-labor", "title": "3720- Plumbing Labor", "allowance": 59675.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5700-hvac", "title": "5700- HVAC", "allowance": 68927.0, "actual": 89155.0, "notes": "Bid accepted 7/13/26 (Gent Heating & Cooling) — Sarah confirmed pulling equipment same day. Not reflected in BuilderTrend's Committed/Actual columns.", "comments": []}, {"id": "5750-low-voltage-wiring", "title": "5750- Low Voltage Wiring", "allowance": 20000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "electrical-labor", "title": "Electrical Labor", "allowance": 139432.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1500-insulation-drywall", "category": "1500- Insulation & Drywall", "items": [{"id": "4400-insulation", "title": "4400- Insulation", "allowance": 37095.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5100-drywall", "title": "5100- Drywall", "allowance": 62656.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1600-interior-finishes", "category": "1600- Interior Finishes", "items": [{"id": "5200-interior-trim-material", "title": "5200- Interior Trim Material", "allowance": 100000.0, "actual": 182353.75, "notes": "Charlie's (USAM) pricing received 7/27/26, excludes reclaimed doors (bedroom hallway, laundry, pantry). Needs a client conversation on overage vs scope reduction.", "comments": []}, {"id": "5250-interior-trim-labor", "title": "5250- Interior Trim Labor", "allowance": 115000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5300-painting-interior", "title": "5300- Painting- Interior", "allowance": 65000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5610-door-hardware", "title": "5610- Door Hardware", "allowance": 10000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5620-glass", "title": "5620- Glass", "allowance": 16059.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5622-mirrors", "title": "5622- Mirrors", "allowance": 7000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5640-closet-shelving", "title": "5640- Closet Shelving", "allowance": 30000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1601-cabinets-countertops", "category": "1601- Cabinets & Countertops", "items": [{"id": "5400-cabinets-vanities", "title": "5400- Cabinets & Vanities", "allowance": 150000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5452-quartz-tops", "title": "5452- Quartz tops", "allowance": 75000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1602-fireplaces", "category": "1602- Fireplaces", "items": [{"id": "4500-fireplaces", "title": "4500- Fireplaces", "allowance": 60808.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1603-flooring-tile", "category": "1603- Flooring & Tile", "items": [{"id": "5510-ceramic-tile", "title": "5510- Ceramic Tile", "allowance": 65000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5512-ceramic-tile-installation", "title": "5512- Ceramic Tile Installation", "allowance": 75000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5520-hardwood-flooring", "title": "5520- Hardwood Flooring", "allowance": 92570.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1604-appliances-fixtures", "category": "1604- Appliances & Fixtures", "items": [{"id": "5630-appliances", "title": "5630- Appliances", "allowance": 85000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5710-fixtures-accessories", "title": "5710- Fixtures + Accessories", "allowance": 65000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "5720-electrical-fixtures", "title": "5720- Electrical Fixtures", "allowance": 100000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1700-final-grade-concrete", "category": "1700- Final Grade & Concrete", "items": [{"id": "2700-concrete", "title": "2700- Concrete", "allowance": 116781.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "1800-landscaping", "category": "1800- Landscaping", "items": [{"id": "6600-landscaping", "title": "6600- Landscaping", "allowance": 300943.64, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "6900-pool", "title": "6900- Pool", "allowance": 233826.9, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "2000-general-conditions", "category": "2000- General Conditions", "items": [{"id": "1000-general-conditions", "title": "1000- General Conditions", "allowance": 140000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}, {"id": "2100-general-construction-costs", "category": "2100- General Construction Costs", "items": [{"id": "1002-general-construction-cost", "title": "1002 - General construction cost", "allowance": 75000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "6100-final-cleaning", "title": "6100- Final Cleaning", "allowance": 6000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}, {"id": "6700-pressure-washing", "title": "6700- Pressure Washing", "allowance": 5000.0, "actual": null, "notes": "No committed/actual cost entered in BuilderTrend yet — original estimate only.", "comments": []}]}];
+const seedBudgetGroups = [{"id":"1000-job-startup-and-site-work","category":"1000- Job Startup and Site Work","items":[{"id":"1010-building-permits","title":"1010- Building Permits","allowance":8500.0,"actual":null,"notes":"","comments":[],"estimate":10494.83,"estimateSource":"draw"},{"id":"1400-temporary-utilities","title":"1400- Temporary Utilities","allowance":3200.0,"actual":null,"notes":"","comments":[],"estimate":3200.0,"estimateSource":"draw"},{"id":"1430-utility-fees","title":"1430- Utility Fees","allowance":3500.0,"actual":null,"notes":"","comments":[],"estimate":3500.0,"estimateSource":"draw"},{"id":"2000-surveying","title":"2000- Surveying","allowance":5000.0,"actual":null,"notes":"","comments":[],"estimate":7994.25,"estimateSource":"draw"},{"id":"2005-excavation","title":"2005- Excavation","allowance":75000.0,"actual":null,"notes":"","comments":[],"estimate":224125.06,"estimateSource":"draw"},{"id":"2011-plumbing-underground","title":"2011- Plumbing Underground","allowance":10000.0,"actual":null,"notes":"","comments":[],"estimate":10000.0,"estimateSource":"draw"},{"id":"2012-electrical-underground","title":"2012- Electrical Underground","allowance":10000.0,"actual":null,"notes":"","comments":[],"estimate":10000.0,"estimateSource":"draw"},{"id":"2300-termite-treatment","title":"2300- Termite Treatment","allowance":1200.0,"actual":null,"notes":"","comments":[],"estimate":1200.0,"estimateSource":"draw"}]},{"id":"1100-foundation-waterproofing","category":"1100- Foundation & Waterproofing","items":[{"id":"2100-footings-foundation","title":"2100- Footings & Foundation","allowance":263449.0,"actual":null,"notes":"","comments":[],"estimate":414986.24,"estimateSource":"draw"},{"id":"2200-waterproofing","title":"2200- Waterproofing","allowance":23728.0,"actual":null,"notes":"","comments":[],"estimate":23728.0,"estimateSource":"draw"},{"id":"2500-gravel","title":"2500- Gravel","allowance":65000.0,"actual":null,"notes":"","comments":[],"estimate":87493.38,"estimateSource":"draw"},{"id":"3100-structural-steel","title":"3100- Structural Steel","allowance":87621.0,"actual":null,"notes":"","comments":[],"estimate":94686.25,"estimateSource":"draw"}]},{"id":"1200-framing-roofing","category":"1200- Framing & Roofing","items":[{"id":"3110-framing-material","title":"3110- Framing Material","allowance":216750.0,"actual":null,"notes":"","comments":[],"estimate":216750.0,"estimateSource":"draw"},{"id":"3210-framing-labor","title":"3210- Framing Labor","allowance":137275.0,"actual":null,"notes":"","comments":[],"estimate":137275.0,"estimateSource":"draw"},{"id":"4100-roofing","title":"4100- Roofing","allowance":103660.0,"actual":null,"notes":"","comments":[],"estimate":103660.0,"estimateSource":"draw"},{"id":"4150-roofing-labor","title":"4150- Roofing Labor","allowance":40000.0,"actual":null,"notes":"","comments":[],"estimate":40000.0,"estimateSource":"draw"},{"id":"4160-roofing","title":"4160- Roofing","allowance":40000.0,"actual":null,"notes":"","comments":[],"estimate":40000.0,"estimateSource":"draw"}]},{"id":"1300-exterior-finishes","category":"1300- Exterior Finishes","items":[{"id":"3401-exterior-siding-m-l","title":"3401- Exterior Siding M&L","allowance":85000.0,"actual":null,"notes":"","comments":[],"estimate":85000.0,"estimateSource":"draw"},{"id":"3402-exterior-siding","title":"3402- Exterior Siding","allowance":100000.0,"actual":null,"notes":"","comments":[],"estimate":100000.0,"estimateSource":"draw"},{"id":"3910-gutters-downspouts","title":"3910- Gutters & downspouts","allowance":49200.0,"actual":null,"notes":"","comments":[],"estimate":49200.0,"estimateSource":"draw"},{"id":"4220-stone","title":"4220- Stone ","allowance":105639.5,"actual":null,"notes":"","comments":[],"estimate":105639.5,"estimateSource":"draw"},{"id":"4230-stone-labor","title":"4230- Stone Labor","allowance":105840.0,"actual":null,"notes":"","comments":[],"estimate":105840.0,"estimateSource":"draw"},{"id":"4601-exterior-paint","title":"4601- Exterior Paint","allowance":50000.0,"actual":null,"notes":"","comments":[],"estimate":50000.0,"estimateSource":"draw"},{"id":"4900-mailbox","title":"4900 Mailbox","allowance":2000.0,"actual":null,"notes":"","comments":[],"estimate":2000.0,"estimateSource":"draw"}]},{"id":"1301-porches-decks","category":"1301- Porches & Decks","items":[{"id":"6452-deck","title":"6452- Deck","allowance":50000.0,"actual":null,"notes":"","comments":[],"estimate":50000.0,"estimateSource":"draw"}]},{"id":"1302-windows-doors","category":"1302- Windows & Doors","items":[{"id":"3300-windows","title":"3300- Windows","allowance":105487.37,"actual":null,"notes":"","comments":[],"estimate":182725.41,"estimateSource":"draw"},{"id":"4300-exterior-doors","title":"4300- Exterior Doors","allowance":38000.0,"actual":null,"notes":"Approved package total 7/9/26 (standard raised panel + glass, Dallas Millwork/Witt Building). Not reflected in BuilderTrend.","comments":[],"estimate":38000.0,"estimateSource":"draw"},{"id":"4350-garage-doors","title":"4350- Garage Doors","allowance":25000.0,"actual":null,"notes":"","comments":[],"estimate":25000.0,"estimateSource":"draw"}]},{"id":"1400-mep","category":"1400- MEP","items":[{"id":"3720-plumbing-labor","title":"3720- Plumbing Labor","allowance":59675.0,"actual":null,"notes":"","comments":[],"estimate":59675.0,"estimateSource":"draw"},{"id":"5700-hvac","title":"5700- HVAC","allowance":68927.0,"actual":null,"notes":"Bid accepted 7/13/26 (Gent Heating & Cooling) — Sarah confirmed pulling equipment same day. Not reflected in BuilderTrend's Committed/Actual columns.","comments":[],"estimate":68927.0,"estimateSource":"draw"},{"id":"5750-low-voltage-wiring","title":"5750- Low Voltage Wiring","allowance":20000.0,"actual":null,"notes":"","comments":[],"estimate":20000.0,"estimateSource":"draw"},{"id":"electrical-labor","title":"Electrical Labor","allowance":139432.0,"actual":null,"notes":"","comments":[],"estimate":139432.0,"estimateSource":"draw"}]},{"id":"1500-insulation-drywall","category":"1500- Insulation & Drywall","items":[{"id":"4400-insulation","title":"4400- Insulation","allowance":37095.0,"actual":null,"notes":"","comments":[],"estimate":37095.0,"estimateSource":"draw"},{"id":"5100-drywall","title":"5100- Drywall","allowance":62656.0,"actual":null,"notes":"","comments":[],"estimate":62656.0,"estimateSource":"draw"}]},{"id":"1600-interior-finishes","category":"1600- Interior Finishes","items":[{"id":"5200-interior-trim-material","title":"5200- Interior Trim Material","allowance":100000.0,"actual":null,"notes":"Charlie's (USAM) pricing received 7/27/26, excludes reclaimed doors (bedroom hallway, laundry, pantry). Needs a client conversation on overage vs scope reduction.","comments":[],"estimate":100000.0,"estimateSource":"draw"},{"id":"5250-interior-trim-labor","title":"5250- Interior Trim Labor","allowance":115000.0,"actual":null,"notes":"","comments":[],"estimate":115000.0,"estimateSource":"draw"},{"id":"5300-painting-interior","title":"5300- Painting- Interior","allowance":65000.0,"actual":null,"notes":"","comments":[],"estimate":65000.0,"estimateSource":"draw"},{"id":"5610-door-hardware","title":"5610- Door Hardware","allowance":10000.0,"actual":null,"notes":"","comments":[],"estimate":10000.0,"estimateSource":"draw"},{"id":"5620-glass","title":"5620- Glass","allowance":16059.0,"actual":null,"notes":"","comments":[],"estimate":16059.0,"estimateSource":"draw"},{"id":"5622-mirrors","title":"5622- Mirrors","allowance":7000.0,"actual":null,"notes":"","comments":[],"estimate":7000.0,"estimateSource":"draw"},{"id":"5640-closet-shelving","title":"5640- Closet Shelving","allowance":30000.0,"actual":null,"notes":"","comments":[],"estimate":30000.0,"estimateSource":"draw"}]},{"id":"1601-cabinets-countertops","category":"1601- Cabinets & Countertops","items":[{"id":"5400-cabinets-vanities","title":"5400- Cabinets & Vanities","allowance":150000.0,"actual":null,"notes":"","comments":[],"estimate":150000.0,"estimateSource":"draw"},{"id":"5452-quartz-tops","title":"5452- Quartz tops","allowance":75000.0,"actual":null,"notes":"","comments":[],"estimate":75000.0,"estimateSource":"draw"}]},{"id":"1602-fireplaces","category":"1602- Fireplaces","items":[{"id":"4500-fireplaces","title":"4500- Fireplaces","allowance":60808.0,"actual":null,"notes":"","comments":[],"estimate":60808.0,"estimateSource":"draw"}]},{"id":"1603-flooring-tile","category":"1603- Flooring & Tile","items":[{"id":"5510-ceramic-tile","title":"5510- Ceramic Tile","allowance":65000.0,"actual":null,"notes":"","comments":[],"estimate":65000.0,"estimateSource":"draw"},{"id":"5512-ceramic-tile-installation","title":"5512- Ceramic Tile Installation","allowance":75000.0,"actual":null,"notes":"","comments":[],"estimate":75000.0,"estimateSource":"draw"},{"id":"5520-hardwood-flooring","title":"5520- Hardwood Flooring","allowance":92570.0,"actual":null,"notes":"","comments":[],"estimate":92570.0,"estimateSource":"draw"}]},{"id":"1604-appliances-fixtures","category":"1604- Appliances & Fixtures","items":[{"id":"5630-appliances","title":"5630- Appliances","allowance":85000.0,"actual":null,"notes":"","comments":[],"estimate":85000.0,"estimateSource":"draw"},{"id":"5710-fixtures-accessories","title":"5710- Fixtures + Accessories","allowance":65000.0,"actual":null,"notes":"","comments":[],"estimate":65000.0,"estimateSource":"draw"},{"id":"5720-electrical-fixtures","title":"5720- Electrical Fixtures","allowance":100000.0,"actual":null,"notes":"","comments":[],"estimate":100000.0,"estimateSource":"draw"}]},{"id":"1700-final-grade-concrete","category":"1700- Final Grade & Concrete","items":[{"id":"2700-concrete","title":"2700- Concrete","allowance":116781.0,"actual":null,"notes":"","comments":[],"estimate":92379.0,"estimateSource":"draw"}]},{"id":"1800-landscaping","category":"1800- Landscaping","items":[{"id":"6600-landscaping","title":"6600- Landscaping","allowance":300943.64,"actual":null,"notes":"","comments":[],"estimate":300943.64,"estimateSource":"draw"},{"id":"6900-pool","title":"6900- Pool","allowance":233826.9,"actual":null,"notes":"","comments":[],"estimate":178600.0,"estimateSource":"draw"}]},{"id":"2000-general-conditions","category":"2000- General Conditions","items":[{"id":"1000-general-conditions","title":"1000- General Conditions","allowance":140000.0,"actual":null,"notes":"","comments":[],"estimate":140000.0,"estimateSource":"draw"}]},{"id":"2100-general-construction-costs","category":"2100- General Construction Costs","items":[{"id":"1002-general-construction-cost","title":"1002 - General construction cost","allowance":75000.0,"actual":null,"notes":"","comments":[],"estimate":75000.0,"estimateSource":"draw"},{"id":"6100-final-cleaning","title":"6100- Final Cleaning","allowance":6000.0,"actual":null,"notes":"","comments":[],"estimate":6000.0,"estimateSource":"draw"},{"id":"6700-pressure-washing","title":"6700- Pressure Washing","allowance":5000.0,"actual":null,"notes":"","comments":[],"estimate":5000.0,"estimateSource":"draw"}]}];
 
 const BUDGET_KEY = 'kuendig-budget-standalone-v1';
 const USERNAME_KEY = 'kuendig-budget-username';
+const DATA_VERSION = 'draw-sheet-2026-07-30-v1';
 
 let __saveTimer = null;
 function persistState(){
   clearTimeout(__saveTimer);
   __saveTimer = setTimeout(()=>{
-    fetch('/api/state', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({budget, changeLog})})
+    fetch('/api/state', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({budget, changeLog, dataVersion: DATA_VERSION})})
       .then(r=>r.json()).then(res=>{
         if(!res || !res.ok){ showToast('That change may not have saved — check your connection and try again.', 'error'); }
       }).catch(()=>{ showToast('That change may not have saved — check your connection and try again.', 'error'); });
@@ -415,6 +453,7 @@ function uploadFile(file, onDone){
   });
 }
 let notesModalItemId = null;
+let commentsModalItemId = null;
 let bidModalItemId = null;
 let pendingBidUpload = null;
 let budget = [];
@@ -426,15 +465,16 @@ const NO_MARKUP_IDS = new Set(['1000-general-conditions']);
 function priceFor(itemId, amount){ const rate = NO_MARKUP_IDS.has(itemId) ? 0 : MARKUP_RATE; return amount * (1+rate); }
 function itemCalc(it){
   const budgetAmt = Number(it.allowance||0);
+  const manualEstimate = it.estimate!=null ? Number(it.estimate||0) : budgetAmt;
   const bids = it.bids || [];
   const checked = bids.filter(b=>b.checked && b.amount!=null);
   const hasBid = checked.length>0;
   const bidReceived = hasBid ? checked.reduce((s,b)=>s+Number(b.amount||0),0) : null;
-  const projected = hasBid ? bidReceived : budgetAmt;
+  const projected = hasBid ? bidReceived : manualEstimate;
   const costDiff = budgetAmt - projected;
   const price = priceFor(it.id, budgetAmt);
   const completePrice = priceFor(it.id, projected);
-  return {budgetAmt, bidReceived, hasBid, checkedCount: checked.length, projected, costDiff, price, completePrice};
+  return {budgetAmt, manualEstimate, bidReceived, hasBid, checkedCount: checked.length, projected, costDiff, price, completePrice};
 }
 function catCalc(g){
   const sums = {budgetAmt:0, bidReceived:0, hasBid:false, projected:0, costDiff:0, price:0, completePrice:0};
@@ -537,6 +577,13 @@ function bidSummaryHTML(it){
     <span>${label}</span><small>${meta}</small>
   </button>`;
 }
+function commentsPreviewHTML(it){
+  const comments = it.comments || [];
+  const count = comments.length;
+  const latest = count ? comments[comments.length-1] : null;
+  const label = count ? `${count} comment${count===1?'':'s'}${latest && latest.author ? ` • ${latest.author}` : ''}` : 'Comment...';
+  return `<button type="button" class="comments-preview ${count?'has-comments':''}" data-comments="${it.id}" title="Open comment thread">${esc(label)}</button>`;
+}
 
 function renderBidModal(){
   const modal = document.getElementById('bid-modal');
@@ -623,10 +670,11 @@ function renderBudget(){
       g.items.forEach(it=>{
         const c = itemCalc(it);
         const bidSummary = bidSummaryHTML(it);
+        const commentsSummary = commentsPreviewHTML(it);
         rows += `<tr class="item-row">
           <td><span class="chev"></span> <span class="item-title-edit" contenteditable="true" data-itemtitle="${it.id}">${esc(it.title)}</span></td>
           <td><input class="cell-input" type="text" inputmode="decimal" size="${fmtMoney(it.allowance).length+1}" data-budgetinput="${it.id}" value="${fmtMoney(it.allowance)}"></td>
-          <td class="estimate-cell"><div class="estimate-cell-content">${bidSummary}<span class="estimate-value">${fmtMoney(c.projected)}</span></div></td>
+          <td class="estimate-cell"><div class="estimate-cell-content">${bidSummary}<input class="cell-input estimate-input" type="text" inputmode="decimal" data-estimateinput="${it.id}" value="${fmtMoney(c.projected)}" title="${c.hasBid?'Editing this will switch back to a manual cost estimate.':'Edit Est. Cost to Complete'}"></div></td>
           <td class="${varClass(c.costDiff)}">${diffLabel(c.costDiff)}</td>
           <td>${fmtMoney(c.completePrice)}</td>
           <td><select class="status-select status-${it.status||'none'}" data-statusinput="${it.id}">
@@ -634,7 +682,7 @@ function renderBudget(){
             <option value="open" ${it.status==='open'?'selected':''}>Open</option>
             <option value="closed" ${it.status==='closed'?'selected':''}>Closed</option>
           </select></td>
-          <td class="notes-cell"><div class="notes-preview" data-notespreview="${it.id}" data-placeholder="Notes...">${esc(it.notes)}</div></td>
+          <td class="notes-cell"><div class="notes-stack"><div class="notes-preview" data-notespreview="${it.id}" data-placeholder="Notes...">${esc(it.notes)}</div>${commentsSummary}</div></td>
         </tr>`;
       });
     }
@@ -712,6 +760,25 @@ function bindRowEvents(){
     };
   });
 
+  // Editable Est. Cost to Complete cell. Direct edits switch that row to a manual estimate.
+  document.querySelectorAll('[data-estimateinput]').forEach(el=>{
+    el.addEventListener('click', e=>e.stopPropagation());
+    el.addEventListener('focus', e=>{ const raw = parseCurrency(e.target.value); e.target.value = raw!=null ? raw : ''; e.target.select(); });
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter') e.target.blur(); });
+    el.onchange = (e)=>{
+      const itemId = el.dataset.estimateinput;
+      const val = parseCurrency(e.target.value);
+      if(val===null){ renderBudget(); return; }
+      const rec = findItemRecord(itemId);
+      if(rec){
+        rec.item.estimate = val;
+        (rec.item.bids||[]).forEach(b=>{ b.checked = false; });
+      }
+      logChange(`set ${findItemTitle(itemId)} cost to complete to ${fmtMoney(val)}`);
+      saveJSON(BUDGET_KEY, budget); renderBudget();
+    };
+  });
+
   // Status column
   document.querySelectorAll('[data-statusinput]').forEach(el=>{
     el.addEventListener('click', e=>e.stopPropagation());
@@ -737,6 +804,12 @@ function bindRowEvents(){
       document.getElementById('notes-modal-textarea').value = rec.notes || '';
       document.getElementById('notes-modal').style.display = 'flex';
       setTimeout(()=>document.getElementById('notes-modal-textarea').focus(), 50);
+    });
+  });
+  document.querySelectorAll('[data-comments]').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      openCommentsModal(el.dataset.comments);
     });
   });
 }
@@ -870,8 +943,51 @@ function closeNotesModal(){
   notesModalItemId = null;
   renderBudget();
 }
+function renderCommentsModal(){
+  if(!commentsModalItemId) return;
+  const rec = findItemRecord(commentsModalItemId);
+  if(!rec) return;
+  const comments = rec.item.comments || [];
+  document.getElementById('comments-thread-list').innerHTML = comments.length
+    ? comments.map(c=>`<div class="comment-entry"><div class="comment-meta">${esc(c.author||'Anon')}<span>${fmtTs(c.ts||Date.now())}</span></div><div class="comment-text">${esc(c.text||'')}</div></div>`).join('')
+    : '<div class="comments-empty">No comments yet.</div>';
+}
+function openCommentsModal(itemId){
+  const rec = findItemRecord(itemId);
+  if(!rec) return;
+  commentsModalItemId = itemId;
+  rec.item.comments = rec.item.comments || [];
+  document.getElementById('comments-modal-title').textContent = 'Comments — ' + rec.item.title;
+  document.getElementById('comments-modal-textarea').value = '';
+  document.getElementById('comments-modal').style.display = 'flex';
+  renderCommentsModal();
+  setTimeout(()=>document.getElementById('comments-modal-textarea').focus(), 50);
+}
+function closeCommentsModal(){
+  document.getElementById('comments-modal').style.display = 'none';
+  commentsModalItemId = null;
+  renderBudget();
+}
+function addComment(){
+  if(!commentsModalItemId) return;
+  const text = document.getElementById('comments-modal-textarea').value.trim();
+  if(!text) return;
+  const rec = findItemRecord(commentsModalItemId);
+  if(!rec) return;
+  rec.item.comments = rec.item.comments || [];
+  rec.item.comments.push({author: username || 'Anon', text, ts: Date.now()});
+  document.getElementById('comments-modal-textarea').value = '';
+  logChange(`commented on ${findItemTitle(commentsModalItemId)}`);
+  saveJSON(BUDGET_KEY, budget);
+  renderCommentsModal();
+  renderBudget();
+}
 document.getElementById('notes-modal-close').onclick = closeNotesModal;
 document.getElementById('notes-modal').addEventListener('click', e=>{ if(e.target.id==='notes-modal') closeNotesModal(); });
+document.getElementById('comments-modal-close').onclick = closeCommentsModal;
+document.getElementById('comments-modal').addEventListener('click', e=>{ if(e.target.id==='comments-modal') closeCommentsModal(); });
+document.getElementById('comments-add-btn').onclick = addComment;
+document.getElementById('comments-modal-textarea').addEventListener('keydown', e=>{ if((e.metaKey||e.ctrlKey) && e.key==='Enter') addComment(); });
 document.getElementById('bid-modal-close').onclick = closeBidModal;
 document.getElementById('bid-modal').addEventListener('click', e=>{ if(e.target.id==='bid-modal') closeBidModal(); });
 document.getElementById('bid-upload-input').addEventListener('change', e=>{
@@ -906,6 +1022,8 @@ const BOILERPLATE_NOTE = "No committed/actual cost entered in BuilderTrend yet �
 function migrateToBidsArray(data){
   data.forEach(g=>g.items.forEach(it=>{
     if(it.notes === BOILERPLATE_NOTE){ it.notes = ''; }
+    if(it.estimate == null){ it.estimate = it.allowance; }
+    if(!it.comments){ it.comments = []; }
     if(!it.bids){
       it.bids = [];
       if(it.bidAmount!=null || it.bidVendor || it.bidFileId){
@@ -921,6 +1039,31 @@ function migrateToBidsArray(data){
   }));
   return data;
 }
+function cloneSeedBudget(){
+  return JSON.parse(JSON.stringify(seedBudgetGroups));
+}
+function seedItemMap(){
+  const map = {};
+  seedBudgetGroups.forEach(g=>g.items.forEach(it=>{ map[it.id] = it; }));
+  return map;
+}
+function applyDrawBaseline(data){
+  const seed = seedItemMap();
+  data.forEach(g=>g.items.forEach(it=>{
+    const fresh = seed[it.id];
+    if(!fresh) return;
+    it.allowance = fresh.allowance;
+    it.estimate = fresh.estimate != null ? fresh.estimate : fresh.allowance;
+    it.estimateSource = fresh.estimateSource || 'draw';
+    if(!it.comments) it.comments = [];
+  }));
+  return data;
+}
+function prepareBudgetState(payload){
+  const source = payload && payload.budget ? payload.budget : cloneSeedBudget();
+  const data = migrateToBidsArray(source);
+  return (!payload || payload.dataVersion !== DATA_VERSION) ? applyDrawBaseline(data) : data;
+}
 
 document.getElementById('activity-toggle').onclick = ()=>{
   const list = document.getElementById('changelog-list');
@@ -931,12 +1074,12 @@ document.getElementById('activity-toggle').onclick = ()=>{
 };
 
 fetch('/api/state').then(r=>r.json()).then(data=>{
-  budget = migrateToBidsArray((data && data.budget) ? data.budget : seedBudgetGroups);
+  budget = prepareBudgetState(data);
   changeLog = (data && data.changeLog) ? data.changeLog : [];
   renderChangeLog();
   renderBudget();
 }).catch(()=>{
-  budget = migrateToBidsArray(seedBudgetGroups);
+  budget = prepareBudgetState(null);
   changeLog = [];
   renderChangeLog();
   renderBudget();
